@@ -11,6 +11,7 @@ public class OpenticketApplicationTests {
 
     @Test
     public void contextLoads() {
+        
     }
 
 }
