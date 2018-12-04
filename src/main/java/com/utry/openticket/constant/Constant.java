@@ -9,4 +9,5 @@ package com.utry.openticket.constant;
 
 public class Constant {
     public static final String selectType = "文本框";
+	
 }
