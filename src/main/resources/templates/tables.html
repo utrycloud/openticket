@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<!--
+文档路径: docs\datatable.html
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+	<!-- begin::Head -->
+	<head>
+		<meta charset="utf-8" />
+		<title>填写表单</title>
+		<meta name="description" content="Initialized via remote ajax json data">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+
+		<!--begin::Global Theme Styles -->
+		<link href="assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+
+		<link href="assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css" />
+
+
+
+	<style>
+	.m-aside-left--fixed .m-body {
+    -webkit-transition: width 0.2s ease;
+    transition: width 0.2s ease;
+    padding-left: 0px;
+}
+
+.m-body .m-content {
+    padding: 20px 20px;
+}
+		</style>
+	</head>
+
+	<!-- end::Head -->
+
+	<!-- begin::Body -->
+	<body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
+
+		<!-- begin:: Page -->
+		<div class="m-grid m-grid--hor m-grid--root m-page">
+
+			<!-- BEGIN: Header -->
+			<header id="m_header" class="m-grid__item    m-header " m-minimize-offset="200" m-minimize-mobile-offset="200">
+				<div class="m-container m-container--fluid m-container--full-height">
+					<div class="m-stack m-stack--ver m-stack--desktop">
+
+						
+						<div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
+
+							<!-- BEGIN: Horizontal Menu -->
+							<button class="m-aside-header-menu-mobile-close  m-aside-header-menu-mobile-close--skin-dark " id="m_aside_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
+							<div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
+								<ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
+									<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true"><a href="javascript:;" class="m-menu__link m-menu__toggle" title="Non functional dummy link"><i
+											 class="m-menu__link-icon flaticon-add"></i><span class="m-menu__link-text">查看表单</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
+										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span class="m-menu__arrow m-menu__arrow--adjust"></span>
+											<ul class="m-menu__subnav">
+
+												<li class="m-menu__item " aria-haspopup="true" th:each="ticketType : ${ticketTypeList}"><a class="m-menu__link " th:href="@{/index(ticketType=${ticketType.name})}"><span th:text="${ticketType.name}" ></span></a></li>
+
+											</ul>
+										</div>
+									</li>
+									<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true"><a href="javascript:;" class="m-menu__link m-menu__toggle" title="Non functional dummy link"><i
+										class="m-menu__link-icon flaticon-add"></i><span class="m-menu__link-text">系统设置</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
+								   <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span class="m-menu__arrow m-menu__arrow--adjust"></span>
+									   <ul class="m-menu__subnav">
+										   <!--<li class="m-menu__item " aria-haspopup="true"><a href="../../../header/actions.html" class="m-menu__link "><i class="m-menu__link-icon flaticon-file"></i><span class="m-menu__link-text">增加类型</span></a></li>-->
+										   <li class="m-menu__item " aria-haspopup="true"><a href="#" class="m-menu__link "><i class="m-menu__link-icon flaticon-diagram"></i><span class="m-menu__link-text" id="new-column">字段添加</span></a></li>
+									   </ul>
+								   </div>
+							   </li>
+								</ul>
+							</div>
+
+							<!-- END: Horizontal Menu -->
+
+							<!-- BEGIN: Topbar -->
+							<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
+								<div class="m-stack__item m-topbar__nav-wrapper">
+									<ul class="m-topbar__nav m-nav m-nav--inline">
+										<li class="m-nav__item m-dropdown m-dropdown--large m-dropdown--arrow m-dropdown--align-center m-dropdown--mobile-full-width m-dropdown--skin-light	m-list-search m-list-search--skin-light" m-dropdown-toggle="click" id="m_quicksearch"
+										 m-quicksearch-mode="dropdown" m-dropdown-persistent="1">
+											<a href="#" class="m-nav__link m-dropdown__toggle">
+												<span class="m-nav__link-icon"><i class="flaticon-search-1"></i></span>
+											</a>
+											<div class="m-dropdown__wrapper">
+												<span class="m-dropdown__arrow m-dropdown__arrow--center"></span>
+												<div class="m-dropdown__inner ">
+													<div class="m-dropdown__header">
+														<form class="m-list-search__form">
+															<div class="m-list-search__form-wrapper">
+																<span class="m-list-search__form-input-wrapper">
+																	<input id="m_quicksearch_input" autocomplete="off" type="text" name="q" class="m-list-search__form-input" value="" placeholder="Search...">
+																</span>
+																<span class="m-list-search__form-icon-close" id="m_quicksearch_close">
+																	<i class="la la-remove"></i>
+																</span>
+															</div>
+														</form>
+													</div>
+													<div class="m-dropdown__body">
+														<div class="m-dropdown__scrollable m-scrollable" data-scrollable="true" data-height="300" data-mobile-height="200">
+															<div class="m-dropdown__content">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li>
+										<li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center 	m-dropdown--mobile-full-width" m-dropdown-toggle="click"
+										 m-dropdown-persistent="1">
+											<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
+												<span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"></span>
+												<span class="m-nav__link-icon"><i class="flaticon-alarm"></i></span>
+											</a>
+											<div class="m-dropdown__wrapper">
+												<span class="m-dropdown__arrow m-dropdown__arrow--center"></span>
+												<div class="m-dropdown__inner">
+													<div class="m-dropdown__header m--align-center" style="background: url(../../../assets/app/media/img/misc/notification_bg.jpg); background-size: cover;">
+														<span class="m-dropdown__header-title">9 New</span>
+														<span class="m-dropdown__header-subtitle">User Notifications</span>
+													</div>
+													<div class="m-dropdown__body">
+														<div class="m-dropdown__content">
+															<ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+																<li class="nav-item m-tabs__item">
+																	<a class="nav-link m-tabs__link active" data-toggle="tab" href="#topbar_notifications_notifications" role="tab">
+																		Alerts
+																	</a>
+																</li>
+																<li class="nav-item m-tabs__item">
+																	<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_events" role="tab">Events</a>
+																</li>
+																<li class="nav-item m-tabs__item">
+																	<a class="nav-link m-tabs__link" data-toggle="tab" href="#topbar_notifications_logs" role="tab">Logs</a>
+																</li>
+															</ul>
+															<div class="tab-content">
+																<div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
+																	<div class="m-scrollable" data-scrollable="true" data-height="250" data-mobile-height="200">
+																		<div class="m-list-timeline m-list-timeline--skin-light">
+																			<div class="m-list-timeline__items">
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
+																					<span class="m-list-timeline__text">12 new users registered</span>
+																					<span class="m-list-timeline__time">Just now</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">System shutdown <span class="m-badge m-badge--success m-badge--wide">pending</span></span>
+																					<span class="m-list-timeline__time">14 mins</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">New invoice received</span>
+																					<span class="m-list-timeline__time">20 mins</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">DB overloaded 80% <span class="m-badge m-badge--info m-badge--wide">settled</span></span>
+																					<span class="m-list-timeline__time">1 hr</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">System error - <a href="#" class="m-link">Check</a></span>
+																					<span class="m-list-timeline__time">2 hrs</span>
+																				</div>
+																				<div class="m-list-timeline__item m-list-timeline__item--read">
+																					<span class="m-list-timeline__badge"></span>
+																					<span href="" class="m-list-timeline__text">New order received <span class="m-badge m-badge--danger m-badge--wide">urgent</span></span>
+																					<span class="m-list-timeline__time">7 hrs</span>
+																				</div>
+																				<div class="m-list-timeline__item m-list-timeline__item--read">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">Production server down</span>
+																					<span class="m-list-timeline__time">3 hrs</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge"></span>
+																					<span class="m-list-timeline__text">Production server up</span>
+																					<span class="m-list-timeline__time">5 hrs</span>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="tab-pane" id="topbar_notifications_events" role="tabpanel">
+																	<div class="m-scrollable" data-scrollable="true" data-height="250" data-mobile-height="200">
+																		<div class="m-list-timeline m-list-timeline--skin-light">
+																			<div class="m-list-timeline__items">
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-success"></span>
+																					<a href="" class="m-list-timeline__text">New order received</a>
+																					<span class="m-list-timeline__time">Just now</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-danger"></span>
+																					<a href="" class="m-list-timeline__text">New invoice received</a>
+																					<span class="m-list-timeline__time">20 mins</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-success"></span>
+																					<a href="" class="m-list-timeline__text">Production server up</a>
+																					<span class="m-list-timeline__time">5 hrs</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-info"></span>
+																					<a href="" class="m-list-timeline__text">New order received</a>
+																					<span class="m-list-timeline__time">7 hrs</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-info"></span>
+																					<a href="" class="m-list-timeline__text">System shutdown</a>
+																					<span class="m-list-timeline__time">11 mins</span>
+																				</div>
+																				<div class="m-list-timeline__item">
+																					<span class="m-list-timeline__badge m-list-timeline__badge--state1-info"></span>
+																					<a href="" class="m-list-timeline__text">Production server down</a>
+																					<span class="m-list-timeline__time">3 hrs</span>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="tab-pane" id="topbar_notifications_logs" role="tabpanel">
+																	<div class="m-stack m-stack--ver m-stack--general" style="min-height: 180px;">
+																		<div class="m-stack__item m-stack__item--center m-stack__item--middle">
+																			<span class="">All caught up!<br>No new logs.</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li>
+										
+									
+										<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
+										 m-dropdown-toggle="click">
+											<a href="#" class="m-nav__link m-dropdown__toggle">
+												<span class="m-topbar__userpic">
+													<img src="../../../assets/app/media/img/users/user4.jpg" class="m--img-rounded m--marginless" alt="" />
+												</span>
+												<span class="m-topbar__username m--hide">Nick</span>
+											</a>
+											<div class="m-dropdown__wrapper">
+												<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+												<div class="m-dropdown__inner">
+													<div class="m-dropdown__header m--align-center" style="background: url(../../../assets/app/media/img/misc/user_profile_bg.jpg); background-size: cover;">
+														<div class="m-card-user m-card-user--skin-dark">
+															<div class="m-card-user__pic">
+																<img src="../../../assets/app/media/img/users/user4.jpg" class="m--img-rounded m--marginless" alt="" />
+
+																<!--
+						<span class="m-type m-type--lg m--bg-danger"><span class="m--font-light">S<span><span>
+						-->
+															</div>
+															<div class="m-card-user__details">
+																<span class="m-card-user__name m--font-weight-500">Mark Andre</span>
+																<a href="" class="m-card-user__email m--font-weight-300 m-link">mark.andre@gmail.com</a>
+															</div>
+														</div>
+													</div>
+													<div class="m-dropdown__body">
+														<div class="m-dropdown__content">
+															<ul class="m-nav m-nav--skin-light">
+																<li class="m-nav__section m--hide">
+																	<span class="m-nav__section-text">Section</span>
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../header/profile.html" class="m-nav__link">
+																		<i class="m-nav__link-icon flaticon-profile-1"></i>
+																		<span class="m-nav__link-title">
+																			<span class="m-nav__link-wrap">
+																				<span class="m-nav__link-text">My Profile</span>
+																				<span class="m-nav__link-badge"><span class="m-badge m-badge--success">2</span></span>
+																			</span>
+																		</span>
+																	</a>
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../header/profile.html" class="m-nav__link">
+																		<i class="m-nav__link-icon flaticon-share"></i>
+																		<span class="m-nav__link-text">Activity</span>
+																	</a>
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../header/profile.html" class="m-nav__link">
+																		<i class="m-nav__link-icon flaticon-chat-1"></i>
+																		<span class="m-nav__link-text">Messages</span>
+																	</a>
+																</li>
+																<li class="m-nav__separator m-nav__separator--fit">
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../header/profile.html" class="m-nav__link">
+																		<i class="m-nav__link-icon flaticon-info"></i>
+																		<span class="m-nav__link-text">FAQ</span>
+																	</a>
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../header/profile.html" class="m-nav__link">
+																		<i class="m-nav__link-icon flaticon-lifebuoy"></i>
+																		<span class="m-nav__link-text">Support</span>
+																	</a>
+																</li>
+																<li class="m-nav__separator m-nav__separator--fit">
+																</li>
+																<li class="m-nav__item">
+																	<a href="../../../snippets/pages/user/login-1.html" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">Logout</a>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li>
+									
+									</ul>
+								</div>
+							</div>
+
+							<!-- END: Topbar -->
+						
+						
+						
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<!-- END: Header -->
+
+			<!-- begin::Body -->
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
+				
+				<div class="m-grid__item m-grid__item--fluid m-wrapper">
+
+					<!-- BEGIN: Subheader -->
+					
+
+					<!-- END: Subheader -->
+					<div class="m-content">
+						
+						<div class="m-portlet m-portlet--mobile">
+							<div class="m-portlet__head">
+								<div class="m-portlet__head-caption">
+									<div class="m-portlet__head-title">
+										<h3 class="m-portlet__head-text" th:text="${ticketType}">需求</h3>
+									</div>
+								</div>
+								<div class="m-portlet__head-tools">
+									<ul class="m-portlet__nav">
+										<li class="m-portlet__nav-item">
+											<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover" aria-expanded="true">
+												<a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+													<i class="la la-ellipsis-h m--font-brand"></i>
+												</a>
+												<div class="m-dropdown__wrapper">
+													<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+													<div class="m-dropdown__inner">
+														<div class="m-dropdown__body">
+															<div class="m-dropdown__content">
+																<ul class="m-nav">
+																	<li class="m-nav__section m-nav__section--first">
+																		<span class="m-nav__section-text">导出</span>
+																	</li>
+																	<li class="m-nav__item">
+																		<a href="" class="m-nav__link">
+																			<i class="m-nav__link-icon flaticon-share"></i>
+																			<span class="m-nav__link-text">导出当前页面</span>
+																		</a>
+																	</li>
+																	<li class="m-nav__item">
+																		<a href="" class="m-nav__link">
+																			<i class="m-nav__link-icon flaticon-chat-1"></i>
+																			<span class="m-nav__link-text">导出所有</span>
+																		</a>
+																	</li>
+		
+																	
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="m-portlet__body">
+
+								<!--begin: Search Form -->
+								<div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+									<div class="row align-items-center">
+										<div class="col-xl-8 order-2 order-xl-1">
+											<div class="form-group m-form__group row align-items-center">
+												<div class="col-md-4">
+													<div class="m-form__group m-form__group--inline">
+														<div class="m-form__label">
+															<label>Status:</label>
+														</div>
+														<div class="m-form__control">
+															<select class="form-control m-bootstrap-select" id="m_form_status">
+																<option value="">All</option>
+																<option value="1">Pending</option>
+																<option value="2">Delivered</option>
+																<option value="3">Canceled</option>
+															</select>
+														</div>
+													</div>
+													<div class="d-md-none m--margin-bottom-10"></div>
+												</div>
+												<div class="col-md-4">
+													<div class="m-form__group m-form__group--inline">
+														<div class="m-form__label">
+															<label class="m-label m-label--single">Type:</label>
+														</div>
+														<div class="m-form__control">
+															<select class="form-control m-bootstrap-select" id="m_form_type">
+																<option value="">All</option>
+																<option value="1">Online</option>
+																<option value="2">Retail</option>
+																<option value="3">Direct</option>
+															</select>
+														</div>
+													</div>
+													<div class="d-md-none m--margin-bottom-10"></div>
+												</div>
+												<div class="col-md-4">
+													<div class="m-input-icon m-input-icon--left">
+														<input type="text" class="form-control m-input" placeholder="Search..." id="generalSearch">
+														<span class="m-input-icon__icon m-input-icon__icon--left">
+															<span><i class="la la-search"></i></span>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xl-4 order-1 order-xl-2 m--align-right">
+											<a href="#" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+												<span>
+													<i class="la la-cart-plus"></i>
+													<span id="new-ticket" th:text="'新增'+${ticketType}">新增工单</span>
+												</span>
+											</a>
+											<div class="m-separator m-separator--dashed d-xl-none"></div>
+										</div>
+									</div>
+								</div>
+
+								<!--end: Search Form -->
+
+								<!--begin: Datatable -->
+								<div class="m_datatable" id="ajax_data"></div>
+
+								<!--end: Datatable -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- end:: Body -->
+		</div>
+
+		<!-- end:: Page -->
+
+		
+
+		<!-- begin::Scroll Top -->
+		<div id="m_scroll_top" class="m-scroll-top">
+			<i class="la la-arrow-up"></i>
+		</div>
+
+		<!-- end::Scroll Top -->
+
+	
+
+		<!--begin::Global Theme Bundle -->
+		<script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+		<script src="assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
+		<!--end::Global Theme Bundle -->
+
+
+	</body>
+
+	<script th:inline="javascript">
+
+        var DatatableRemoteAjaxDemo = {
+            init: function () {
+                var ticketType = [[${ticketType}]];
+                var data = getColumn(ticketType);
+                var t;
+                t = $(".m_datatable").mDatatable({
+                    data: {
+                        type: "remote",
+                        source: {
+                            read: {
+                                url: "/openticket/getTicket?ticketType="+ticketType,
+                                map: function (t) {
+                                    var e = t;
+                                    return void 0 !== t.data && (e = t.data),
+                                        e
+                                }
+                            }
+                        },
+                        pageSize: 10,
+                        serverPaging: !0,
+                        serverFiltering: !0,
+                        serverSorting: !0
+                    },
+                    layout: {
+                        scroll: !1,
+                        footer: !1
+                    },
+                    sortable: !0,
+                    pagination: !0,
+                    toolbar: {
+                        items: {
+                            pagination: {
+                                pageSizeSelect: [10, 20, 30, 50, 100]
+                            }
+                        }
+                    },
+                    search: {
+                        input: $("#generalSearch")
+                    },
+                    columns: data
+                }),
+                    $("#m_form_status").on("change",
+                        function () {
+                            t.search($(this).val(), "Status")
+                        }),
+                    $("#m_form_type").on("change",
+                        function () {
+                            t.search($(this).val(), "Type")
+                        }),
+                    $("#m_form_status, #m_form_type").selectpicker()
+
+            }
+        };
+        jQuery(document).ready(function () {
+            DatatableRemoteAjaxDemo.init();
+        });
+        $("[id=new-ticket]").click(function () {
+            var ticketType = $("h3.m-portlet__head-text").text();
+            window.location.href = "/openticket/form?tickettype=" + ticketType;
+        });
+		$("[id=new-column]").click(function () {
+			window.location.href = "/openticket/addField";
+		});
+        function chooseType(obj){
+            var ticketType = $(obj).text();
+            $("h3.m-portlet__head-text").text(ticketType);
+            $(".m_datatable").empty();
+            DatatableRemoteAjaxDemo.init();
+		};
+		function getColumn(arg){
+            var myColumn = [{
+                field: 'id',
+                title: '序号',
+            }, {
+                field: 'createTime',
+                title: '创建时间',
+            }, {
+                field: 'createUser',
+                title: '创建用户',
+            }];
+            $.ajax({
+                url : "/openticket/getColumn",
+                type : 'post',
+                async : false,
+                data : {
+                    ticketType: arg
+                },
+                success : function(data){
+                    if(data){
+                        for(var i=0;i<data.length;i++) {
+                            myColumn.push({
+                                "field": data[i].fieldName,
+                                "title": data[i].name,
+                            });
+                        }
+                    }
+                },
+                error : function(){
+                    console.info("加载数据失败"+data);
+                }
+            });
+            myColumn.push({
+				"field":"Actions",
+				"width":110,
+				"title":"操作",
+				"template":function() {
+                    return'<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit" onclick="updateTicket(this)"></i></a>'+
+						'<a href="#" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete"><i class="la la-trash" onclick="deleteTicket(this)"></i></a>';
+                }
+			});
+            return myColumn;
+		};
+        function updateTicket(obj){
+            var id = $(obj).parents("tr").find("td").eq(0).text();
+            var ticketType = $("h3.m-portlet__head-text").text();
+            window.location.href="/openticket/updateTicketPage?id="+id+"&ticketType="+ticketType;
+        }
+        function deleteTicket(obj){
+            var tr = $(obj).parents("tr");
+            var id = $(obj).parents("tr").find("td").eq(0).text();
+            $.ajax({
+                type:"post",
+                url:"/openticket/deleteTicket",
+                //contentType: "application/json",
+                //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data:{ id:id },
+                success:function(data){
+                    alert("删除成功！");
+                    tr.remove();
+                },
+                error:function(data){
+                    alert("删除失败！");
+                }
+            });
+        }
+	</script>
+
+	<!-- end::Body -->
+</html>
