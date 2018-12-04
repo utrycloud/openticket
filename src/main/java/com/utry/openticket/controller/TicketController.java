@@ -58,6 +58,7 @@ public class TicketController {
         model.addAttribute("ticketType",ticketType);
         return "/tables";
     }
+    
 
     @RequestMapping("index2")
     public String index2(Model model){
