@@ -10,5 +10,6 @@ public class OpenticketApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(OpenticketApplication.class, args);
+		
     }
 }
