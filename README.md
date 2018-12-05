@@ -5,3 +5,4 @@
 运行 src/main/resources/db 下的建库、建表、初始数据插入语句
 
 yang
+test2
