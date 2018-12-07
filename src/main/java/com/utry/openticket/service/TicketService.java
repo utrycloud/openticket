@@ -38,7 +38,7 @@ public class TicketService {
         List<TicketDTO> ticketList = ticketDAO.getTicketList(ticketType);
         return ticketList;
 
-    };
+    }
 
     /**
      *

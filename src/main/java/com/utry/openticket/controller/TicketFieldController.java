@@ -16,6 +16,8 @@ import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.service.FieldTypeService;
 import com.utry.openticket.service.TicketFieldService;
 import com.utry.openticket.service.TicketTypeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,7 @@ public class TicketFieldController {
     @Autowired
     private TicketFieldService ticketFieldService;
 
+    private static Logger logger = LoggerFactory.getLogger(TicketFieldController.class);
     /**
      *
      * 功能描述 : 跳转到添加自定义列页面
@@ -44,11 +47,15 @@ public class TicketFieldController {
      * @date : 2018-07-26
      */
     @RequestMapping("addField")
-    public String addFieldsPage(Model map){
+    public String addFieldsPage(Model map, String ticketType){
         List<FieldTypeDO> fieldTypeDOList = fieldTypeService.getFieldTypeList();
+        //工单类型列表
         List<TicketTypeDO> ticketTypeDOList = ticketTypeService.getTicketTypeList();
+        logger.info("fieldTypeDOList" + fieldTypeDOList.toString());
+        logger.info("ticketTypeDOList" + ticketTypeDOList);
         map.addAttribute("fieldTypeList", fieldTypeDOList);
         map.addAttribute("ticketTypeList", ticketTypeDOList);
+        map.addAttribute("ticketType", ticketType);
         return "/add_field";
     }
 

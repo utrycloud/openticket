@@ -5,7 +5,7 @@
 <mapper namespace="com.utry.openticket.dao.IFieldTypeDAO">
 
     <select id="getFieldTypeList" resultType="com.utry.openticket.model.FieldTypeDO">
-        select name from ot_field_type
+        select name, id from ot_field_type
     </select>
 
 </mapper>   
