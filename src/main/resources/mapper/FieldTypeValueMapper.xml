@@ -20,5 +20,5 @@
         from ot_field_type_value
         where field_id = #{value}
     </select>
-</mapper>   
+</mapper>
  

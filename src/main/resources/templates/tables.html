@@ -46,7 +46,7 @@
 				<div class="m-container m-container--fluid m-container--full-height">
 					<div class="m-stack m-stack--ver m-stack--desktop">
 
-						
+
 						<div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
 
 							<!-- BEGIN: Horizontal Menu -->
@@ -57,9 +57,9 @@
 											 class="m-menu__link-icon flaticon-add"></i><span class="m-menu__link-text">查看表单</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
 										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span class="m-menu__arrow m-menu__arrow--adjust"></span>
 											<ul class="m-menu__subnav">
-
-												<li class="m-menu__item " aria-haspopup="true" th:each="ticketType : ${ticketTypeList}"><a class="m-menu__link " th:href="@{/index(ticketType=${ticketType.name})}"><span th:text="${ticketType.name}" ></span></a></li>
-
+												<li class="m-menu__item " aria-haspopup="true" th:each="ticketType : ${ticketTypeList}"><a class="m-menu__link " th:href="@{/index(ticketType=${ticketType.id})}">
+													<span th:text="${ticketType.name}" ></span>
+												</a></li>
 											</ul>
 										</div>
 									</li>
@@ -238,8 +238,8 @@
 												</div>
 											</div>
 										</li>
-										
-									
+
+
 										<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
 										 m-dropdown-toggle="click">
 											<a href="#" class="m-nav__link m-dropdown__toggle">
@@ -320,15 +320,15 @@
 												</div>
 											</div>
 										</li>
-									
+
 									</ul>
 								</div>
 							</div>
 
 							<!-- END: Topbar -->
-						
-						
-						
+
+
+
 						</div>
 					</div>
 				</div>
@@ -338,20 +338,21 @@
 
 			<!-- begin::Body -->
 			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body">
-				
+
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 
 					<!-- BEGIN: Subheader -->
-					
+
 
 					<!-- END: Subheader -->
 					<div class="m-content">
-						
+
 						<div class="m-portlet m-portlet--mobile">
 							<div class="m-portlet__head">
 								<div class="m-portlet__head-caption">
 									<div class="m-portlet__head-title">
-										<h3 class="m-portlet__head-text" th:text="${ticketType}">需求</h3>
+										<h3 class="class-head-text" th:text="${ticketTypeName}">需求</h3>
+										<h3 class="m-portlet__head-text" hidden th:text="${ticketType}">需求</h3>
 									</div>
 								</div>
 								<div class="m-portlet__head-tools">
@@ -382,8 +383,8 @@
 																			<span class="m-nav__link-text">导出所有</span>
 																		</a>
 																	</li>
-		
-																	
+
+
 																</ul>
 															</div>
 														</div>
@@ -472,7 +473,7 @@
 
 		<!-- end:: Page -->
 
-		
+
 
 		<!-- begin::Scroll Top -->
 		<div id="m_scroll_top" class="m-scroll-top">
@@ -481,7 +482,7 @@
 
 		<!-- end::Scroll Top -->
 
-	
+
 
 		<!--begin::Global Theme Bundle -->
 		<script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
@@ -554,7 +555,8 @@
             window.location.href = "/openticket/form?tickettype=" + ticketType;
         });
 		$("[id=new-column]").click(function () {
-			window.location.href = "/openticket/addField";
+            var ticketType = $("h3.m-portlet__head-text").text();
+			window.location.href = "/openticket/addField?ticketType=" + ticketType;
 		});
         function chooseType(obj){
             var ticketType = $(obj).text();

@@ -14,9 +14,12 @@ import com.utry.openticket.dto.TicketFieldDTO;
 import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.model.TicketValueDO;
 import com.utry.openticket.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +44,8 @@ public class TicketController {
     @Autowired
     private TicketValueService ticketValueService;
 
+    private static Logger logger = LoggerFactory.getLogger(TicketController.class);
+
     /**
      *
      * 功能描述 : 打开table_future页面
@@ -53,10 +58,23 @@ public class TicketController {
     @RequestMapping("index")
     public String index(Model model,@RequestParam String ticketType){
         List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
-        ticketService.getTicketList(ticketType);
+        logger.info("ticketTypeList" + ticketTypeList);
+        logger.info("ticketType"+ticketType);
+        String ticketTypeName = ticketTypeName(ticketTypeList, ticketType);
         model.addAttribute("ticketTypeList",ticketTypeList);
         model.addAttribute("ticketType",ticketType);
+        model.addAttribute("ticketTypeName", ticketTypeName);
         return "/tables";
+    }
+
+    private String ticketTypeName(List<TicketTypeDO> ticketTypeList, String ticketType) {
+        String result = "ticketTypeName Error";
+        for (TicketTypeDO ticketTypeDO : ticketTypeList) {
+            if (ticketTypeDO.getId() == Integer.parseInt(ticketType)) {
+                result = ticketTypeDO.getName();
+            }
+        }
+        return result;
     }
 
     @RequestMapping("index2")
@@ -124,10 +142,11 @@ public class TicketController {
         List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumn(ticketType);
         for(TicketFieldDTO t:ticketFieldList){
             t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
-            //System.out.println(t);
+
         }
         model.addAttribute("ticketType",ticketType);
         model.addAttribute("ticketFieldList",ticketFieldList);
+        logger.info("ticketFieldList", ticketFieldList);
         return "/form_future";
     }
 

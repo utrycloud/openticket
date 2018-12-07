@@ -33,7 +33,10 @@ function showTextarea(obj){
     }
 }
 
-//进行校验并提交表单
+function check(ticketType) {
+    console.log(ticketType);
+    window.location.href="/openticket/index?ticketType="+ticketType;
+}
 function submitOrder(){
     var name = $("[name=name]").val();
     var fieldName = $("[name=fieldName]").val();
@@ -58,6 +61,8 @@ function submitOrder(){
                return;
            }else{
                if (selectValueList.indexOf($("[name=defaultValue]").val()) < 0) {
+                   console.log(selectValueList);
+                   console.log("log bug");
                    alert("默认值错误");
                    return;
                }
@@ -78,6 +83,7 @@ function submitOrder(){
                 selectValueList:selectValueList
             }),
             success:function(data){
+
                 alert("添加成功！");
                 window.location.href="/openticket/index";
             },

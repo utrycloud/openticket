@@ -44,19 +44,20 @@
         <!-- BEGIN PAGE -->
         <div class="page-content" style="margin:0">
             <div class="portlet-body form">
-                <form role="form" action="/openticket/saveField" id="fieldForm">
+                <!--<form role="form" action="/openticket/saveField" id="fieldForm">-->
                     <div class="form-body">
                         <div class="form-group">
                             <label >工单类型</label>
                             <select  class="form-control" name="ticketType">
                                 <option th:each="ticketType : ${ticketTypeList}" th:text="${ticketType.name}"></option>
                             </select>
-                        </div>    
+                        </div>
                         <div class="form-group">
                             <label >选择类型</label>
                             <select  class="form-control" id="typeSelect" onchange="showTextarea(this)" name="selectType">
                                 <option th:each="fieldType : ${fieldTypeList}" th:text="${fieldType.name}"></option>
                             </select>
+
                         </div> 
                         <div class="form-group">
                             <label for="exampleInputEmail1">对象名称</label><span style="color:red">(*)</span>
@@ -89,11 +90,12 @@
                             <textarea class="form-control" rows="3" name="textareaValue"></textarea>
                         </div>
                     </div>
+                    <p hidden id="hidden-p-ticketType" th:text="${ticketType}"></p>
                     <div class="form-actions">
                         <button type="button" class="btn btn-info" onclick="submitOrder()">Submit</button>
-                        <button type="button" class="btn btn-default" onclick="javascript:window.location.href='/openticket/index'">Cancel</button>
+                        <button type="button-index" class="btn btn-default" th:onclick="'javascript:check('+${ticketType}+')'">Cancel</button>
                     </div>
-                </form>
+                <!--</form>-->
             </div>
         </div>
         <!-- END PAGE -->
@@ -129,7 +131,10 @@
       jQuery(document).ready(function() {       
          App.init();
          //TableEditable.init();
+        
+
       });
+
    </script>
 </body>
 </html>
