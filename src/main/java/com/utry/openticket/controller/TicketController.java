@@ -159,7 +159,7 @@ public class TicketController {
 	 */
 	@RequestMapping("exportXLs")
 	public String exportXLs(HttpServletRequest request, HttpServletResponse response,@RequestParam(defaultValue = "需求") String ticketType) throws IOException {
-		//得到所有的结果
+		//得到所有的结果 
 		List<Map<String, String>> resultList= getTicket(ticketType);
 		// 创建hssfworkbook Excel的文档对象
 		HSSFWorkbook wb = new HSSFWorkbook();
