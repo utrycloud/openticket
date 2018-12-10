@@ -14,6 +14,10 @@ import com.utry.openticket.dto.TicketFieldDTO;
 import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.model.TicketValueDO;
 import com.utry.openticket.service.*;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +29,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class TicketController {
@@ -251,4 +260,75 @@ public class TicketController {
         ticketValueService.updateTicketValueList(ticketValueList);
         return "success";
     }
+    
+    /**
+	 * 导出excel表格 选择导出全部
+	 * @param request
+	 * @param response
+	 * @param ticketType 导出什么类型的表格 可以传递参数
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping("exportXLs")
+	public String exportXLs(HttpServletRequest request, HttpServletResponse response,@RequestParam String ticketType) throws IOException {
+		//得到所有的结果  
+		List<Map<String, String>> resultList= getTicket(ticketType);
+		// 创建hssfworkbook Excel的文档对象
+		HSSFWorkbook wb = new HSSFWorkbook();
+		// 创建新的sheet
+		HSSFSheet sheet = wb.createSheet("用户信息");
+		// 设置第一行
+		HSSFRow row = sheet.createRow(0);
+		// 设置属性 但是我现在也不知道有几行 所以要去数据库查
+		List<TicketFieldDTO> ticketFieldDTOs=getTicketColumn(ticketType);
+		//现在只需要一个TicketFieldDTO的name属性 并且需要其他的默认属性 新建一个lsit<String>对象
+		List<String> nameList=new ArrayList<String>();
+		List<String> fileldNameList=new ArrayList<String>();
+		fileldNameList.add("id");
+		fileldNameList.add("createTime");
+		fileldNameList.add("createUser");
+		nameList.add("序号");
+		nameList.add("创建时间");
+		nameList.add("创建用户");
+		for (TicketFieldDTO ticketFieldDTO : ticketFieldDTOs) {
+			nameList.add(ticketFieldDTO.getName());
+			fileldNameList.add(ticketFieldDTO.getFieldName());
+		}
+		//现在得到了所有的属性列 设置列名字
+		for (int i=0;i<nameList.size();i++) {
+			row.createCell(i).setCellValue(nameList.get(i));
+		}
+		
+		//便利
+		for(int i = 0;i<resultList.size();i++){
+			HSSFRow rows = sheet.createRow(sheet.getLastRowNum() + 1);
+			Map<String,String> map = resultList.get(i);
+			//用来跟踪map的一个变量 因为该map的类型是linkedHashMap所以遍历取值时是可以保证顺序的
+			for(int j=0;j<map.size()-1;j++){
+				rows.createCell(j).setCellValue(map.get(fileldNameList.get(j)));
+			}
+		}
+		// 输出Excel文件
+		// 获取输出流
+		OutputStream output=null;
+		try {
+			output = response.getOutputStream();
+			response.reset();
+			// 设置分区中文名
+			String filename = ticketType+"信息";
+			// 设置响应的编码
+			response.setContentType("application/x-download");// 下面三行是关键代码，处理乱码问题
+			response.setCharacterEncoding("utf-8");
+			// 设置浏览器响应头对应的Content-disposition
+			response.setHeader("Content-disposition",
+					"attachment;filename=" + new String(filename.getBytes("gbk"), "iso8859-1") + ".xls");
+			// wb输出
+			wb.write(output);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			output.close();
+		}
+		return null;
+	}
 }
