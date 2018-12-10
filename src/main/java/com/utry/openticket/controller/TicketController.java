@@ -58,8 +58,6 @@ public class TicketController {
     @RequestMapping("index")
     public String index(Model model,@RequestParam String ticketType){
         List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
-        logger.info("ticketTypeList" + ticketTypeList);
-        logger.info("ticketType"+ticketType);
         String ticketTypeName = ticketTypeName(ticketTypeList, ticketType);
         model.addAttribute("ticketTypeList",ticketTypeList);
         model.addAttribute("ticketType",ticketType);
