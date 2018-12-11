@@ -65,21 +65,21 @@ public class TicketController {
      * @date : 2018-07-26
      */
     @RequestMapping("index")
-    public String index(Model model,@RequestParam String ticketType){
+    public String index(Model model,@RequestParam(defaultValue = "1") String ticketTypeId){
         List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
         logger.info("ticketTypeList" + ticketTypeList);
-        logger.info("ticketType"+ticketType);
-        String ticketTypeName = ticketTypeName(ticketTypeList, ticketType);
+        logger.info("ticketTypeId"+ticketTypeId);
+        String ticketTypeName = ticketTypeName(ticketTypeList, ticketTypeId);
         model.addAttribute("ticketTypeList",ticketTypeList);
-        model.addAttribute("ticketType",ticketType);
-        model.addAttribute("ticketTypeName", ticketTypeName);
+        model.addAttribute("ticketTypeId",ticketTypeId);
+        model.addAttribute("ticketType", ticketTypeName);
         return "/tables";
     }
 
-    private String ticketTypeName(List<TicketTypeDO> ticketTypeList, String ticketType) {
+    private String ticketTypeName(List<TicketTypeDO> ticketTypeList, String ticketTypeId) {
         String result = "ticketTypeName Error";
         for (TicketTypeDO ticketTypeDO : ticketTypeList) {
-            if (ticketTypeDO.getId() == Integer.parseInt(ticketType)) {
+            if (ticketTypeDO.getId() == Integer.parseInt(ticketTypeId)) {
                 result = ticketTypeDO.getName();
             }
         }
@@ -118,8 +118,10 @@ public class TicketController {
      * @date : 2018-07-26
      */
     @RequestMapping("getTicket")
-    public @ResponseBody List<Map<String,String>> getTicket(@RequestParam String ticketType){
-        List<TicketDTO> ticketList = ticketService.getTicketList(ticketType);
+    public @ResponseBody List<Map<String,String>> getTicket(@RequestParam String ticketTypeId){
+        logger.info("ticketTypeId="+ticketTypeId);
+        List<TicketDTO> ticketList = ticketService.getTicketList(ticketTypeId);
+        logger.info("ticketList="+ticketList);
         List<Map<String,String>> result = new ArrayList<>();
         for(TicketDTO ticket:ticketList){
             Map<String,String> ticketMap = new LinkedHashMap<>();
@@ -134,6 +136,7 @@ public class TicketController {
             }
             result.add(ticketMap);
         }
+        logger.info("result="+result);
         return result;
     }
 
