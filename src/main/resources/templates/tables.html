@@ -57,7 +57,7 @@
 											 class="m-menu__link-icon flaticon-add"></i><span class="m-menu__link-text">查看表单</span><i class="m-menu__hor-arrow la la-angle-down"></i><i class="m-menu__ver-arrow la la-angle-right"></i></a>
 										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span class="m-menu__arrow m-menu__arrow--adjust"></span>
 											<ul class="m-menu__subnav">
-												<li class="m-menu__item " aria-haspopup="true" th:each="ticketType : ${ticketTypeList}"><a class="m-menu__link " th:href="@{/index(ticketType=${ticketType.id})}">
+												<li class="m-menu__item " aria-haspopup="true" th:each="ticketType : ${ticketTypeList}"><a class="m-menu__link " th:href="@{/index(ticketTypeId=${ticketType.id})}">
 													<span th:text="${ticketType.name}" ></span>
 												</a></li>
 											</ul>
@@ -497,6 +497,7 @@
         var DatatableRemoteAjaxDemo = {
             init: function () {
                 var ticketType = [[${ticketType}]];
+                var ticketTypeId = [[${ticketTypeId}]];
                 var data = getColumn(ticketType);
                 var t;
                 t = $(".m_datatable").mDatatable({
@@ -504,7 +505,7 @@
                         type: "remote",
                         source: {
                             read: {
-                                url: "/openticket/getTicket?ticketType="+ticketType,
+                                url: "/openticket/getTicket?ticketTypeId="+ticketTypeId,
                                 map: function (t) {
                                     var e = t;
                                     return void 0 !== t.data && (e = t.data),

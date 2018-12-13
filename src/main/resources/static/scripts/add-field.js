@@ -33,9 +33,9 @@ function showTextarea(obj){
     }
 }
 
-function check(ticketType) {
-    console.log(ticketType);
-    window.location.href="/openticket/index?ticketType="+ticketType;
+function check(ticketTypeId) {
+    console.log(ticketTypeId);
+    window.location.href="/openticket/index?ticketTypeId="+ticketTypeId;
 }
 function submitOrder(){
     var name = $("[name=name]").val();
