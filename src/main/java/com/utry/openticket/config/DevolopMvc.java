@@ -17,6 +17,7 @@ public class DevolopMvc implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login.html", "/login", "/login2.html","/assets/**");
+                .excludePathPatterns("/login.html", "/login", "/login2.html","/assets/**",
+                        "**/vendors.bundle.js","**/user/login.js");
     }
 }
