@@ -55,6 +55,6 @@ public class LoginController {
 
     private String mainTable(HttpServletRequest request, HttpSession session) {
         session.setAttribute("login", "login");
-        return "redirect:/index?ticketType=1";
+        return "redirect:/index?ticketTypeId=1";
     }
 }
