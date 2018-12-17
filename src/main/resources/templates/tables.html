@@ -432,12 +432,15 @@
 				<!-- END: Subheader -->
 				<div class="m-content">
 
+
 					<div class="m-portlet m-portlet--mobile">
 						<div class="m-portlet__head">
 							<div class="m-portlet__head-caption">
 								<div class="m-portlet__head-title">
 									<h3  th:text="${ticketType}"></h3>
 									<h3 class="m-portlet__head-text" hidden th:text="${ticketTypeId}">1</h3>
+
+
 								</div>
 							</div>
 							<div class="m-portlet__head-tools">
@@ -645,6 +648,7 @@
             DatatableRemoteAjaxDemo.init();
         });
         $("[id=new-ticket]").click(function () {
+
             var ticketType = $("h3.m-portlet__head-text").text();
             window.location.href = "/openticket/addTicket?ticketType=" + ticketType;
         });
@@ -660,6 +664,8 @@
         $("[id=export_all]").click(function () {
             var ticketType = $("h3.m-portlet__head-text").text();
             window.open('/openticket/exportXLs?ticketType='+ticketType);
+
+
         });
 		$("[id=new-column]").click(function () {
 			var ticketTypeId = $("h3.m-portlet__head-text").text();
