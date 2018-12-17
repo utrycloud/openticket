@@ -16,6 +16,8 @@ import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.service.FieldTypeService;
 import com.utry.openticket.service.TicketFieldService;
 import com.utry.openticket.service.TicketTypeService;
+
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,18 +68,33 @@ public class TicketFieldController {
     public String saveFields(@RequestBody String jsonObj){
         TicketFieldDTO ticketFieldDTO = (TicketFieldDTO)JSON.parseObject(jsonObj,TicketFieldDTO.class);
 
-        //
-        if(Constant.selectType.equals(ticketFieldDTO.getSelectType())){
-            ticketFieldService.saveTicketField(ticketFieldDTO);
-        }else{
-            List<String> selectValuelist = ticketFieldDTO.getSelectValueList();
-            List<FieldTypeValueDO> fieldTypeValueList = new ArrayList<>();
-            for(String str:selectValuelist){
-                FieldTypeValueDO fieldTypeValueDO = new FieldTypeValueDO();
-                fieldTypeValueDO.setValue(str);
-                fieldTypeValueList.add(fieldTypeValueDO);
-            }
-            ticketFieldService.saveTicketField(ticketFieldDTO,fieldTypeValueList);
+        //判断加入的是什么样的类型
+        if(!Strings.isEmpty(ticketFieldDTO.getSelectType())){
+        	//如果不为空才判断
+        	switch (ticketFieldDTO.getSelectType()) {
+        	//如果是文本 大文本 文件 日期的话 只保存字段
+			case Constant.DATE_TYPE:
+			case Constant.TEXT_AREA_TYPE:
+			case Constant.FILE_TYPE:
+			case Constant.TEXT_TYPE:
+				ticketFieldService.saveTicketField(ticketFieldDTO);
+				break;
+			//如果是单选 多选 下拉的话 还要保存可选属性
+			case Constant.CHECKBOX_TYPE:
+			case Constant.RADIO_TYPE:
+			case Constant.SELECT_TYPE:
+				List<String> selectValuelist = ticketFieldDTO.getSelectValueList();
+	            List<FieldTypeValueDO> fieldTypeValueList = new ArrayList<>();
+	            for(String str:selectValuelist){
+	                FieldTypeValueDO fieldTypeValueDO = new FieldTypeValueDO();
+	                fieldTypeValueDO.setValue(str);
+	                fieldTypeValueList.add(fieldTypeValueDO);
+	            }
+	            ticketFieldService.saveTicketField(ticketFieldDTO,fieldTypeValueList);
+				break;
+			default:
+				break;
+			}
         }
 
         return "success";

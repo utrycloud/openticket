@@ -1,8 +1,10 @@
 package com.utry.openticket.service;
 
+import com.utry.openticket.dao.AttachmentDAO;
 import com.utry.openticket.dao.ITicketDAO;
 import com.utry.openticket.dao.ITicketValueDAO;
 import com.utry.openticket.dto.TicketDTO;
+import com.utry.openticket.dto.TicketPageDTO;
 import com.utry.openticket.model.TicketValueDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,14 +52,14 @@ public class TicketService {
      * @date : 2018-07-31
      */
     @Transactional
-    public void saveTicket(TicketDTO ticketDTO, List<TicketValueDO> ticketValueList){
+    public int saveTicket(TicketDTO ticketDTO, List<TicketValueDO> ticketValueList){
         ticketDAO.saveTicket(ticketDTO);
         int ticketId = ticketDTO.getId();
         for(TicketValueDO ticketValue:ticketValueList){
             ticketValue.setTicketId(ticketId);
         }
         ticketValueDAO.saveTicketValue(ticketValueList);
-
+        return ticketId;
     }
 
     /**
@@ -74,5 +76,23 @@ public class TicketService {
         ticketValueDAO.deleteTicketValue(id);
         ticketDAO.deleteTicket(id);
     }
+
+    /**
+     * 分页查询
+     * @param ticketType
+     * @param pagNow
+     * @param pageSize
+     * @return
+     */
+	public List<TicketDTO> getTicketListByPage(String ticketType, String pagNow, String pageSize) {
+		// TODO Auto-generated method stub
+		int pn=Integer.parseInt(pagNow);
+		int ps=Integer.parseInt(pageSize);
+		TicketPageDTO pageDTO=new TicketPageDTO();
+		pageDTO.setTicketType(ticketType);
+		pageDTO.setPageStart((pn-1)*ps);
+		pageDTO.setPageSize(ps);
+		return ticketDAO.getTicketListByPage(pageDTO);
+	}
 
 }

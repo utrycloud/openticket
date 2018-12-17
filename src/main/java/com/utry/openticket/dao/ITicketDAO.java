@@ -8,6 +8,8 @@ package com.utry.openticket.dao;
  */
 
 import com.utry.openticket.dto.TicketDTO;
+import com.utry.openticket.dto.TicketPageDTO;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -60,4 +62,11 @@ public interface ITicketDAO {
      * @date : 2018-08-01
      */
     List<Integer> getTicketIdByTicketType(String ticketType);
+
+    /**
+     * 分页查询
+     * @param pageDTO
+     * @return
+     */
+	List<TicketDTO> getTicketListByPage(TicketPageDTO pageDTO);
 }

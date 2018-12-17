@@ -20,7 +20,11 @@ public class TicketFieldDTO implements Serializable {
     private String selectType;
     private String value;
     private List<String> selectValueList;
-
+    /**
+     * 增加存放多选值的list遍与前端数据回显
+     */
+    private List<String> checkBoxValue;
+    
     public Integer getId() {
         return id;
     }
@@ -92,8 +96,16 @@ public class TicketFieldDTO implements Serializable {
     public void setValue(String value) {
         this.value = value;
     }
+    
+    public List<String> getCheckBoxValue() {
+		return checkBoxValue;
+	}
 
-    @Override
+	public void setCheckBoxValue(List<String> checkBoxValue) {
+		this.checkBoxValue = checkBoxValue;
+	}
+
+	@Override
     public String toString() {
         return "TicketFieldDTO{" +
                 "id=" + id +

@@ -31,4 +31,11 @@
         select id from ot_ticket where ticket_type_id=(select id from ot_ticket_type where name=#{value})
     </select>
 
+    <select id="getTicketListByPage" resultType="com.utry.openticket.dto.TicketDTO" parameterType="com.utry.openticket.dto.TicketPageDTO">
+       select t.id,t.create_time as createTime,u.name as createUser,tt.name as ticketType from ot_ticket t,ot_user u,ot_ticket_type tt
+        where ticket_type_id = (select id from ot_ticket_type where name = '${ticketType}')
+        and t.create_user_id = u.id
+        and t.ticket_type_id = tt.id
+        limit #{pageStart},#{pageSize}
+    </select>
 </mapper>

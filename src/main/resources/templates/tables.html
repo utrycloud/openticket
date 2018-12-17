@@ -461,7 +461,7 @@
 																<li class="m-nav__item"><a href=""
 																	class="m-nav__link"> <i
 																		class="m-nav__link-icon flaticon-share"></i> <span
-																		class="m-nav__link-text">导出当前页面</span>
+																		class="m-nav__link-text" id="export_page">导出当前页面</span>
 																</a></li>
 																<li class="m-nav__item">
 																<a href="" class="m-nav__link" id="export_all">
@@ -569,6 +569,7 @@
 		<i class="la la-arrow-up"></i>
 	</div>
 
+
 	<!-- end::Scroll Top -->
 
 
@@ -645,9 +646,18 @@
             var ticketType = $("h3.m-portlet__head-text").text();
             window.location.href = "/openticket/form?tickettype=" + ticketType;
         });
+        //导出当前页面数据
+        $("[id=export_page]").click(function () {
+            var ticketType = $("h3.m-portlet__head-text").text();
+            var pageNow = $("a.m-datatable__pager-link--active").text();
+            var pageSize = $("div.filter-option-inner").text().substring(6);
+            //alert(pageSize);
+            window.open('/openticket/exportPageXLs?ticketType='+ticketType+'&pageNow='+pageNow+'&pageSize='+pageSize);
+        });
         //导出所有数据
         $("[id=export_all]").click(function () {
-            window.open('/openticket/exportXLs');
+            var ticketType = $("h3.m-portlet__head-text").text();
+            window.open('/openticket/exportXLs?ticketType='+ticketType);
         });
 		$("[id=new-column]").click(function () {
 			window.location.href = "/openticket/addField";
