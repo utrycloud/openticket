@@ -26,4 +26,8 @@ public interface ITicketTypeDAO {
      */
     List<TicketTypeDO> getTicketTypeList();
 
+    /**
+     * 通过id得到名字
+     */
+    String getTicketNameById(String ticketId); 
 }

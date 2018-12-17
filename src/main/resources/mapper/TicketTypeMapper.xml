@@ -7,6 +7,10 @@
     <select id="getTicketTypeList" resultType="com.utry.openticket.model.TicketTypeDO">
         select name, id from ot_ticket_type
     </select>
+    
+    <select id="getTicketNameById" parameterType="string" resultType="string">
+        select name from ot_ticket_type where id=#{id}
+    </select>
 
 </mapper>   
  

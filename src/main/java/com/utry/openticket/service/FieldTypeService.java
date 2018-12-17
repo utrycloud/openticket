@@ -34,5 +34,6 @@ public class FieldTypeService {
         List<FieldTypeDO> list = fieldTypeDAO.getFieldTypeList();
         return list;
     }
+    
 
 }
