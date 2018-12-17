@@ -351,7 +351,7 @@
 							<div class="m-portlet__head">
 								<div class="m-portlet__head-caption">
 									<div class="m-portlet__head-title">
-										<h3 class="class-head-text" th:text="${ticketTypeName}">需</h3>
+										<h3 class="class-head-text" th:text="${ticketType}">需</h3>
 										<h3 class="m-portlet__head-text" hidden th:text="${ticketTypeId}">1</h3>
 									</div>
 								</div>
@@ -552,8 +552,9 @@
             DatatableRemoteAjaxDemo.init();
         });
         $("[id=new-ticket]").click(function () {
-            var ticketType = $("h3.m-portlet__head-text").text();
-            window.location.href = "/openticket/form?tickettype=" + ticketType;
+            var ticketType = $("h3.class-head-text").text();
+            console.log("ticketType = ", [[${ticketType}]]);
+            window.location.href = "/openticket/form?ticketType=" + ticketType;
         });
 		$("[id=new-column]").click(function () {
             var ticketTypeId = $("h3.m-portlet__head-text").text();
