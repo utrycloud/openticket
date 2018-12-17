@@ -33,5 +33,11 @@ public class TicketTypeService {
 
         return list;
     }
+    /**
+     * 通过id获取名字
+     */
+    public String getTicketNameById(String ticketId){
+    	return ticketTypeDAO.getTicketNameById(ticketId);
+    }
 
 }

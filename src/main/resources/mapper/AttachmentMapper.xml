@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utry.openticket.dao.AttachmentDAO">
+
+    <insert id="saveAttachment" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.utry.openticket.model.AttachmentDO">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+          SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT into ot_attachment
+            (ticket_id,ticket_fileld_id,file_name,file_size,file_upload_time,content_type,path)
+            values (#{ticketId},#{ticketFileldId},#{fileName},#{fileSize},
+                    #{fileUploadTime},#{contentType},#{path});
+    </insert>
+
+    <select id="getAttachmentByTicket" parameterType="com.utry.openticket.model.AttachmentDO" resultType="com.utry.openticket.model.AttachmentDO">
+         select t.id ,t.content_type as contentType,t.file_size as fileSize,
+                t.file_upload_time as fileUploadTime,t.file_name as fileName,t.path 
+                from ot_attachment t where 
+                t.ticket_id=#{ticketId} and t.ticket_fileld_id=#{ticketFileldId}
+     </select>
+     
+     <delete id="deleteAttachmentByTicketId" parameterType="int">
+        DELETE from ot_attachment  where ticket_id= #{id}
+     </delete>
+     
+     <select id="getPathByDelId" parameterType="int" resultType="string">
+        SELECT t.path from ot_attachment t WHERE t.ticket_id=#{id}
+     </select>
+     
+     <update id="updateAttachment" parameterType="com.utry.openticket.model.AttachmentDO">
+        UPDATE ot_attachment t SET
+        t.ticket_id=#{ticketId},t.ticket_fileld_id=#{ticketFileldId},
+        t.file_name=#{fileName},t.file_size=#{fileSize},
+        t.file_upload_time=#{fileUploadTime},t.content_type=#{contentType},
+        t.path=#{path}
+        where t.id=#{id}
+     </update>
+</mapper>   
+ 
