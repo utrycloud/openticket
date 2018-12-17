@@ -68,7 +68,7 @@
 								   <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span class="m-menu__arrow m-menu__arrow--adjust"></span>
 									   <ul class="m-menu__subnav">
 										   <!--<li class="m-menu__item " aria-haspopup="true"><a href="../../../header/actions.html" class="m-menu__link "><i class="m-menu__link-icon flaticon-file"></i><span class="m-menu__link-text">增加类型</span></a></li>-->
-										   <li class="m-menu__item " aria-haspopup="true"><a href="#" class="m-menu__link "><i class="m-menu__link-icon flaticon-diagram"></i><span class="m-menu__link-text" id="new-column">字段添加</span></a></li>
+										   <li class="m-menu__item " aria-haspopup="true"><a class="m-menu__link "><i class="m-menu__link-icon flaticon-diagram"></i><span class="m-menu__link-text" id="new-column">字段添加</span></a></li>
 									   </ul>
 								   </div>
 							   </li>
@@ -352,7 +352,7 @@
 								<div class="m-portlet__head-caption">
 									<div class="m-portlet__head-title">
 										<h3 class="class-head-text" th:text="${ticketTypeName}">需</h3>
-										<h3 class="m-portlet__head-text" hidden th:text="${ticketType}">需求</h3>
+										<h3 class="m-portlet__head-text" hidden th:text="${ticketTypeId}">1</h3>
 									</div>
 								</div>
 								<div class="m-portlet__head-tools">
@@ -556,8 +556,8 @@
             window.location.href = "/openticket/form?tickettype=" + ticketType;
         });
 		$("[id=new-column]").click(function () {
-            var ticketType = $("h3.m-portlet__head-text").text();
-			window.location.href = "/openticket/addField?ticketType=" + ticketType;
+            var ticketTypeId = $("h3.m-portlet__head-text").text();
+			window.location.href = "/openticket/addField?ticketTypeId=" + ticketTypeId;
 		});
         function chooseType(obj){
             var ticketType = $(obj).text();

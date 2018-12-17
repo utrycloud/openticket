@@ -90,10 +90,10 @@
                             <textarea class="form-control" rows="3" name="textareaValue"></textarea>
                         </div>
                     </div>
-                    <p hidden id="hidden-p-ticketType" th:text="${ticketType}"></p>
+                    <p hidden id="hidden-p-ticketType" th:text="${ticketTypeId}"></p>
                     <div class="form-actions">
                         <button type="button" class="btn btn-info" onclick="submitOrder()">Submit</button>
-                        <button type="button-index" class="btn btn-default" th:onclick="'javascript:check('+${ticketType}+')'">Cancel</button>
+                        <button type="button-index" class="btn btn-default" th:onclick="'javascript:check('+${ticketTypeId}+')'">Cancel</button>
                     </div>
                 <!--</form>-->
             </div>
