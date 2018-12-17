@@ -47,7 +47,7 @@ public class TicketFieldController {
      * @date : 2018-07-26
      */
     @RequestMapping("addField")
-    public String addFieldsPage(Model map, String ticketType){
+    public String addFieldsPage(Model map, String ticketTypeId){
         List<FieldTypeDO> fieldTypeDOList = fieldTypeService.getFieldTypeList();
         //工单类型列表
         List<TicketTypeDO> ticketTypeDOList = ticketTypeService.getTicketTypeList();
@@ -55,7 +55,7 @@ public class TicketFieldController {
         logger.info("ticketTypeDOList" + ticketTypeDOList);
         map.addAttribute("fieldTypeList", fieldTypeDOList);
         map.addAttribute("ticketTypeList", ticketTypeDOList);
-        map.addAttribute("ticketType", ticketType);
+        map.addAttribute("ticketTypeId", ticketTypeId);
         return "/add_field";
     }
 
