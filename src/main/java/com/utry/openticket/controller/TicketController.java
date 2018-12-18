@@ -10,6 +10,7 @@ package com.utry.openticket.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.utry.openticket.dao.UserDAO;
 import com.utry.openticket.dto.TicketValueDTO;
 import com.utry.openticket.constant.Constant;
 import com.utry.openticket.dto.TicketDTO;
@@ -17,6 +18,7 @@ import com.utry.openticket.dto.TicketFieldDTO;
 import com.utry.openticket.model.AttachmentDO;
 import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.model.TicketValueDO;
+import com.utry.openticket.model.UserDO;
 import com.utry.openticket.service.*;
 import com.utry.openticket.util.DateUtils;
 import com.utry.openticket.util.FileUtil;
@@ -48,6 +50,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class TicketController {
@@ -205,14 +208,15 @@ public class TicketController {
 	 */
 	@RequestMapping("saveTicket")
 	@ResponseBody
-	public String saveTicket(@RequestBody String jsonObj){
+	public String saveTicket(@RequestBody String jsonObj, HttpSession session){
 		// 为了解决多选框选择的值在 数据库 表中的存储问题----开始
 		JSONObject jsonObject = JSON.parseObject(jsonObj);
 		JSONArray jsonArray = (JSONArray) jsonObject.get("ticketValueList");
 		jsonObject.put("ticketValueList", takeOutRepetition(jsonArray));
 		// 为了解决多选框选择的值在 数据库 表中的存储问题----结束
 		TicketDTO ticket = (TicketDTO) JSON.parseObject(jsonObject.toString(), TicketDTO.class);
-		ticket.setCreateUser("张三");
+		UserDO login = (UserDO)session.getAttribute("login");
+		ticket.setCreateUser(login.getUsername());
 		List<TicketValueDO> ticketValueList = ticket.getTicketValueList();
 		// 判断是否包括文件上传
 		JSONObject fileJsonObject = null;
