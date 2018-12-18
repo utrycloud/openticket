@@ -28,6 +28,8 @@ public interface ITicketFieldDAO {
      */
     List<TicketFieldDTO> getColumn(String ticketType);
 
+    List<TicketFieldDTO> getColumnByTicketId(Integer ticketId);
+
     /**
      *
      * 功能描述 : 保存新自定义列并返回自增ID

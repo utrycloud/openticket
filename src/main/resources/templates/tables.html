@@ -321,8 +321,8 @@
 													</div>
 												</div>
 											</div>
-										</div></li>
 
+										</div></li>
 
 									<li
 										class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light"
@@ -594,7 +594,7 @@
             init: function () {
                 var ticketType = [[${ticketType}]];
                 var ticketTypeId = [[${ticketTypeId}]];
-                var data = getColumn(ticketType);
+                var data = getColumn(ticketTypeId);
                 var t;
                 t = $(".m_datatable").mDatatable({
                     data: {
@@ -664,7 +664,7 @@
         $("[id=export_all]").click(function () {
             var ticketType = $("h3.m-portlet__head-text").text();
             window.open('/openticket/exportXLs?ticketType='+ticketType);
-
+            window.location.href = "/openticket/form?ticketType=" + ticketType;
 
         });
 		$("[id=new-column]").click(function () {

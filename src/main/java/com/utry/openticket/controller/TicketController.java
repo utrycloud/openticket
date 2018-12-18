@@ -21,6 +21,7 @@ import com.utry.openticket.service.*;
 import com.utry.openticket.util.DateUtils;
 import com.utry.openticket.util.FileUtil;
 
+import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -51,84 +52,84 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class TicketController {
 
-    @Autowired
-    private TicketFieldService ticketFieldService;
-    @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private TicketTypeService ticketTypeService;
-    @Autowired
-    private FieldTypeValueService fieldTypeValueService;
-    @Autowired
-    private TicketValueService ticketValueService;
-    @Autowired
+	@Autowired
+	private TicketFieldService ticketFieldService;
+	@Autowired
+	private TicketService ticketService;
+	@Autowired
+	private TicketTypeService ticketTypeService;
+	@Autowired
+	private FieldTypeValueService fieldTypeValueService;
+	@Autowired
+	private TicketValueService ticketValueService;
+	@Autowired
 	private AttachmentService attachmentService;
 
-    private static Logger logger = LoggerFactory.getLogger(TicketController.class);
+	private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
-    /**
-     *
-     * 功能描述 : 打开table_future页面
-     *
-     * @param : Model
-     * @return :
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("index")
-    public String index(Model model,@RequestParam(defaultValue = "1") String ticketTypeId){
-        List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
-        String ticketTypeName = ticketTypeName(ticketTypeList, ticketTypeId);
-        model.addAttribute("ticketTypeList",ticketTypeList);
-        model.addAttribute("ticketTypeId",ticketTypeId);
-        model.addAttribute("ticketType", ticketTypeName);
-        return "/tables";
-    }
+	/**
+	 *
+	 * 功能描述 : 打开table_future页面
+	 *
+	 * @param : Model
+	 * @return :
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("index")
+	public String index(Model model,@RequestParam(defaultValue = "1") String ticketTypeId){
+		List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
+		String ticketTypeName = ticketTypeName(ticketTypeList, ticketTypeId);
+		model.addAttribute("ticketTypeList",ticketTypeList);
+		model.addAttribute("ticketTypeId",ticketTypeId);
+		model.addAttribute("ticketType", ticketTypeName);
+		return "/tables";
+	}
 
-    private String ticketTypeName(List<TicketTypeDO> ticketTypeList, String ticketTypeId) {
-        String result = "ticketTypeName Error";
-        for (TicketTypeDO ticketTypeDO : ticketTypeList) {
-            if (ticketTypeDO.getId() == Integer.parseInt(ticketTypeId)) {
-                result = ticketTypeDO.getName();
-            }
-        }
-        return result;
-    }
+	private String ticketTypeName(List<TicketTypeDO> ticketTypeList, String ticketTypeId) {
+		String result = "ticketTypeName Error";
+		for (TicketTypeDO ticketTypeDO : ticketTypeList) {
+			if (ticketTypeDO.getId() == Integer.parseInt(ticketTypeId)) {
+				result = ticketTypeDO.getName();
+			}
+		}
+		return result;
+	}
 
-    @RequestMapping("index2")
-    public String index2(Model model){
-        List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
-        model.addAttribute("ticketTypeList",ticketTypeList);
-        return "/table_future";
-    }
+	@RequestMapping("index2")
+	public String index2(Model model){
+		List<TicketTypeDO> ticketTypeList = ticketTypeService.getTicketTypeList();
+		model.addAttribute("ticketTypeList",ticketTypeList);
+		return "/table_future";
+	}
 
-    /**
-     *
-     * 功能描述 : 获得工单的自定义列
-     *
-     * @param : String ticketType 工单类型
-     * @return : List<TicketFieldDO> 自定义列List
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("getColumn")
-    public @ResponseBody List<TicketFieldDTO> getTicketColumn(@RequestParam String ticketType){
-        List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumn(ticketType);
-        return ticketFieldList;
-    }
+	/**
+	 *
+	 * 功能描述 : 获得工单的自定义列
+	 *
+	 * @param : String ticketType 工单类型
+	 * @return : List<TicketFieldDO> 自定义列List
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("getColumn")
+	public @ResponseBody List<TicketFieldDTO> getTicketColumn(@RequestParam Integer ticketType){
+		List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumnByTicketId(ticketType);
+		return ticketFieldList;
+	}
 
-    /**
-     *
-     * 功能描述 : 获得基础工单信息
-     *
-     * @param : String ticketType 工单类型
-     * @return : List<TicketDTO> 基础工单List
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("getTicket")
-    public @ResponseBody List<Map<String,String>> getTicket(@RequestParam String ticketTypeId){
-    	List<TicketDTO> ticketList = ticketService.getTicketList(ticketTypeId);
+	/**
+	 *
+	 * 功能描述 : 获得基础工单信息
+	 *
+	 * @param : String ticketType 工单类型
+	 * @return : List<TicketDTO> 基础工单List
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("getTicket")
+	public @ResponseBody List<Map<String,String>> getTicket(@RequestParam String ticketTypeId){
+		List<TicketDTO> ticketList = ticketService.getTicketList(ticketTypeId);
 		List<Map<String, String>> result = new ArrayList<>();
 		for (TicketDTO ticket : ticketList) {
 			Map<String, String> ticketMap = new LinkedHashMap<>();
@@ -144,65 +145,67 @@ public class TicketController {
 			result.add(ticketMap);
 		}
 		return result;
-    }
+	}
 
-    /**
-     *
-     * 功能描述 : 跳转到添加工单页面
-     *
-     * @param : Model
-     * @return :
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("addTicket")
-    public String addFieldsPage(@RequestParam String ticketType,Model model){
-    	String ticketName=ticketTypeService.getTicketNameById(ticketType);
-    	List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumn(ticketName);
+	/**
+	 *
+	 * 功能描述 : 跳转到添加工单页面
+	 *
+	 * @param : Model
+	 * @return :
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("addTicket")
+	public String addFieldsPage(@RequestParam Integer ticketType,Model model){
+		String ticketName=ticketTypeService.getTicketNameById(ticketType.toString());
+		List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumnByTicketId(ticketType);
 		for (TicketFieldDTO t : ticketFieldList) {
 			t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
 		}
 		model.addAttribute("ticketType", ticketName);
 		model.addAttribute("ticketFieldList", ticketFieldList);
-
+		logger.info("ticketType:"+ticketType);
+		logger.info("ticketName:"+ticketName);
+		logger.info("ticketFieldList:"+ticketFieldList);
 		return "/form_future";
-    }
+	}
 
 
 
-    /**
-     *
-     * 表单渲染页面
-     *
-     * @param : Model
-     * @return :
-     * @auther : robotbird
-     * @date : 2018-11-26
-     */
-    @RequestMapping("form")
-    public String renderForm(@RequestParam String ticketType,Model model){
-        List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumn(ticketType);
-        for(TicketFieldDTO t:ticketFieldList){
-            t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
-            //System.out.println(t);
-        }
-        model.addAttribute("ticketType",ticketType);
-        model.addAttribute("ticketFieldList",ticketFieldList);
-        return "/forms";
-    }
+	/**
+	 *
+	 * 表单渲染页面
+	 *
+	 * @param : Model
+	 * @return :
+	 * @auther : robotbird
+	 * @date : 2018-11-26
+	 */
+	@RequestMapping("form")
+	public String renderForm(@RequestParam String ticketType,Model model){
+		List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumn(ticketType);
+		for(TicketFieldDTO t:ticketFieldList){
+			t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
+			//System.out.println(t);
+		}
+		model.addAttribute("ticketType",ticketType);
+		model.addAttribute("ticketFieldList",ticketFieldList);
+		return "/forms";
+	}
 
-    /**
-     *
-     * 功能描述 : 添加工单
-     *自定义列
-     * @param : jsonObj(TicketDTO) 工单对象
-     * @return : String 结果
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("saveTicket")
-    @ResponseBody
-    public String saveTicket(@RequestBody String jsonObj){
+	/**
+	 *
+	 * 功能描述 : 添加工单
+	 *自定义列
+	 * @param : jsonObj(TicketDTO) 工单对象
+	 * @return : String 结果
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("saveTicket")
+	@ResponseBody
+	public String saveTicket(@RequestBody String jsonObj){
 		// 为了解决多选框选择的值在 数据库 表中的存储问题----开始
 		JSONObject jsonObject = JSON.parseObject(jsonObj);
 		JSONArray jsonArray = (JSONArray) jsonObject.get("ticketValueList");
@@ -246,63 +249,70 @@ public class TicketController {
 			ticketService.saveTicket(ticket, ticketValueList);
 		}
 		return "success";
-    }
+	}
 
-    /**
-     *
-     * 功能描述 : 删除工单
-     *自定义列
-     * @param : Integer id 工单编号
-     * @return : String 结果
-     * @auther : LVDING
-     * @date : 2018-07-26
-     */
-    @RequestMapping("deleteTicket")
-    @ResponseBody
-    public String deleteTicket(@RequestParam Integer id){
-    	ticketService.deleteTicket(id);
+	/**
+	 *
+	 * 功能描述 : 删除工单
+	 *自定义列
+	 * @param : Integer id 工单编号
+	 * @return : String 结果
+	 * @auther : LVDING
+	 * @date : 2018-07-26
+	 */
+	@RequestMapping("deleteTicket")
+	@ResponseBody
+	public String deleteTicket(@RequestParam Integer id){
+		ticketService.deleteTicket(id);
 		attachmentService.deleteAttachmentByTicketId(id);
-        return "success";
-    }
+		return "success";
+	}
 
-    /**
-     *
-     * 功能描述 : 跳转到编辑工单页面
-     *
-     * @param : Model
-     * @return :
-     * @auther : LVDING
-     * @date : 2018-08-01
-     */
-    @RequestMapping("updateTicketPage")
-    public String updateTicket(@RequestParam int id,@RequestParam String ticketType,Model model){
-    	String ticketName=ticketTypeService.getTicketNameById(ticketType);
-    	List<TicketFieldDTO> ticketFieldList = ticketFieldService.getUpdateColumn(id, ticketName);
+	/**
+	 *
+	 * 功能描述 : 跳转到编辑工单页面
+	 *
+	 * @param : Model
+	 * @return :
+	 * @auther : LVDING
+	 * @date : 2018-08-01
+	 */
+	@RequestMapping("updateTicketPage")
+	public String updateTicket(@RequestParam int id,@RequestParam String ticketType,Model model){
+		String ticketName=ticketTypeService.getTicketNameById(ticketType);
+		List<TicketFieldDTO> ticketFieldList = ticketFieldService.getUpdateColumn(id, ticketName);
 		for (TicketFieldDTO t : ticketFieldList) {
 			t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
 			// 判断如果是多选框的话 就设置checkBoxValue的值来存放多选的所有结果
 			if (Constant.CHECKBOX_TYPE.equals(t.getSelectType())) {
-				String[] values = t.getValue().split("/");
-				t.setCheckBoxValue(Arrays.asList(values));
+				//如果不为空的话 就取出值 为空就设一个空的默认值
+				if(!Strings.isEmpty(t.getValue())){
+					String[] values = t.getValue().split("/");
+					t.setCheckBoxValue(Arrays.asList(values));
+				}else {
+					List<String> list = new ArrayList<String>();
+					list.add("");
+					t.setCheckBoxValue(list);
+				}
 			}
 		}
 		model.addAttribute("ticketId", id);
 		model.addAttribute("ticketFieldList", ticketFieldList);
 		return "/table_update";
-    }
+	}
 
-    /**
-     *
-     * 功能描述 : 添加工单
-     *自定义列
-     * @param : jsonObj(TicketDTO) 工单对象
-     * @return : String 结果
-     * @auther : LVDING
-     * @date : 2018-08-01
-     */
-    @RequestMapping("updateTicket")
-    @ResponseBody
-    public String updateTicket(@RequestBody String jsonObj){
+	/**
+	 *
+	 * 功能描述 : 添加工单
+	 *自定义列
+	 * @param : jsonObj(TicketDTO) 工单对象
+	 * @return : String 结果
+	 * @auther : LVDING
+	 * @date : 2018-08-01
+	 */
+	@RequestMapping("updateTicket")
+	@ResponseBody
+	public String updateTicket(@RequestBody String jsonObj){
 		// 为了解决多选框选择的值在 数据库 表中的存储问题 将多选值合成一个并用/分开----开始
 		JSONObject jsonObject = JSON.parseObject(jsonObj);
 		JSONArray jsonArray = (JSONArray) jsonObject.get("ticketValueList");
@@ -315,7 +325,7 @@ public class TicketController {
 		JSONObject fileJsonObject=null;
 		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null) {
 			// 1.有文件就先对事先放弃的文件进行处理
-			if (jsonObject.get("giveUpFile") != null) {
+			if (!"".equals(jsonObject.get("giveUpFile"))&&jsonObject.get("giveUpFile") != null) {
 				// 判断是否有被放弃的文件 如果有就删除
 				Object giveUpFile = jsonObject.get("giveUpFile");
 				FileUtil.delFileByPath(handleString(giveUpFile.toString()));
@@ -363,9 +373,9 @@ public class TicketController {
 			ticketValueService.updateTicketValueList(ticketValueList);
 		}
 		return "success";
-    }
-    
-    /**
+	}
+
+	/**
 	 * 导出excel表格 选择导出全部
 	 * @param request
 	 * @param response
@@ -375,7 +385,8 @@ public class TicketController {
 	 */
 	@RequestMapping("exportXLs")
 	public String exportXLs(HttpServletRequest request, HttpServletResponse response,@RequestParam String ticketType) throws IOException {
-		//得到所有的结果  
+		//得到所有的结果
+		String ticketName = ticketTypeService.getTicketNameById(ticketType);
 		List<Map<String, String>> resultList= getTicket(ticketType);
 		// 创建hssfworkbook Excel的文档对象
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -384,7 +395,7 @@ public class TicketController {
 		// 设置第一行
 		HSSFRow row = sheet.createRow(0);
 		// 设置属性 但是我现在也不知道有几行 所以要去数据库查
-		List<TicketFieldDTO> ticketFieldDTOs=getTicketColumn(ticketType);
+		List<TicketFieldDTO> ticketFieldDTOs=ticketFieldService.getColumn(ticketName);
 		//现在只需要一个TicketFieldDTO的name属性 并且需要其他的默认属性 新建一个lsit<String>对象
 		List<String> nameList=new ArrayList<String>();
 		List<String> fileldNameList=new ArrayList<String>();
@@ -402,7 +413,7 @@ public class TicketController {
 		for (int i=0;i<nameList.size();i++) {
 			row.createCell(i).setCellValue(nameList.get(i));
 		}
-		
+
 		//便利
 		for(int i = 0;i<resultList.size();i++){
 			HSSFRow rows = sheet.createRow(sheet.getLastRowNum() + 1);
@@ -419,7 +430,7 @@ public class TicketController {
 			output = response.getOutputStream();
 			response.reset();
 			// 设置分区中文名
-			String filename = ticketType+"信息";
+			String filename = ticketName+"信息";
 			// 设置响应的编码
 			response.setContentType("application/x-download");// 下面三行是关键代码，处理乱码问题
 			response.setCharacterEncoding("utf-8");
@@ -436,10 +447,9 @@ public class TicketController {
 		return null;
 	}
 	/**
-	 * 
+	 *
 	 * @param request
 	 * @param response
-	 * @param ticketType要导出的类型
 	 * @param pagNow 当前页面
 	 * @param pageSize 页面数据大小
 	 * @return
@@ -447,11 +457,12 @@ public class TicketController {
 	 */
 	@RequestMapping("exportPageXLs")
 	public String exportPageXLs(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(defaultValue = "需求") String ticketType,
-			@RequestParam("pageNow")String pagNow,
-			@RequestParam("pageSize")String pageSize) throws IOException {
+								@RequestParam(defaultValue = "1") String ticketType,
+								@RequestParam("pageNow")String pagNow,
+								@RequestParam("pageSize")String pageSize) throws IOException {
 		// 得到所有的结果
-		List<Map<String, String>> resultList = getTicketByPage(ticketType,pagNow,pageSize);
+		String ticketName = ticketTypeService.getTicketNameById(ticketType);
+		List<Map<String, String>> resultList = getTicketByPage(ticketName,pagNow,pageSize);
 		// 创建hssfworkbook Excel的文档对象
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 创建新的sheet
@@ -459,7 +470,7 @@ public class TicketController {
 		// 设置第一行
 		HSSFRow row = sheet.createRow(0);
 		// 设置属性 但是我现在也不知道有几行 所以要去数据库查
-		List<TicketFieldDTO> ticketFieldDTOs = getTicketColumn(ticketType);
+		List<TicketFieldDTO> ticketFieldDTOs = ticketFieldService.getColumn(ticketName);
 		// 现在只需要一个TicketFieldDTO的name属性 并且需要其他的默认属性 新建一个lsit<String>对象
 		List<String> nameList = new ArrayList<String>();
 		List<String> fileldNameList = new ArrayList<String>();
@@ -492,7 +503,7 @@ public class TicketController {
 		OutputStream output = response.getOutputStream();
 		response.reset();
 		// 设置分区中文名
-		String filename = ticketType + "信息";
+		String filename = ticketName + "信息";
 		// 设置响应的编码
 		response.setContentType("application/x-download");// 下面三行是关键代码，处理乱码问题
 		response.setCharacterEncoding("utf-8");
@@ -530,10 +541,10 @@ public class TicketController {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 将重复的json的key去掉 保留value/间隔
-	 * 
+	 *
 	 * @param jsonArray
 	 * @return
 	 */
