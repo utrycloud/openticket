@@ -2,8 +2,10 @@ package com.utry.openticket.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.utry.openticket.dto.UserDTO;
+import com.utry.openticket.model.PermissionDO;
 import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.model.UserDO;
+import com.utry.openticket.service.PermissionService;
 import com.utry.openticket.service.TicketTypeService;
 import com.utry.openticket.service.UserService;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private PermissionService permissionService;
 
     @Autowired
     private TicketTypeService ticketTypeService;
@@ -48,13 +52,16 @@ public class LoginController {
                 model.addAttribute("empty", "用户名不存在");
                 return "/login";
             } else {
-                return mainTable(request, session);
+                return mainTable(session,userDO);
             }
         }
     }
 
-    private String mainTable(HttpServletRequest request, HttpSession session) {
-        session.setAttribute("login", "login");
-        return "redirect:/index?ticketTypeId=1";
+    private String mainTable(HttpSession session,UserDO user) {
+        session.setAttribute("login", user);
+        List<PermissionDO> userPermissions = permissionService.getUserPermissions(user.getId());
+        session.setAttribute("userPermissions",userPermissions);
+        logger.info("用户"+user.getId()+"权限:"+userPermissions);
+        return "redirect:/index?ticketType=1";
     }
 }

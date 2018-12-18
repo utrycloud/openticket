@@ -12,15 +12,15 @@ public class UserDO implements Serializable{
     private String email;
     private String createTime;
     private String updateTime;
-    private Integer roleId;
+   // private Integer roleId;
 
-    public Integer getRoleId() {
+/*    public Integer getRoleId() {
         return roleId;
-    }
+    }*/
 
-    public void setRoleId(Integer roleId) {
+/*    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
-    }
+    }*/
 
     public String getRealName() {
         return realName;
@@ -97,7 +97,6 @@ public class UserDO implements Serializable{
                 ", email='" + email + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
-                ", roleId=" + roleId +
                 '}';
     }
 }

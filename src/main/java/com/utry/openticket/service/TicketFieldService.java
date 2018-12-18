@@ -100,6 +100,10 @@ public class TicketFieldService {
         List<TicketFieldDTO> ticketFieldList = ticketFieldDAO.getColumn(ticketType);
         return ticketFieldList;
     }
+    public List<TicketFieldDTO> getColumnByTicketId(Integer ticketId){
+        List<TicketFieldDTO> ticketFieldList = ticketFieldDAO.getColumnByTicketId(ticketId);
+        return ticketFieldList;
+    }
 
     /**
      *
