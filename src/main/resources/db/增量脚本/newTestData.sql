@@ -3,9 +3,9 @@ insert ot_user(id,username,password,realName) values(200,'enoch','123456','开�
 
 
 
-insert ot_role_type(name) values(1,'超级管理员');
-insert ot_role_type(name) values(2,'团队负责人');
-insert ot_role_type(name) values(3,'开发');
+insert ot_role_type(id,name) values(1,'超级管理员');
+insert ot_role_type(id,name) values(2,'团队负责人');
+insert ot_role_type(id,name) values(3,'开发');
 
 
 
