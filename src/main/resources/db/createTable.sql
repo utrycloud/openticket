@@ -212,7 +212,6 @@ alter table ot_attachment add column file_upload_time datetime not null comment 
 -- 把这一列放到file_size后
 alter table ot_attachment modify file_upload_time datetime after file_size;
 
--- ---------
 
 insert ot_user(id,username,password,realName) values(100,'admin','123456','管理员甲');
 insert ot_user(id,username,password,realName) values(200,'enoch','123456','开发乙');
