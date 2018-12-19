@@ -28,13 +28,11 @@
 
     <update id="updateTicketValue" parameterType="java.util.List">
          <foreach collection="list" item="ticketValue" index="index" open="" close="" separator=";">
-            <if test="ticketValue.value!=''">
                 update ot_ticket_value
                 <set>
                     value=#{ticketValue.value}
                 </set>
                 where field_id=#{ticketValue.fieldId} and ticket_id=#{ticketValue.ticketId}
-            </if>
         </foreach>
     </update>
 

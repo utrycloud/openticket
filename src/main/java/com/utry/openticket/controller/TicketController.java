@@ -323,6 +323,7 @@ public class TicketController {
 			}
 		}
 		model.addAttribute("ticketId", id);
+		model.addAttribute("ticketType", ticketName);
 		model.addAttribute("ticketFieldList", ticketFieldList);
 		return "/table_update";
 	}
@@ -347,6 +348,26 @@ public class TicketController {
 
 		int ticketId = ticket.getId();
 		List<TicketValueDO> ticketValueList = ticket.getTicketValueList();
+		/**
+		 * 修改 如果修改单选或者多选什么都不选 就不显示这两个的bug
+		 * 思路是 先去数据库查一下ticketValueList是否包含该工单全部的值 如果不包含 就加上
+		 */
+		List<TicketFieldDTO> ticketFieldDTOs=ticketFieldService.getColumn(jsonObject.getString("ticketType"));
+		for (TicketFieldDTO ticketFieldDTO : ticketFieldDTOs) {
+			boolean flag=true;
+			for(TicketValueDO ticketValueDO:ticketValueList){
+				if(ticketFieldDTO.getId().equals(ticketValueDO.getFieldId())){
+					flag=false;
+					break;
+				}
+			}
+			if(flag){
+				TicketValueDO ticketValueDO = new TicketValueDO();
+				ticketValueDO.setFieldId(ticketFieldDTO.getId());
+				ticketValueDO.setValue("");
+				ticketValueList.add(ticketValueDO);	
+			}			
+		}
 		// 判断是否包括文件上传
 		JSONObject fileJsonObject=null;
 		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null && !("{}".equals(fileJsonObject.toString()))) {
@@ -390,21 +411,13 @@ public class TicketController {
 					}
 				}
 			}
-			if(ticketValueList.size()>0){
-				ticketValueService.updateTicketValueList(ticketValueList);
-			}else {
-				return "没有修改";
-			}
+			ticketValueService.updateTicketValueList(ticketValueList);
 		} else {
 			//如果没有文件上传的话
 			for (TicketValueDO ticketValue : ticketValueList) {
 				ticketValue.setTicketId(ticketId);
 			}
-			if(ticketValueList.size()>0){
-				ticketValueService.updateTicketValueList(ticketValueList);
-			}else {
-				return "没有修改";
-			}
+			ticketValueService.updateTicketValueList(ticketValueList);
 		}
 		return "success";
 	}
