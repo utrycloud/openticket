@@ -56,10 +56,8 @@
 			<form role="form" action="/openticket/saveField" id="fieldForm">
 				<div class="form-body">
 					<div class="form-group">
-						<label>工单类型</label> <select class="form-control" name="ticketType">
-							<option th:each="ticketType : ${ticketTypeList}"
-								th:text="${ticketType.name}"></option>
-						</select>
+						<label for="for-ticketType">工单类型</label>
+							<input type="text" readonly="ture" class="form-control" id="for-ticketType" name="ticketType" th:value="${ticketName}">
 					</div>
 					<div class="form-group">
 						<label>选择类型</label> <select class="form-control" id="typeSelect"
@@ -112,6 +110,7 @@
 					</div>
 				</div>
 				<div class="form-actions">
+					<p id="p-submit-id" hidden th:text="${ticketTypeId}"></p>
 					<button type="button" class="btn btn-info" onclick="submitOrder()">Submit</button>
 					<button type="button" class="btn btn-default" onclick="javascript:history.back(-1);">Cancel</button>
 				</div>

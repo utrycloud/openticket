@@ -53,11 +53,13 @@ public class TicketFieldController {
         List<FieldTypeDO> fieldTypeDOList = fieldTypeService.getFieldTypeList();
         //工单类型列表
         List<TicketTypeDO> ticketTypeDOList = ticketTypeService.getTicketTypeList();
+        String ticketName=ticketTypeService.getTicketNameById(ticketTypeId.toString());
         logger.info("fieldTypeDOList" + fieldTypeDOList.toString());
         logger.info("ticketTypeDOList" + ticketTypeDOList);
         map.addAttribute("fieldTypeList", fieldTypeDOList);
         map.addAttribute("ticketTypeList", ticketTypeDOList);
         map.addAttribute("ticketTypeId", ticketTypeId);
+        map.addAttribute("ticketName", ticketName);
         return "/add_field";
     }
 

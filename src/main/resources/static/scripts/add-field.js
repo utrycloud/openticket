@@ -59,7 +59,8 @@ function showTextarea(obj){
 }
 
 //进行校验并提交表单
-function submitOrder(){
+function submitOrder(ticketTypeId){
+    console.log("ticketTypeId = ", ticketTypeId);
     var name = $("[name=name]").val();
     var fieldName = $("[name=fieldName]").val();
     var selectType = $("#typeSelect").val();
@@ -105,7 +106,9 @@ function submitOrder(){
             }),
             success:function(data){
                 alert("添加成功！");
-                window.location.href="/openticket/index";
+                var id = $("[id=p-submit-id]").text();
+                console.log(id);
+                window.location.href="/openticket/index?ticketTypeId="+id;
             },
             error:function(data){
                 alert("添加失败！");
