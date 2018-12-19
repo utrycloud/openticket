@@ -218,6 +218,28 @@ public class TicketController {
 		UserDO login = (UserDO)session.getAttribute("login");
 		ticket.setCreateUser(login.getUsername());
 		List<TicketValueDO> ticketValueList = ticket.getTicketValueList();
+		/**
+		 * 由于之前单选框和多选框如果都没有选的话ticketValueList得不到值
+		 * 会造成数据库不存数据 实际上应该存入空值
+		 * 下面是修改结果 
+		 * 思路是 先去数据库查一下ticketValueList是否包含该工单全部的值 如果不包含 就加上
+		 */
+		List<TicketFieldDTO> ticketFieldDTOs=ticketFieldService.getColumn(jsonObject.getString("ticketType"));
+		for (TicketFieldDTO ticketFieldDTO : ticketFieldDTOs) {
+			boolean flag=true;
+			for(TicketValueDO ticketValueDO:ticketValueList){
+				if(ticketFieldDTO.getId().equals(ticketValueDO.getFieldId())){
+					flag=false;
+					break;
+				}
+			}
+			if(flag){
+				TicketValueDO ticketValueDO = new TicketValueDO();
+				ticketValueDO.setFieldId(ticketFieldDTO.getId());
+				ticketValueDO.setValue("");
+				ticketValueList.add(ticketValueDO);	
+			}			
+		}
 		// 判断是否包括文件上传
 		JSONObject fileJsonObject = null;
 		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null) {
@@ -327,7 +349,7 @@ public class TicketController {
 		List<TicketValueDO> ticketValueList = ticket.getTicketValueList();
 		// 判断是否包括文件上传
 		JSONObject fileJsonObject=null;
-		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null) {
+		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null && !("{}".equals(fileJsonObject.toString()))) {
 			// 1.有文件就先对事先放弃的文件进行处理
 			if (!"".equals(jsonObject.get("giveUpFile"))&&jsonObject.get("giveUpFile") != null) {
 				// 判断是否有被放弃的文件 如果有就删除
@@ -368,13 +390,21 @@ public class TicketController {
 					}
 				}
 			}
-			ticketValueService.updateTicketValueList(ticketValueList);
+			if(ticketValueList.size()>0){
+				ticketValueService.updateTicketValueList(ticketValueList);
+			}else {
+				return "没有修改";
+			}
 		} else {
 			//如果没有文件上传的话
 			for (TicketValueDO ticketValue : ticketValueList) {
 				ticketValue.setTicketId(ticketId);
 			}
-			ticketValueService.updateTicketValueList(ticketValueList);
+			if(ticketValueList.size()>0){
+				ticketValueService.updateTicketValueList(ticketValueList);
+			}else {
+				return "没有修改";
+			}
 		}
 		return "success";
 	}
