@@ -74,6 +74,7 @@ public class AttachmentController {
 		attachmentDO.setPath(path);
 		attachmentDO.setFileSize(size);
 		attachmentDO.setFileUploadTime(DateUtils.getContentFormetDate(new Date()));
+		attachmentDO.setFileUsedTime(attachmentDO.getFileUploadTime());
 		attachmentDO.setContentType(contentType);
 		attachmentDO.setTicketId(-1);// 这里先设置为-1 因为实际工单还没生成 当用户点击提交按钮式生成
 										// 但是数据库不能存空
@@ -102,6 +103,9 @@ public class AttachmentController {
 		Integer ticketId = Integer.parseInt(mesStrings[1]);
 		// 从数据库获取有文件名字 和 实际存储位置的attachment对象
 		AttachmentDO attachment = attachmentService.getAttachmentByTicket(ticketId, ticketFileldId);
+		//更新文件最近一次被修改或者下载的日期
+		attachment.setFileUsedTime(DateUtils.getContentFormetDate(new Date()));
+		attachmentService.updateFileUsedTime(attachment);
 		String fileName = attachment.getFileName();// 文件名
 		if (fileName != null) {
 			// 设置文件路径

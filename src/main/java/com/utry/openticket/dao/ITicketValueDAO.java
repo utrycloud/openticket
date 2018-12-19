@@ -70,4 +70,10 @@ public interface ITicketValueDAO {
      * @date : 2018-08-01
      */
     int saveNullTicketValue(@Param("fieldId") int fieldId,@Param("ticketId") int ticketId);
+    /**
+     * 获取value通过ticketValueDO 的两个id
+     * @param ticketValueDO
+     * @return
+     */
+	String getValue(TicketValueDO ticketValueDO);
 }

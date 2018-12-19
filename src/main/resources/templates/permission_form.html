@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+文档路径: docs\datatable.html
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <title>权限管理</title>
+    <meta name="description" content="Initialized via remote ajax json data">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <link href="assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="table/bootstrap.min.css">
+    <script src="table/jquery-1.10.2.min.js"></script>
+    <script src="table/bootstrap.min.js"></script>
+    <script src="scripts/permission_form.js"></script>
+    <style>
+        html{
+            width:100%;
+            overflow-x:hidden;
+        }
+    </style>
+</head>
+<body>
+<div style="padding: 20px 20px;">
+    <div class="m-portlet m-portlet--mobile ">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        权限列表
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div>
+          <sapn></sapn><span></span><span></span>
+        </div>
+        <div class="m-portlet__body">
+            <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 order-1 order-xl-2 m--align-right" onclick="initFrom()">
+                        <a href="#addUserModal" data-toggle="modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                            <span>
+                                <i class="la la-cart-plus"></i>
+                                <span id="addUser" >添加权限</span>
+                            </span>
+                        </a>
+                        <div class="m-separator m-separator--dashed d-xl-none"></div>
+                    </div>
+                </div>
+            </div>
+            <!--begin: Datatable -->
+            <div class="m_datatable" id="userTable">
+
+            </div>
+            <!--end: Datatable -->
+        </div>
+    </div>
+
+
+</div>
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addUserModalTitle">
+                    添加权限
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="hidden"  id="id" name="id">
+                    <label>权限名</label><span style="color:red">(*)</span>
+                    <input type="text" class="form-control" id="name" placeholder="请输入权限名" name="name" value="">
+                    <label>限制的uri</label><span style="color:red">(*)</span>
+                    <input type="text" class="form-control" id="uri" placeholder="请输入uri" name="uri">
+                    <label>父权限</label>
+	                     <select class="form-control">
+	                         <optgroup >
+                                 <option value="1" style="color: red;font-size: 18px">最高权限</option>
+                             </optgroup>
+	                         <optgroup label="Category 1" th:value="aa">
+	                             <option value="1">Choice 1</option>
+	                             <option value="2">Choice 2</option>
+	                             <option value="3">Choice 3</option>
+	                             <option value="4">Choice 4</option>
+	                         </optgroup>
+	                         <optgroup label="Category 2">
+	                             <option value="5">Choice 5</option>
+	                             <option value="6">Choice 6</option>
+	                             <option value="7">Choice 7</option>
+	                             <option value="8">Choice 8</option>
+	                         </optgroup>
+	                         <optgroup label="Category 3">
+	                             <option value="5">Choice 9</option>
+	                             <option value="6">Choice 10</option>
+	                             <option value="7">Choice 11</option>
+	                             <option value="8">Choice 12</option>
+	                         </optgroup>
+	                     </select>
+                    <label>权限层级</label>
+                    <input type="text" class="form-control" id="funcOrder" placeholder="请输入层级" name="funcOrder">
+                    <label>权限描述</label>
+                    <input type="text" class="form-control" id="description" placeholder="请输入权限描述" name="description">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="addPermission()">
+                    提交
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--begin::Global Theme Bundle -->
+<script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
+<script src="assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
+<!--end::Global Theme Bundle -->
+
+
+</body>
+<script th:inline="javascript">
+    //加载表格
+    var DatatableRemoteAjaxDemo = {
+        init: function () {
+            //表格头
+            var data = [{
+                    field: 'id',
+                    title: '权限编号',
+                }, {
+                    field: 'name',
+                    title: '权限名',
+                }, {
+                    field: 'pid',
+                    title: '父权限id',
+                },{
+                    field: 'funcOrder',
+                    title: '权限层级',
+                },{
+                    field: 'description',
+                    title: '权限描述',
+                },{
+                "field":"Actions",
+                "width":110,
+                "title":"操作",
+                "template":function() {
+                    return'<a href="#addUserModal" data-toggle="modal" onclick="updatePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>'+
+                        '<a href="#" onclick="deletePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete"><i class="la la-trash"></i></a>';
+                }
+            }
+            ];
+            var t;
+            t = $("#userTable").mDatatable({
+                data: {
+                    type: "remote",
+                    source: {
+                        read: {
+                            url: "/openticket/permission/list",
+                            map: function (t) {
+                                var e = t;
+                                return void 0 !== t.data && (e = t.data),
+                                    e
+                            }
+                        }
+                    },
+                    pageSize: 10,
+                    serverPaging: !0,
+                    serverFiltering: !0,
+                    serverSorting: !0
+                },
+                layout: {
+                    scroll: !1,
+                    footer: !1
+                },
+                sortable: !0,
+                pagination: !0,
+                toolbar: {
+                    items: {
+                        pagination: {
+                            pageSizeSelect: [10, 20, 30, 50, 100]
+                        }
+                    }
+                },
+                search: {
+                    input: $("#generalSearch")
+                },
+                columns: data
+            }),
+                $("#m_form_status").on("change",
+                    function () {
+                        t.search($(this).val(), "Status")
+                    }),
+                $("#m_form_type").on("change",
+                    function () {
+                        t.search($(this).val(), "Type")
+                    }),
+                $("#m_form_status, #m_form_type").selectpicker()
+
+        }
+    };
+    jQuery(document).ready(function () {
+        DatatableRemoteAjaxDemo.init();
+    });
+</script>
+
+</html>

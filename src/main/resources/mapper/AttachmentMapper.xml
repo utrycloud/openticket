@@ -9,9 +9,9 @@
           SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT into ot_attachment
-            (ticket_id,ticket_fileld_id,file_name,file_size,file_upload_time,content_type,path)
+            (ticket_id,ticket_fileld_id,file_name,file_size,file_upload_time,file_used_time,content_type,path)
             values (#{ticketId},#{ticketFileldId},#{fileName},#{fileSize},
-                    #{fileUploadTime},#{contentType},#{path});
+                    #{fileUploadTime},#{fileUploadTime},#{contentType},#{path});
     </insert>
 
     <select id="getAttachmentByTicket" parameterType="com.utry.openticket.model.AttachmentDO" resultType="com.utry.openticket.model.AttachmentDO">
@@ -33,8 +33,13 @@
         UPDATE ot_attachment t SET
         t.ticket_id=#{ticketId},t.ticket_fileld_id=#{ticketFileldId},
         t.file_name=#{fileName},t.file_size=#{fileSize},
-        t.file_upload_time=#{fileUploadTime},t.content_type=#{contentType},
+        t.file_used_time=#{fileUsedTime},t.content_type=#{contentType},
         t.path=#{path}
+        where t.id=#{id}
+     </update>
+     
+     <update id="updateFileUsedTime" parameterType="com.utry.openticket.model.AttachmentDO">
+        UPDATE ot_attachment t set t.file_used_time= #{fileUsedTime}
         where t.id=#{id}
      </update>
 </mapper>   

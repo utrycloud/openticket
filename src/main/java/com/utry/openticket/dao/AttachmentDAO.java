@@ -44,5 +44,11 @@ public interface AttachmentDAO {
 	 */
 	void updateAttachment(AttachmentDO attachmentDO);
 
+	/**
+	 * 更新文件最近一次被修改或者下载的日期
+	 * @param contentFormetDate
+	 */
+	void updateFileUsedTime(AttachmentDO attachment);
+
 	 
 }

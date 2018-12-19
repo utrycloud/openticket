@@ -45,4 +45,14 @@ public class TicketValueService {
     public void updateTicketValueList(List<TicketValueDO> ticketValueList){
         ticketValueDAO.updateTicketValue(ticketValueList);
     }
+
+    /**
+     * 获取value通过ticketValueDO 的两个id
+     * @param ticketValueDO
+     * @return
+     */
+	public String getValue(TicketValueDO ticketValueDO) {
+		// TODO Auto-generated method stub
+		return ticketValueDAO.getValue(ticketValueDO);
+	}
 }

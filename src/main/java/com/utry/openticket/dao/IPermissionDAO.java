@@ -18,4 +18,29 @@ public interface IPermissionDAO {
      * @return
      */
     List<PermissionDO> getUserPermissions(Integer userId);
+
+    /**
+     * 保存权限
+     * @param permissionDO
+     */
+	void savePermission(PermissionDO permissionDO);
+
+	/**
+	 * 获得PermissionDO 对象
+ 	 * @param id
+	 * @return
+	 */
+	PermissionDO getPermissionById(Integer id);
+
+	/**
+	 * 通过id删除
+	 * @param id
+	 */
+	void delPermissionById(int id);
+
+	/**
+	 * 更新permissionDO
+	 * @param permissionDO
+	 */
+	void updatePermission(PermissionDO permissionDO);
 }

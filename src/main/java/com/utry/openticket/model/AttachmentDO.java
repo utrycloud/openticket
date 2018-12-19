@@ -12,6 +12,7 @@ public class AttachmentDO {
 	private String fileName;//文件名称
 	private Integer fileSize;//文件大小
 	private String fileUploadTime;//文件上传日期
+	private String fileUsedTime;//文件最近一次被下载 或者 重新上传的日期
 	private String contentType;//文件类型
 	private String path;//保存路径
 	public Integer getId() {
@@ -49,6 +50,13 @@ public class AttachmentDO {
 	}
 	public void setFileUploadTime(String fileUploadTime) {
 		this.fileUploadTime = fileUploadTime;
+	}
+	
+	public String getFileUsedTime() {
+		return fileUsedTime;
+	}
+	public void setFileUsedTime(String fileUsedTime) {
+		this.fileUsedTime = fileUsedTime;
 	}
 	public String getContentType() {
 		return contentType;
