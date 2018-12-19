@@ -181,25 +181,6 @@ ALTER TABLE ot_user ADD `email` VARCHAR(20) COMMENT '邮箱';
 ALTER TABLE ot_user ADD `create_time` DATETIME COMMENT '创建时间';
 ALTER TABLE ot_user ADD `update_time` DATETIME COMMENT '更新时间';
 
-/*==============================================================*/
-/* 初始化数据                                    */
-/*==============================================================*/
-INSERT  INTO `ot_user`(`username`,`password`,`realName`,`tel`,`email`,`create_time`,`update_time`)
-VALUES ('zhang','123','张三','15868379873','916218211@qq.com','2018-12-11 14:40:39','2018-12-11 14:40:57'),
-('zhangsan','123','张三2','15868379873','916218211@qq.com','2018-12-11 14:40:39','2018-12-11 14:40:57'),
-('lisi','123','李四2','15868379873','916218211@qq.com','2018-12-11 14:40:39','2018-12-11 14:40:57'),
-('wangwu','123','王五2','15868379873','916218211@qq.com','2018-12-11 14:40:39','2018-12-11 14:40:57'),
-('xiaojuan','123','小娟','15868379873','916218211@qq.com','2018-12-11 14:40:39','2018-12-11 14:40:57');
-
--- MH
-/*==============================================================*/
-/* 增加初始化的属性类型                                    */
-/*==============================================================*/
-INSERT into ot_field_type (`name`) VALUES('单选框');
-INSERT into ot_field_type (`name`) VALUES('多选框');
-INSERT into ot_field_type (`name`) VALUES('日期');
-INSERT into ot_field_type (`name`) VALUES('大文本');
-INSERT into ot_field_type (`name`) VALUES('文件上传');
 -- 修改文件记录表 增加一列用于记录一个工单的不同对象
 alter table ot_attachment add column ticket_fileld_id varchar(11) not null comment '对象编号';
 -- 把这一列放到ticket_id后
@@ -212,17 +193,28 @@ alter table ot_attachment add column file_upload_time datetime not null comment 
 -- 把这一列放到file_size后
 alter table ot_attachment modify file_upload_time datetime after file_size;
 
-
-insert ot_user(id,username,password,realName) values(100,'admin','123456','管理员甲');
-insert ot_user(id,username,password,realName) values(200,'enoch','123456','开发乙');
-
-
-
 insert ot_role_type(id,name) values(1,'超级管理员');
 insert ot_role_type(id,name) values(2,'团队负责人');
 insert ot_role_type(id,name) values(3,'开发');
 
+insert into ot_field_type(name) values('文本框');
+insert into ot_field_type(name) values('下拉框');
+INSERT into ot_field_type (`name`) VALUES('单选框');
+INSERT into ot_field_type (`name`) VALUES('多选框');
+INSERT into ot_field_type (`name`) VALUES('日期');
+INSERT into ot_field_type (`name`) VALUES('大文本');
+INSERT into ot_field_type (`name`) VALUES('文件上传');
 
+insert into ot_ticket_type(name) values('需求');
+insert into ot_ticket_type(name) values('问题');
+insert into ot_ticket_type(name) values('bug');
+
+insert ot_user(id,username,password,realName) values(100,'admin','123456','管理员甲');
+
+
+/**
+测试数据
+ */
 
 insert ot_role(id,name,role_type_id) values(1,'管理员',1);
 insert ot_role(id,name,role_type_id) values(2,'产品经理',2);
@@ -235,28 +227,10 @@ insert ot_user_role(user_id,role_id) values(200,2);
 insert ot_user_role(user_id,role_id) values(200,3);
 
 
-
-insert ot_permission(id,uri,name) values(1,'/openticket/addField','添加自定义列');
-
-
-
 insert ot_role_permission(role_id,permission_id) values(1,1);
 
-
-TRUNCATE table ot_field_type;
-TRUNCATE table ot_ticket_type;
-TRUNCATE table ot_field_type_value;
-TRUNCATE table ot_user;
-TRUNCATE table ot_ticket_field;
-
-insert into ot_field_type(name) values('文本框');
-insert into ot_field_type(name) values('下拉框');
--- insert into ot_field_type(name) values('复选框');
--- insert into ot_field_type(name) values('单选框');
-
-insert into ot_ticket_type(name) values('需求');
-insert into ot_ticket_type(name) values('问题');
-insert into ot_ticket_type(name) values('bug');
+insert ot_permission(id,uri,name) values(1,'/openticket/addField','添加自定义列');
+insert ot_user(id,username,password,realName) values(200,'enoch','123456','开发乙');
 
 insert into ot_ticket_field(ticket_type_id,field_name,name,required,default_value,select_id) values((select id from ot_ticket_type where name='需求'),'branch','所属分支',1,'云客服',(select id from ot_field_type where name='下拉框'));
 insert into ot_field_type_value(field_id,value) values((select id from ot_ticket_field where name='所属分支'),'自运营');
@@ -282,32 +256,4 @@ insert into ot_ticket_field(ticket_type_id,field_name,name,required,default_valu
 insert into ot_field_type_value(field_id,value) values((select id from ot_ticket_field where name='状态'),'开发中');
 insert into ot_field_type_value(field_id,value) values((select id from ot_ticket_field where name='状态'),'计划中');
 insert into ot_field_type_value(field_id,value) values((select id from ot_ticket_field where name='状态'),'已完成');
--- insert into ot_ticket(create_time,create_user_id,ticket_type_id) values(SYSDATE(),(select id from ot_user where name='张三'),(select id from ot_ticket_type where name='需求'));
-insert into ot_ticket_value(field_id,ticket_id,value) values(1,1,'自运营');
-insert into ot_ticket_value(field_id,ticket_id,value) values(2,1,'报表');
-insert into ot_ticket_value(field_id,ticket_id,value) values(3,1,'1');
-insert into ot_ticket_value(field_id,ticket_id,value) values(4,1,'衣邦人');
-insert into ot_ticket_value(field_id,ticket_id,value) values(5,1,'双11数据恢复');
-insert into ot_ticket_value(field_id,ticket_id,value) values(6,1,'746');
-insert into ot_ticket_value(field_id,ticket_id,value) values(7,1,'2017-01-01');
-insert into ot_ticket_value(field_id,ticket_id,value) values(8,1,'2017-03-03');
-insert into ot_ticket_value(field_id,ticket_id,value) values(9,1,'开发中');
 
-
-
-
-
--- insert into ot_ticket(create_time,create_user_id,ticket_type_id) values(SYSDATE(),2,2);
--- insert into ot_ticket(create_time,create_user_id,ticket_type_id) values(SYSDATE(),3,3);
--- insert into ot_ticket(create_time,create_user_id,ticket_type_id) values(SYSDATE(),1,2);
--- insert into ot_ticket(create_time,create_user_id,ticket_type_id) values(SYSDATE(),2,3);
-
--- insert into ot_ticket_field(ticket_type_id,field_name,name,required,default_value,select_id) values((select id from ot_ticket_type where name='bug'),'testComboBox','测试复选框',1,'1',(select id from ot_field_type where name='复选框'));
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试复选框'),'1');
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试复选框'),'2');
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试复选框'),'3');
---
--- insert into ot_ticket_field(ticket_type_id,field_name,name,required,default_value,select_id) values((select id from ot_ticket_type where name='bug'),'testRadios','测试单选框',1,'1',(select id from ot_field_type where name='单选框'));
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试单选框'),'1');
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试单选框'),'2');
--- insert into ot_field_type_value(fields_id,value) values((select id from ot_ticket_field where name='测试单选框'),'3');
