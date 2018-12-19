@@ -15,4 +15,22 @@
         from ot_permission p,ot_user u,ot_role r,ot_user_role ur,ot_role_permission rp
         where u.id=#{user_id} and u.id=ur.user_id and ur.role_id=r.id and r.id=rp.role_id and p.id=rp.permission_id
     </select>
+    
+    <insert id="savePermission" parameterType="com.utry.openticket.model.PermissionDO">
+        insert into ot_permission(name,uri,pid,func_order,description)
+        VALUES(#{name},#{uri},#{pid},#{funcOrder},#{description});
+    </insert>
+    
+    <select id="getPermissionById" parameterType="int" resultType="com.utry.openticket.model.PermissionDO">
+        select p.id, p.name,p.uri,p.pid,p.func_order as funcOrder,p.description from ot_permission p where id=#{id};
+    </select>
+    
+    <delete id="delPermissionById" parameterType="int">
+        DELETE from ot_permission where  id=#{id}
+    </delete>
+    
+    <update id="updatePermission" parameterType="com.utry.openticket.model.PermissionDO">
+        UPDATE ot_permission p set p.`name`=#{name},p.uri=#{uri},p.pid=#{pid},p.func_order=#{funcOrder},p.description=#{description}
+        where p.id=#{id}
+    </update>
 </mapper>

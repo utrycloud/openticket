@@ -39,6 +39,9 @@
     <insert id="saveNullTicketValue" >
         insert into ot_ticket_value(field_id,ticket_id) values(#{fieldId},#{ticketId})
     </insert>
-
+    
+    <select id="getValue" resultType="string" parameterType="com.utry.openticket.model.TicketValueDO">
+        SELECT v.`value` from ot_ticket_value v where v.ticket_id=#{ticketId} and v.field_id=#{fieldId}
+    </select>
 </mapper>   
  

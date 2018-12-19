@@ -65,4 +65,13 @@ public class AttachmentService {
 	public void updateAttachment(AttachmentDO attachmentDO){
 		attachmentDAO.updateAttachment(attachmentDO);
 	}
+
+	/**
+	 * 更新文件最近一次被修改或者下载的日期
+	 * @param contentFormetDate
+	 */
+	public void updateFileUsedTime(AttachmentDO attachment) {
+		// TODO Auto-generated method stub
+		attachmentDAO.updateFileUsedTime(attachment);
+	}
 }

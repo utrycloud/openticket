@@ -241,8 +241,8 @@ public class TicketController {
 			}			
 		}
 		// 判断是否包括文件上传
-		JSONObject fileJsonObject = null;
-		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null) {
+		if (isHaveFile(ticketFieldDTOs)) {
+			JSONObject fileJsonObject = (JSONObject) jsonObject.get("inserts");
 			// 有文件就先对事先放弃的文件进行处理
 			if (jsonObject.get("giveUpFile") != null) {
 				// 判断是否有被放弃的文件 如果有就删除
@@ -369,9 +369,9 @@ public class TicketController {
 			}			
 		}
 		// 判断是否包括文件上传
-		JSONObject fileJsonObject=null;
-		if ((fileJsonObject = (JSONObject) jsonObject.get("inserts")) != null && !("{}".equals(fileJsonObject.toString()))) {
+		if (isHaveFile(ticketFieldDTOs)) {
 			// 1.有文件就先对事先放弃的文件进行处理
+			JSONObject fileJsonObject = (JSONObject) jsonObject.get("inserts");
 			if (!"".equals(jsonObject.get("giveUpFile"))&&jsonObject.get("giveUpFile") != null) {
 				// 判断是否有被放弃的文件 如果有就删除
 				Object giveUpFile = jsonObject.get("giveUpFile");
@@ -402,6 +402,12 @@ public class TicketController {
 			// 3.对保存的文件名处理 设置ticketId 将文件名字设置为正常的文件名 并更新到属性值表中
 			for (TicketValueDO ticketValueDO : ticketValueList) {
 				ticketValueDO.setTicketId(ticketId);
+				if("".equals(ticketValueDO.getValue())){
+					String value = ticketValueService.getValue(ticketValueDO);
+					if(Strings.isNotEmpty(value)){
+						ticketValueDO.setValue(value);
+					}
+				}
 				//从文件保存的json对象中取出对象 的实际名字
 				for (String key : fileJsonObject.keySet()) {
 					JSONObject attachmentObject = (JSONObject) fileJsonObject.get(key);
@@ -420,6 +426,23 @@ public class TicketController {
 			ticketValueService.updateTicketValueList(ticketValueList);
 		}
 		return "success";
+	}
+
+	/**
+	 * 判断是否包括文件上传
+	 * @param ticketFieldDTOs
+	 * @return
+	 */
+	private boolean isHaveFile(List<TicketFieldDTO> ticketFieldDTOs) {
+		// TODO Auto-generated method stub
+		boolean flag=false;
+		for (TicketFieldDTO ticketFieldDTO : ticketFieldDTOs) {
+			if(Constant.FILE_TYPE.equals(ticketFieldDTO.getSelectType())){
+				flag=true;
+				break;
+			}
+		}
+		return flag;
 	}
 
 	/**

@@ -19,4 +19,41 @@ public class PermissionService {
     public List<PermissionDO> getUserPermissions(Integer userId){
         return permissionDAO.getUserPermissions(userId);
     }
+
+    /**
+     * 保存权限
+     * @param permissionDO
+     */
+	public void savePermission(PermissionDO permissionDO) {
+		// TODO Auto-generated method stub
+		permissionDAO.savePermission(permissionDO);
+	}
+
+	/**
+	 * 得到PermissionDO通过id
+	 * @param id
+	 * @return
+	 */
+	public PermissionDO getPermissionById(Integer id) {
+		// TODO Auto-generated method stub
+		return permissionDAO.getPermissionById(id);
+	}
+
+	/**
+	 * 通过id删除
+	 * @param parseInt
+	 */
+	public void delPermissionById(int id) {
+		// TODO Auto-generated method stub
+		permissionDAO.delPermissionById(id);
+	}
+
+	/**
+	 * 修改permissionDO
+	 * @param permissionDO
+	 */
+	public void updatePermission(PermissionDO permissionDO) {
+		// TODO Auto-generated method stub
+		permissionDAO.updatePermission(permissionDO);
+	}
 }
