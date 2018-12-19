@@ -45,6 +45,7 @@ function UpFile3(form) {
 //进行校验并提交表单
 function submitOrder() {
 	//alert(1);
+	var ticketType = $("h3").text();
 	var ticketId = $("input[type=hidden]").val();
 	$(".selfDefine").each(function() {
 		//如果是单选框或者多选框的话 就只选择check的提交
@@ -74,6 +75,7 @@ function submitOrder() {
 		//contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		data : JSON.stringify({
 			id : ticketId,
+			ticketType : ticketType,
 			ticketValueList : ticketValueList,
 			inserts:inserts,
 			giveUpFile:giveUp,
