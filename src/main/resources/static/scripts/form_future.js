@@ -78,7 +78,9 @@ function submitOrder() {
 			giveUpFile:giveUp,
 		}),
 		success : function(data) {
-			window.location.href = "/openticket/index";
+			var ticketTypeId = $("p#id-p-ticketTypteId").text();
+			console.log("ticketTypeId", ticketTypeId);
+			window.location.href = "/openticket/index?ticketTypeId="+ticketTypeId;
 		},
 		error : function(data) {
 			alert("添加失败！");
