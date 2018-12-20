@@ -54,29 +54,29 @@
 						<div th:switch="${ticketField.selectType}">
 
 							<div th:case="文本框">
-								<input type="hidden" th:value="${ticketField.fieldName}"
-									name="hiddenData">
-								<div class="form-group">
-									<div th:if="${ticketField.required}=='1'">
-										<label th:text="${ticketField.name}" style="color:red"></label>
-										<input type="input" class="form-control selfDefine"
-											th:name="${ticketField.fieldName}"
-											th:value="${ticketField.defaultValue}"
-											th:id="${ticketField.id}">
-									</div>
-									<div th:if="${ticketField.required}=='0'">
-										<label th:text="${ticketField.name}"></label> <input
-											th:if="${ticketField.defaultValue} !=''" type="input"
-											class="form-control  selfDefine"
-											th:name="${ticketField.fieldName}"
-											th:value="${ticketField.defaultValue}"
-											th:id="${ticketField.id}"> <input
-											th:if="${ticketField.defaultValue} ==''" type="input"
-											class="form-control  selfDefine" placeholder="Enter text"
-											th:name="${ticketField.fieldName}" th:id="${ticketField.id}">
-									</div>
-								</div>
-							</div>
+                                <input type="hidden" th:value="${ticketField.fieldName}"
+                                    name="hiddenData">
+                                <div class="form-group">
+                                    <div th:if="${ticketField.required}=='1'">
+                                        <label th:text="${ticketField.name+'(*)'}" style="color:red"></label>
+                                        <input type="input" class="form-control selfDefine notNullInput"
+                                            th:name="${ticketField.fieldName}" th:label="${ticketField.name}"
+                                            th:value="${ticketField.defaultValue}"
+                                            th:id="${ticketField.id}">
+                                    </div>
+                                    <div th:if="${ticketField.required}=='0'">
+                                        <label th:text="${ticketField.name}"></label> <input
+                                            th:if="${ticketField.defaultValue} !=''" type="input"
+                                            class="form-control  selfDefine"
+                                            th:name="${ticketField.fieldName}"
+                                            th:value="${ticketField.defaultValue}"
+                                            th:id="${ticketField.id}"> <input
+                                            th:if="${ticketField.defaultValue} ==''" type="input"
+                                            class="form-control  selfDefine" placeholder="Enter text"
+                                            th:name="${ticketField.fieldName}" th:id="${ticketField.id}">
+                                    </div>
+                                </div>
+                            </div>
 
 							<!-- 如果是单选的话 -->
 							<div th:case="单选框">
@@ -113,34 +113,34 @@
 								</div>
 							</div>
 							<!-- 如果是日期的话 -->
-							<div th:case="日期">
-								<input type="hidden" th:value="${ticketField.fieldName}"
-									name="hiddenData">
-								<!--日期-->
-								<div class="form-group">
-									<div th:if="${ticketField.required}=='1'">
-										<label th:text="${ticketField.name}" style="color:red"></label>
-										<input class="form-control selfDefine" type="date"
-											th:name="${ticketField.fieldName}"
-											th:value="${ticketField.defaultValue}"
-											th:id="${ticketField.id}">
-									</div>
-									<div th:if="${ticketField.required}=='0'">
-										<label th:text="${ticketField.name}"></label> <input
-											th:if="${ticketField.defaultValue} !=''"
-											class="form-control selfDefine" type="date"
-											name="defaultValue" id="exampleInputEmail31"
-											th:name="${ticketField.fieldName}"
-											th:value="${ticketField.defaultValue}"
-											th:id="${ticketField.id}"> <input
-											th:if="${ticketField.defaultValue} ==''"
-											class="form-control selfDefine" type="date"
-											name="defaultValue" id="exampleInputEmail31"
-											placeholder="Chose Time" th:name="${ticketField.fieldName}"
-											th:id="${ticketField.id}">
-									</div>
-								</div>
-							</div>
+                            <div th:case="日期">
+                                <input type="hidden" th:value="${ticketField.fieldName}"
+                                    name="hiddenData">
+                                <!--日期-->
+                                <div class="form-group">
+                                    <div th:if="${ticketField.required}=='1'">
+                                        <label th:text="${ticketField.name+'(*)'}" style="color:red"></label>
+                                        <input class="form-control selfDefine notNullInput" type="date"
+                                            th:name="${ticketField.fieldName}" th:label="${ticketField.name}"
+                                            th:value="${ticketField.defaultValue}"
+                                            th:id="${ticketField.id}">
+                                    </div>
+                                    <div th:if="${ticketField.required}=='0'">
+                                        <label th:text="${ticketField.name}"></label> <input
+                                            th:if="${ticketField.defaultValue} !=''"
+                                            class="form-control selfDefine" type="date"
+                                            name="defaultValue" id="exampleInputEmail31"
+                                            th:name="${ticketField.fieldName}"
+                                            th:value="${ticketField.defaultValue}"
+                                            th:id="${ticketField.id}"> <input
+                                            th:if="${ticketField.defaultValue} ==''"
+                                            class="form-control selfDefine" type="date"
+                                            name="defaultValue" id="exampleInputEmail31"
+                                            placeholder="Chose Time" th:name="${ticketField.fieldName}"
+                                            th:id="${ticketField.id}">
+                                    </div>
+                                </div>
+                            </div>
 							<!-- 如果是文件上传的话 -->
 							<div th:case="文件上传">
 								<input type="hidden" th:value="${ticketField.fieldName}"
