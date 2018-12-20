@@ -7,7 +7,7 @@
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <title>用户管理</title>
+    <title>角色管理</title>
     <meta name="description" content="Initialized via remote ajax json data">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
 
@@ -33,7 +33,7 @@
                         <a href="index" class="m-nav__link m-nav__link--icon" id="returnIndex">
                             <i class="m-nav__link-icon la la-home" ></i>
                         </a>
-                        <span style="font-size: 25px; margin-left:20px;">用户列表</span>
+                        <span style="font-size: 25px; margin-left:20px;">角色列表</span>
                     </h3>
                 </div>
             </div>
@@ -42,10 +42,10 @@
             <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                 <div class="row align-items-center">
                     <div class="col-xl-12 order-1 order-xl-2 m--align-right">
-                        <a href="#addUserModal" data-toggle="modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                        <a href="#addRoleModal" data-toggle="modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                             <span>
                                 <i class="la la-cart-plus"></i>
-                                <span id="addUser" >添加用户</span>
+                                <span id="addUser" >添加角色</span>
                             </span>
                         </a>
                         <div class="m-separator m-separator--dashed d-xl-none"></div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <!--begin: Datatable -->
-            <div class="m_datatable" id="userTable">
+            <div class="m_datatable" id="roleTable">
 
             </div>
             <!--end: Datatable -->
@@ -62,34 +62,34 @@
 
 
 </div>
-<!-- 添加用户模态框（Modal） -->
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- 添加角色模态框（Modal） -->
+<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="addUserModalTitle">
-                    添加用户
+                <h3 class="modal-title" id="addRoleModalTitle">
+                    添加角色
                 </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-group" id="addUserForm">
-                    <label>用户名</label><span style="color:red">(*)</span>
-                    <input type="text" class="form-control" id="username" placeholder="请输入用户名" name="username">
-                    <label>密码</label><span style="color:red">(*)</span>
-                    <input type="text" class="form-control" id="password" placeholder="请输入密码" name="password">
-                    <label>真实姓名</label>
-                    <input type="text" class="form-control" id="realName" placeholder="请输入" name="realName">
-                    <label>手机号</label>
-                    <input type="text" class="form-control" id="tel" placeholder="请输入" name="tel">
-                    <label>邮箱</label>
-                    <input type="text" class="form-control" id="email" placeholder="请输入" name="email">
+                <form class="form-group" id="addRoleForm">
+                    <label>角色名称</label><span style="color:red">(*)</span>
+                    <input type="text" class="form-control" id="roleName" placeholder="请输入" name="name">
+                    <label>角色类型</label><span style="color:red">(*)</span>
+                    <select class="form-control" id="roleTypeId"  name="roleTypeId">
+                        <option value ="1">超级管理员</option>
+                        <option value ="2">团队负责人</option>
+                        <option value ="3">开发</option>
+                    </select>
+                    <label>角色描述</label>
+                    <input type="text" class="form-control" id="description" placeholder="请输入" name="description">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="addUser()">
+                <button type="button" class="btn btn-primary" onclick="addRole()">
                     提交
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -97,35 +97,35 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<!-- 编辑用户-->
-<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- 编辑角色-->
+<div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="updateUserModalTitle">
-                    编辑用户
+                <h3 class="modal-title" id="updateRoleModalTitle">
+                    编辑角色
                 </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-group" id="updateUserForm">
+                <form class="form-group" id="updateRoleForm">
                     <input type="index" id="u_id" name="id" hidden>
-                    <label>用户名</label><span style="color:red">(*)</span>
-                    <input type="text" class="form-control" id="u_username" placeholder="请输入用户名" name="username" readonly>
-                    <label>密码</label><span style="color:red">(*)</span>
-                    <input type="text" class="form-control" id="u_password" placeholder="请输入密码" name="password">
-                    <label>真实姓名</label>
-                    <input type="text" class="form-control" id="u_realName" placeholder="请输入" name="realName">
-                    <label>手机号</label>
-                    <input type="text" class="form-control" id="u_tel" placeholder="请输入" name="tel">
-                    <label>邮箱</label>
-                    <input type="text" class="form-control" id="u_email" placeholder="请输入" name="email">
+                    <label>角色名称</label><span style="color:red">(*)</span>
+                    <input type="text" class="form-control" id="u_name" placeholder="请输入" name="name">
+                    <label>角色类型</label><span style="color:red">(*)</span>
+                    <select class="form-control" id="u_roleTypeId"  name="roleTypeId">
+                        <option value ="1">超级管理员</option>
+                        <option value ="2">团队负责人</option>
+                        <option value ="3">开发</option>
+                    </select>
+                    <label>角色描述</label>
+                    <input type="text" class="form-control" id="u_description" placeholder="请输入" name="description">
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="updateUser()">
+                <button type="button" class="btn btn-primary" onclick="updateRole()">
                     保存
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -133,31 +133,27 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<!-- 设置角色-->
-<div class="modal fade" id="setRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- 设置权限-->
+<div class="modal fade" id="setPermissionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="setRoleModalTitle">
-                    角色设置
+                <h3 class="modal-title" id="setPermissionModalTitle">
+                    角色权限
                 </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-group" id="setRoleForm">
-                    <input type="index" id="s_id" name="id" hidden>
-                    <label>当前用户:</label><span id="s_username">用户甲</span><br/>
-                    <label>角色列表:</label>
-                    <div id="RoleListDiv">
+                <form class="form-group" id="setPermissionForm">
+                    <label>当前角色:</label><span id="s_role_name">角色1</span><br/>
+                    <label>拥有权限:</label>
+                    <div id="permissionDiv">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="setRole()">
-                    保存
-                </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
@@ -167,7 +163,7 @@
 <script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
-<script src="scripts/user_form.js" type="text/javascript"></script>
+<script src="scripts/role_form.js" type="text/javascript"></script>
 
 </body>
 
