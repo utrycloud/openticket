@@ -43,7 +43,22 @@ function UpFile3(form) {
 };
 //进行校验并提交表单
 function submitOrder() {
+	var flag=true;
 	var ticketType = $("h3").text();
+	//先验证所有不能为空的值都要填
+	$(".notNullInput").each(function (){
+		if(!flag){
+			return;
+		}
+		if($(this).val()==''){
+			alert($(this).attr('label')+"不能为空");
+			flag=false;
+			return ;
+		}
+	})
+	if(!flag){
+		return;
+	}
 	//把所有的内容加入ticketValueList中
 	$(".selfDefine").each(function() {
 		//如果是单选框或者多选框的话
