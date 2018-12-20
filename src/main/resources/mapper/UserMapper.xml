@@ -9,4 +9,33 @@
         from ot_user u
     </select>
 
+    <select id="getUserByUsername" resultType="com.utry.openticket.model.UserDO">
+        select u.id,u.username,u.password,u.realName,u.tel,u.email,u.create_time as createTime,u.update_time as updateTime
+        from ot_user u where username=#{username}
+    </select>
+
+    <insert id="saveUser"  parameterType="com.utry.openticket.model.UserDO"
+            useGeneratedKeys="true" keyProperty="UserDO.id">
+        insert into ot_user(username,password,realName,tel,email,create_time,update_time)
+        value(#{username},#{password},#{realName},#{tel},#{email},#{createTime},#{updateTime})
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from ot_user where id=#{id}
+    </delete>
+    
+    <select id="getUserById" parameterType="Integer" resultType="com.utry.openticket.model.UserDO">
+        select u.id,u.username,u.password,u.realName,u.tel,u.email,u.create_time as createTime,u.update_time as updateTime
+        from ot_user u where id=#{id}
+    </select>
+
+    <update id="updateUser"  parameterType="com.utry.openticket.model.UserDO">
+        update ot_user set password=#{password},realName=#{realName},tel=#{tel},email=#{email}
+        where id=#{id}
+    </update>
+
+
 </mapper>

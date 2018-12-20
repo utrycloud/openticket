@@ -50,9 +50,6 @@ public class LoginController {
 
     private String mainTable(HttpSession session,UserDO user) {
         session.setAttribute("login", user);
-        List<PermissionDO> userPermissions = permissionService.getUserPermissions(user.getId());
-        session.setAttribute("userPermissions",userPermissions);
-        logger.info("用户"+user.getId()+"权限:"+userPermissions);
-        return "redirect:/index?ticketType=1";
+        return "redirect:/index";
     }
 }

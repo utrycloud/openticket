@@ -33,4 +33,14 @@
         UPDATE ot_permission p set p.`name`=#{name},p.uri=#{uri},p.pid=#{pid},p.func_order=#{funcOrder},p.description=#{description}
         where p.id=#{id}
     </update>
+
+    <select id="getByRoleId" parameterType="Integer" resultType="com.utry.openticket.model.PermissionDO">
+        select p.id,p.name,p.uri,p.pid,p.func_order as funcOrder,p.description
+        from ot_permission p,ot_role_permission rp
+        where rp.role_id=#{roleId} and rp.permission_id=p.id
+    </select>
+
+    <delete id="delRolePermissionByPermissionId" parameterType="int" >
+        delete from ot_role_permission where permission_id=#{id}
+    </delete>
 </mapper>

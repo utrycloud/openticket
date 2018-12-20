@@ -8,10 +8,20 @@ import java.util.List;
 @Mapper
 public interface UserDAO {
     /**
-     * 获得用户list
+     * 获得所有用户信息，不分页
      * @return
      */
     List<UserDO> getUserList();
 
+    List<UserDO> getUserByUsername(String username);
+
     UserDO getUser(UserDO user);
+
+    int saveUser(UserDO user);
+
+    int deleteUser(Integer id);
+
+    UserDO getUserById(Integer id);
+
+    int updateUser(UserDO user);
 }

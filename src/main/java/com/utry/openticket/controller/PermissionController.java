@@ -13,6 +13,8 @@ import com.utry.openticket.model.PermissionDO;
 import com.utry.openticket.model.vo.JsonResult;
 import com.utry.openticket.service.PermissionService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class PermissionController {
 
@@ -48,7 +50,7 @@ public class PermissionController {
      */
     @RequestMapping("savePermission")
     @ResponseBody
-    public JsonResult savePermission(@RequestBody PermissionDO permissionDO){
+    public JsonResult savePermission(@RequestBody PermissionDO permissionDO,HttpServletRequest request){
     	if(permissionDO.getId()!=null){
     		//不为空是修改
     		permissionService.updatePermission(permissionDO);
@@ -56,6 +58,7 @@ public class PermissionController {
 			//否则是保存
     		permissionService.savePermission(permissionDO);
 		}
+        removePermissionList(request);
     	return new JsonResult(1,"保存成功");
     }
     
@@ -72,14 +75,29 @@ public class PermissionController {
     }
     
     /**
-     * 用户通过id获取Permission
+     * 用户通过id删除Permission
      * @param id
      * @return
      */
     @RequestMapping("/delPermissionById")
     @ResponseBody
-    public JsonResult delPermissionById(@RequestBody String id){
+    public JsonResult delPermissionById(@RequestBody String id,HttpServletRequest request){
     	permissionService.delPermissionById(Integer.parseInt(id));
+        removePermissionList(request);
     	return new JsonResult(1, "删除成功");
+    }
+
+    @RequestMapping("/permission/getByRoleId")
+    @ResponseBody
+    public JsonResult getByRoleId(Integer roleId){
+        return permissionService.getByRoleId(roleId);
+    }
+
+    /**
+     * 移除ServletContext保存的权限list
+     * @param request
+     */
+    private void removePermissionList(HttpServletRequest request){
+        request.getServletContext().removeAttribute("permissionList");
     }
 }

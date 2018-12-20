@@ -35,10 +35,10 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         } else {
             //url权限认证
             if(checkPermission(request)){//有权限则放行.
-                logger.info("用户:"+login.getUsername()+"有权限:"+request.getRequestURL());
+                //logger.info("用户:"+login.getUsername()+"有权限:"+request.getRequestURL());
                 return true;
             }else{//没权限
-                logger.info("用户:"+login.getUsername()+"没权限:"+request.getRequestURL());
+                //logger.info("用户:"+login.getUsername()+"没权限:"+request.getRequestURL());
                 //判断是否为ajax请求
                 String header = request.getHeader("x-requested-with");
                 if(header==null){//普通请求
@@ -62,21 +62,20 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     private boolean checkPermission(HttpServletRequest request){
         //获得请求uri
         String requestURI = request.getRequestURI();
-        logger.info("请求uri:"+requestURI);
+        //logger.info("请求uri:"+requestURI);
         //获得权限list
         ServletContext servletContext = request.getServletContext();
         List<PermissionDO> permissionList =(List<PermissionDO>) servletContext.getAttribute("permissionList");
         if(permissionList==null) {
             permissionList=permissionService.getPermissionList();
             servletContext.setAttribute("permissionList", permissionList);
+            logger.info("权限list:"+permissionList);
         }
         //判断是否公共url
         boolean isPublic=true;
         AntPathMatcher matcher=new AntPathMatcher();
         for(PermissionDO permission:permissionList){
-            if(matcher.match(requestURI,permission.getUri())){
-                isPublic=false;
-            }
+            isPublic=!matcher.match(requestURI,permission.getUri());
         }
         //公用url则放行
         if(isPublic){
@@ -86,12 +85,14 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         //判断用户是否具有权限
         List<PermissionDO> userPermissions = (List<PermissionDO>)request.getSession().getAttribute("userPermissions");
         boolean hasPermission=false;
-        if(userPermissions!=null){
-            for(PermissionDO permission:userPermissions){
-                if(matcher.match(requestURI,permission.getUri())){
-                    hasPermission=true;
-                }
-            }
+        if(userPermissions==null){
+            UserDO user = (UserDO) request.getSession().getAttribute("login");
+            userPermissions = permissionService.getUserPermissions(user.getId());
+            request.getSession().setAttribute("userPermissions",userPermissions);
+            logger.info("用户"+user.getUsername()+"权限:"+userPermissions);
+        }
+        for(PermissionDO permission:userPermissions){
+            hasPermission=matcher.match(requestURI,permission.getUri());
         }
         return hasPermission;
     }

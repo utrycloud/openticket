@@ -43,4 +43,18 @@ public interface IPermissionDAO {
 	 * @param permissionDO
 	 */
 	void updatePermission(PermissionDO permissionDO);
+
+	/**
+	 * 获得角色拥有的权限
+	 * @param roleId 角色id
+	 * @return
+	 */
+	List<PermissionDO> getByRoleId(Integer roleId);
+
+	/**
+	 * 删除权限关联的角色权限关系表中的数据
+	 * @param permissionId
+	 * @return
+	 */
+	int delRolePermissionByPermissionId(int permissionId);
 }

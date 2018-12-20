@@ -31,7 +31,10 @@
             <div class="m-portlet__head-caption">
                 <div class="m-portlet__head-title">
                     <h3 class="m-portlet__head-text">
-                        权限列表
+                        <a href="index" class="m-nav__link m-nav__link--icon" id="returnIndex">
+                            <i class="m-nav__link-icon la la-home" ></i>
+                        </a>
+                        <span style="font-size: 25px; margin-left:20px;">权限列表</span>
                     </h3>
                 </div>
             </div>
@@ -79,30 +82,20 @@
                     <input type="hidden"  id="id" name="id">
                     <label>权限名</label><span style="color:red">(*)</span>
                     <input type="text" class="form-control" id="name" placeholder="请输入权限名" name="name" value="">
-                    <label>限制的uri</label><span style="color:red">(*)</span>
+                    <label>uri</label><span style="color:red">(*)</span>
                     <input type="text" class="form-control" id="uri" placeholder="请输入uri" name="uri">
                     <label>父权限</label>
 	                     <select class="form-control">
 	                         <optgroup >
-                                 <option value="1" style="color: red;font-size: 18px">最高权限</option>
+                                 <option value="0" style="color: red;font-size: 18px">无</option>
                              </optgroup>
-	                         <optgroup label="Category 1" th:value="aa">
-	                             <option value="1">Choice 1</option>
-	                             <option value="2">Choice 2</option>
-	                             <option value="3">Choice 3</option>
-	                             <option value="4">Choice 4</option>
+	                         <optgroup label="工单管理">
+	                             <option value="1">字段添加</option>
 	                         </optgroup>
-	                         <optgroup label="Category 2">
-	                             <option value="5">Choice 5</option>
-	                             <option value="6">Choice 6</option>
-	                             <option value="7">Choice 7</option>
-	                             <option value="8">Choice 8</option>
-	                         </optgroup>
-	                         <optgroup label="Category 3">
-	                             <option value="5">Choice 9</option>
-	                             <option value="6">Choice 10</option>
-	                             <option value="7">Choice 11</option>
-	                             <option value="8">Choice 12</option>
+	                         <optgroup label="系统管理">
+	                             <option value="5">用户管理</option>
+	                             <option value="6">角色管理</option>
+	                             <option value="7">权限管理</option>
 	                         </optgroup>
 	                     </select>
                     <label>权限层级</label>
@@ -138,6 +131,9 @@
                 }, {
                     field: 'name',
                     title: '权限名',
+                }, {
+                    field: 'uri',
+                    title: 'uri',
                 }, {
                     field: 'pid',
                     title: '父权限id',
