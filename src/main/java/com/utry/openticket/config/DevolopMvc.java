@@ -20,6 +20,7 @@ public class DevolopMvc implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginHandlerInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/login.html", "/login", "/login2.html","/error","/403",
-                        "/assets/**","/scripts/**","/css/**","/fonts/**","/img/**","/plugins/**","/table/**");
+                        "/assets/**","/scripts/**","/css/**","/fonts/**","/img/**","/plugins/**",
+                        "/table/**", "/addTicket*", "/saveTicket");
     }
 }

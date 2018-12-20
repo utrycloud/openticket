@@ -79,8 +79,16 @@ function submitOrder() {
 		}),
 		success : function(data) {
 			var ticketTypeId = $("p#id-p-ticketTypteId").text();
-			console.log("ticketTypeId", ticketTypeId);
-			window.location.href = "/openticket/index?ticketTypeId="+ticketTypeId;
+			var login = $("p#id-p-session-login").text();
+			console.log("login", login);
+			if(login == null || login == "") {
+                alert("提交成功");
+                window.location.reload();
+                return;
+			} else {
+                window.location.href = "/openticket/index?ticketTypeId="+ticketTypeId;
+			}
+
 		},
 		error : function(data) {
 			alert("添加失败！");

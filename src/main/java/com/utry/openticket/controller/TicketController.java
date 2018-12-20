@@ -15,6 +15,7 @@ import com.utry.openticket.dto.TicketValueDTO;
 import com.utry.openticket.constant.Constant;
 import com.utry.openticket.dto.TicketDTO;
 import com.utry.openticket.dto.TicketFieldDTO;
+import com.utry.openticket.dto.UserDTO;
 import com.utry.openticket.model.AttachmentDO;
 import com.utry.openticket.model.TicketTypeDO;
 import com.utry.openticket.model.TicketValueDO;
@@ -67,6 +68,8 @@ public class TicketController {
 	private TicketValueService ticketValueService;
 	@Autowired
 	private AttachmentService attachmentService;
+	@Autowired
+	private UserService userService;
 
 	private static Logger logger = LoggerFactory.getLogger(TicketController.class);
 
@@ -217,7 +220,15 @@ public class TicketController {
 		// 为了解决多选框选择的值在 数据库 表中的存储问题----结束
 		TicketDTO ticket = (TicketDTO) JSON.parseObject(jsonObject.toString(), TicketDTO.class);
 		UserDO login = (UserDO)session.getAttribute("login");
-		ticket.setCreateUser(login.getUsername());
+		if (login == null) {
+			UserDTO clientUser = new UserDTO();
+			clientUser.setUsername("client");
+			clientUser.setPassword("123456");
+			userService.getUser(clientUser);
+			ticket.setCreateUser(clientUser.getUsername());
+		} else {
+			ticket.setCreateUser(login.getUsername());
+		}
 		List<TicketValueDO> ticketValueList = ticket.getTicketValueList();
 		/**
 		 * 由于之前单选框和多选框如果都没有选的话ticketValueList得不到值
@@ -324,6 +335,7 @@ public class TicketController {
 			}
 		}
 		model.addAttribute("ticketId", id);
+		model.addAttribute("ticketTypeId", ticketType);
 		model.addAttribute("ticketType", ticketName);
 		model.addAttribute("ticketFieldList", ticketFieldList);
 		return "/table_update";
