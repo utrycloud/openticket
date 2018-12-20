@@ -167,6 +167,7 @@ public class TicketController {
 			t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
 		}
 		model.addAttribute("ticketType", ticketName);
+		model.addAttribute("ticketTypeId", ticketType);
 		model.addAttribute("ticketFieldList", ticketFieldList);
 		logger.info("ticketType:"+ticketType);
 		logger.info("ticketName:"+ticketName);

@@ -82,7 +82,8 @@ function submitOrder() {
 		}),
 		success : function(data) {
 			alert("修改成功！");
-			window.location.href = "/openticket/index";
+			var ticketId = $("#id-p-ticketTypteId").text();
+			window.location.href = "/openticket/index?ticketTypeId="+ticketId;
 		},
 		error : function(data) {
 			alert("修改失败！");
