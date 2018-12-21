@@ -67,7 +67,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">对象名称</label><span
+                        <label for="exampleInputEmail1">列名称</label><span
                             style="color:red">(*)</span> <input type="text"
                             class="form-control" id="exampleInputEmail1"
                             placeholder="Enter text" name="name"> <span
@@ -96,8 +96,10 @@
                         <input type="text" class="form-control" id="exampleInputEmail3" placeholder="Enter text" name="defaultValue">
                         <!-- 这里设置选择日期时的默认值输入框 -->
                         <label for="exampleInputEmail31" id="defaultLabel1" style="display: none;">日期默认值</label>
-                             <input class="form-control" type="date" name="defaultValue" id="exampleInputEmail31" placeholder="Chose Time" style="display: none;"> 
-                             <span class="help-block">请输入默认值</span>
+                        <input class="form-control" type="date" name="defaultValue" id="exampleInputEmail31" placeholder="Chose Time" style="display: none;"> 
+                        <!-- 这里设置大文本的默认值输入框 -->
+                        <textarea class="form-control"  name="defaultValue" id="exampleInputEmail32" placeholder="input textarea" style="display: none;"> </textarea>
+                        <span class="help-block">请输入默认值</span>
                     </div>
                     <div class="form-group" id="selectTextarea" style="display: none">
                         <label>请输入可供选择的值（通过回车结束当前选择）</label>

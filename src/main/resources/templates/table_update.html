@@ -75,7 +75,7 @@
                                     <div th:if="${ticketField.required}=='0'">
                                         <label th:text="${ticketField.name}"></label> <input
                                             th:if="${ticketField.defaultValue} !=''" type="input"
-                                            class="form-control  selfDefine"
+                                            class="form-control  selfDefine"  placeholder="Enter text"
                                             th:name="${ticketField.fieldName}"
                                             th:value="${ticketField.value}" th:id="${ticketField.id}">
                                         <input th:if="${ticketField.defaultValue} ==''" type="input"
@@ -114,7 +114,7 @@
 								<input type="hidden" th:value="${ticketField.fieldName}"
 									name="hiddenData">
 								<div class="m-form__group form-group">
-									<label th:text="${ticketField.name}"
+									<label th:text="${ticketField.name+'(*)'}"
 										th:if="${ticketField.required}=='1'" style="color: red"></label>
 									<label th:text="${ticketField.name}"
 										th:if="${ticketField.required}!='1'" style="color: black;"></label>
@@ -191,16 +191,16 @@
 									name="hiddenData">
 								<div class="form-group m-form__group">
 									<div th:if="${ticketField.required}=='1'">
-										<label th:text="${ticketField.name}" style="color:red"></label>
+										<label th:text="${ticketField.name+'(*)'}" style="color:red"></label>
 										<textarea
-											class="form-control m-input m-input--solid selfDefine"
-											th:if="${ticketField.value} !=''"
+											class="form-control m-input m-input--solid selfDefine notNullInput"
+											th:if="${ticketField.value} !=''"th:label="${ticketField.name}"
 											th:name="${ticketField.fieldName}"
 											th:text="${ticketField.value}" th:id="${ticketField.id}"
 											rows="3"></textarea>
 										<textarea
-											class="form-control m-input m-input--solid selfDefine"
-											th:if="${ticketField.value} ==''"
+											class="form-control m-input m-input--solid selfDefine notNullInput"
+											th:if="${ticketField.value} ==''"th:label="${ticketField.name}"
 											th:name="${ticketField.fieldName}"
 											th:text="${ticketField.defaultValue}"
 											th:id="${ticketField.id}" rows="3"></textarea>
@@ -228,17 +228,25 @@
 								<input type="hidden" th:value="${ticketField.fieldName}"
 									name="hiddenData">
 								<div class="form-group">
-									<label th:text="${ticketField.name}"
-										th:if="${ticketField.required}=='1'" style="color: red"></label>
-									<label th:text="${ticketField.name}"
-										th:if="${ticketField.required}!='1'" style="color: black;"></label>
-									<select class="form-control  selfDefine"
-										th:name="${ticketField.fieldName}" th:id="${ticketField.id}">
-										<option
-											th:each="ticketFieldValue:${ticketField.selectValueList}"
-											th:text="${ticketFieldValue}"
-											th:selected="${ticketFieldValue} == ${ticketField.value}" />
-									</select>
+								    <div th:if="${ticketField.required}=='1'">
+                                        <label th:text="${ticketField.name+'(*)'}" style="color: red"></label>                          
+                                        <select class="form-control  selfDefine notNullInput"
+                                        th:name="${ticketField.fieldName}" th:id="${ticketField.id}">
+                                        <option
+                                            th:each="ticketFieldValue:${ticketField.selectValueList}" th:text="${ticketFieldValue}" 
+                                            th:attr="selected=${ticketFieldValue==ticketField.value?true:false}"/>
+                                        </select>
+                                     </div>
+                                     <div th:if="${ticketField.required}=='0'">
+                                        <label th:text="${ticketField.name}"></label>                          
+                                        <select class="form-control  selfDefine"
+                                        th:name="${ticketField.fieldName}" th:id="${ticketField.id}">
+                                        <option th:attr="selected=${'--不选--'==ticketField.value?true:false}">--不选--</option>
+                                        <option
+                                            th:each="ticketFieldValue:${ticketField.selectValueList}" th:text="${ticketFieldValue}"
+                                            th:attr="selected=${ticketFieldValue==ticketField.value?true:false}" />
+                                        </select>
+                                    </div>
 								</div>
 							</div>
 						</div>

@@ -50,10 +50,22 @@ function submitOrder() {
 		if(!flag){
 			return;
 		}
-		if($(this).val()==''){
-			alert($(this).attr('label')+"不能为空");
-			flag=false;
-			return ;
+		if($(this).attr("type")=='radio'){
+			var id=$(this).attr("id");
+			var val = $('input[id='+id+']:checked').val();
+			if(typeof(val)=="undefined"){
+				alert($(this).attr('label')+"为空");
+				flag=false;
+			}
+		}else{
+			if(!flag){
+				return;
+			}
+			if($(this).val()==''){
+				alert($(this).attr('label')+"为空");
+				flag=false;
+				return ;
+			}
 		}
 	})
 	if(!flag){
