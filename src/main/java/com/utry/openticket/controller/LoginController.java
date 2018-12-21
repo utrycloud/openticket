@@ -29,8 +29,7 @@ public class LoginController {
     Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping("/login")
-    public String  login(String username, String password,
-                         Model model, HttpSession session, HttpServletRequest request) {
+    public String  login(String username, String password, Model model, HttpServletRequest request) {
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             model.addAttribute("empty", "用户名或密码为空");
             return "/login";
@@ -43,13 +42,24 @@ public class LoginController {
                 model.addAttribute("empty", "用户名不存在");
                 return "/login";
             } else {
-                return mainTable(session,userDO);
+                return mainTable(request,userDO);
             }
         }
     }
 
-    private String mainTable(HttpSession session,UserDO user) {
-        session.setAttribute("login", user);
+    //登出
+    @RequestMapping("logout")
+    public String logout(Model model,HttpSession session){
+        //清除session
+        session.removeAttribute("login");
+        session.removeAttribute("userPermissions");
+        model.addAttribute("empty", "已退出");
+        return "/login";
+    }
+
+    private String mainTable(HttpServletRequest request,UserDO user) {
+        request.getSession().setAttribute("login", user);
+        request.getSession().setAttribute("username",user.getUsername());
         return "redirect:/index";
     }
 }

@@ -77,6 +77,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         for(PermissionDO permission:permissionList){
             isPublic=!matcher.match(requestURI,permission.getUri());
         }
+
         //公用url则放行
         if(isPublic){
             return true;

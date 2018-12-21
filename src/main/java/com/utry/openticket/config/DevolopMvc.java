@@ -19,7 +19,7 @@ public class DevolopMvc implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginHandlerInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/login.html", "/login", "/login2.html","/error","/403",
+                .excludePathPatterns("/login.html", "/login", "/login2.html","/logout","/error","/403",
                         "/assets/**","/scripts/**","/css/**","/fonts/**","/img/**","/plugins/**",
                         "/table/**", "/addTicket*", "/saveTicket");
     }
