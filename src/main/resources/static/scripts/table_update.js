@@ -6,7 +6,7 @@
  */
 var ticketValueList = new Array();
 
-//用于存放真正提交的
+//用于存放真正提交的 
 var inserts={};
 //用于存放被放弃提交的文件信息
 var giveUp=[];

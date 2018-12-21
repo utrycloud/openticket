@@ -49,7 +49,7 @@ function submitOrder() {
 	$(".notNullInput").each(function (){
 		if(!flag){
 			return;
-		}
+		} 
 		if($(this).attr("type")=='radio'){
 			var id=$(this).attr("id");
 			var val = $('input[id='+id+']:checked').val();

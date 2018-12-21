@@ -6,7 +6,7 @@
  * @date : 2018/07/26
  */
 
-//删除工单
+//删除工单 
 function deleteTicket(obj){
     var tr = $(obj).parents("tr");
     var id = $(obj).parents("tr").find("td").eq(1).text();

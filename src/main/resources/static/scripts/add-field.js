@@ -4,7 +4,7 @@
  * @version : 1.0
  * @date : 2018/07/26
  */
-var defaultValue='';
+var defaultValue=''; 
 
 ////由是否必要单选框的改变而改变的默认值的样式
 //$(function(){
