@@ -4,20 +4,20 @@
  * @version : 1.0
  * @date : 2018/07/26
  */
-var defaultValue='';
+var defaultValue=''; 
 
-//由是否必要单选框的改变而改变的默认值的样式
-$(function(){
-    $(":radio").click(function(){
-        if($("#optionsRadios4").is(":checked")){
-            $("#defaultLabel").css("color","red");
-            $("#defaultLabel").text("默认值（*）");
-        }else{
-            $("#defaultLabel").css("color","black");
-            $("#defaultLabel").text("默认值");
-        }
-    });
-});
+////由是否必要单选框的改变而改变的默认值的样式
+//$(function(){
+//    $(":radio").click(function(){
+//        if($("#optionsRadios4").is(":checked")){
+//            $("#defaultLabel").css("color","red");
+//            $("#defaultLabel").text("默认值（*）");
+//        }else{
+//            $("#defaultLabel").css("color","black");
+//            $("#defaultLabel").text("默认值");
+//        }
+//    });
+//});
 function check(ticketTypeId) {
     console.log(ticketTypeId);
     window.location.href="/openticket/index?ticketTypeId="+ticketTypeId;
@@ -29,13 +29,10 @@ function showTextarea(obj){
     var select = $(obj).val();
     if("下拉框" == select||"单选框" == select||"多选框" == select){
         $("#selectTextarea").show();
-        $("#optionsRadios4").prop("checked",true);
-        $("#optionsRadios5").prop("disabled",true);
     	$("#exampleInputEmail3").prop("value","");
     	$("#exampleInputEmail3").prop("disabled",false);
     }else{
         $("#selectTextarea").hide();
-        $("#optionsRadios5").removeProp("disabled");
     	$("#exampleInputEmail3").prop("value","");
     	$("#exampleInputEmail3").prop("disabled",false);
     }
@@ -49,6 +46,14 @@ function showTextarea(obj){
     	$("#defaultLabel1").show();
     	$("#exampleInputEmail31").show();
     	$("#defaultLabel").hide();
+    	$("#exampleInputEmail3").hide();
+    }
+  //如果选择的是日期的话 默认值应该为日期选择框
+    if("大文本" != select){
+    	$("#exampleInputEmail3").show();
+    	$("#exampleInputEmail32").hide();
+    }else{
+    	$("#exampleInputEmail32").show();
     	$("#exampleInputEmail3").hide();
     }
     //如果是文件选择的话 不需要默认值
@@ -72,23 +77,20 @@ function submitOrder(ticketTypeId){
     if($("#exampleInputEmail31").val()!=''){
     	defaultValue=$("#exampleInputEmail31").val();
     }
+    exampleInputEmail32
     if("" != name && "" !=fieldName){
-        if($("#optionsRadios4").is(":checked")){
-            if("" == defaultValue){
-                alert("请输入默认值");
-                return;
-            }
-        }
         if ("下拉框" == selectType||"单选框" == selectType||"多选框" == selectType){
-           if ("" == selectValues){
-               alert("请输入提供选择的值");
-               return;
-           }else{
-               if (selectValueList.indexOf($("[name=defaultValue]").val()) < 0) {
-                   alert("默认值错误");
-                   return;
-               }
-           }
+            if ("" == selectValues){
+                alert("请输入提供选择的值");
+                return;
+            }else{
+            	if($("[name=defaultValue]").val()!=''){
+            		if (selectValueList.indexOf($("[name=defaultValue]").val()) < 0) {
+                        alert("默认值错误");
+                        return;
+                    }
+                }
+            }
         }
         $.ajax({
             type:"post",
