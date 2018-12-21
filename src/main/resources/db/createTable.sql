@@ -215,7 +215,7 @@ insert into ot_ticket_type(name) values('问题');
 insert into ot_ticket_type(name) values('bug');
 
 insert ot_user(id,username,password,realName) values(100,'admin','123456','管理员甲');
-
+INSERT INTO ot_user(username, `password`, realName) VALUES('client', 123456, '客户');
 
 /**
 测试数据
