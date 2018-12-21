@@ -80,7 +80,7 @@
                             placeholder="Enter text" name="fieldName"> <span
                             class="help-block">请输入要添加的列名在表格中的字段名</span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="isMust">
                         <label class="">是否必填</label>
                         <div class="radio-list">
                             <label class="radio-inline"> <input type="radio"
@@ -99,7 +99,8 @@
                         <input class="form-control" type="date" name="defaultValue" id="exampleInputEmail31" placeholder="Chose Time" style="display: none;"> 
                         <!-- 这里设置大文本的默认值输入框 -->
                         <textarea class="form-control"  name="defaultValue" id="exampleInputEmail32" placeholder="input textarea" style="display: none;"> </textarea>
-                        <span class="help-block">请输入默认值</span>
+                        <span class="help-block" id="outherBlock">请输入默认值</span>
+                        <span class="help-block" id="checkboxBlock" style="display: none;">请输入多选默认值 多个值以/分割</span>
                     </div>
                     <div class="form-group" id="selectTextarea" style="display: none">
                         <label>请输入可供选择的值（通过回车结束当前选择）</label>

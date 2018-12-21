@@ -168,6 +168,12 @@ public class TicketController {
 		List<TicketFieldDTO> ticketFieldList = ticketFieldService.getColumnByTicketId(ticketType);
 		for (TicketFieldDTO t : ticketFieldList) {
 			t.setSelectValueList(fieldTypeValueService.getFieldTypeValue(t.getId()));
+			if(Constant.CHECKBOX_TYPE.equals(t.getSelectType())){
+				if(Strings.isNotEmpty(t.getDefaultValue())){
+					String[] values = t.getDefaultValue().split("/");
+					t.setCheckBoxValue(Arrays.asList(values));
+				}
+			}
 		}
 		model.addAttribute("ticketType", ticketName);
 		model.addAttribute("ticketTypeId", ticketType);

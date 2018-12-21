@@ -133,8 +133,7 @@
 							<div th:case="多选框">
 								<input type="hidden" th:value="${ticketField.fieldName}"
 									name="hiddenData">
-								<div class="m-form__group form-group"
-									style="width: 1350px;float: left;margin-left: 0px">
+								<div class="m-form__group form-group ">
 									<label th:text="${ticketField.name}"
 										th:if="${ticketField.required}=='1'" style="color: red"></label>
 									<label th:text="${ticketField.name}"

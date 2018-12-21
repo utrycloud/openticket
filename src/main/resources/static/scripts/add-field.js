@@ -25,6 +25,8 @@ function check(ticketTypeId) {
 
 //显示用于输入非文本框列的选择值
 function showTextarea(obj){
+	$("#exampleInputEmail31").attr("value","")
+	$("#exampleInputEmail32").attr("value"," ");
 	//输入的类型可能有 文本框，下拉，单选，多选，日期，文本，附件上传 其中文本，日期 大文本，附件 不需要选择值
     var select = $(obj).val();
     if("下拉框" == select||"单选框" == select||"多选框" == select){
@@ -35,6 +37,12 @@ function showTextarea(obj){
         $("#selectTextarea").hide();
     	$("#exampleInputEmail3").prop("value","");
     	$("#exampleInputEmail3").prop("disabled",false);
+    }
+    //如果选择的是多选框
+    if("多选框" == select){
+    	$("#isMust").hide();
+    	$("#outherBlock").hide();
+    	$("#checkboxBlock").show();
     }
     //如果选择的是日期的话 默认值应该为日期选择框
     if("日期" != select){
@@ -48,7 +56,7 @@ function showTextarea(obj){
     	$("#defaultLabel").hide();
     	$("#exampleInputEmail3").hide();
     }
-  //如果选择的是日期的话 默认值应该为日期选择框
+  //如果选择的是大文本
     if("大文本" != select){
     	$("#exampleInputEmail3").show();
     	$("#exampleInputEmail32").hide();
@@ -77,7 +85,9 @@ function submitOrder(ticketTypeId){
     if($("#exampleInputEmail31").val()!=''){
     	defaultValue=$("#exampleInputEmail31").val();
     }
-    exampleInputEmail32
+    if($("#exampleInputEmail32").val()!=' '&&$("#exampleInputEmail32").val()!=''){
+    	defaultValue=$("#exampleInputEmail32").val();
+    }
     if("" != name && "" !=fieldName){
         if ("下拉框" == selectType||"单选框" == selectType||"多选框" == selectType){
             if ("" == selectValues){
@@ -85,10 +95,22 @@ function submitOrder(ticketTypeId){
                 return;
             }else{
             	if($("[name=defaultValue]").val()!=''){
-            		if (selectValueList.indexOf($("[name=defaultValue]").val()) < 0) {
-                        alert("默认值错误");
-                        return;
-                    }
+            		if ("多选框" != selectType){
+            			if (selectValueList.indexOf($("[name=defaultValue]").val()) < 0) {
+                            alert("默认值错误");
+                            return;
+                        }
+            		}
+            		if("多选框" == selectType){
+            			var defaultValueList=[];
+            			defaultValueList=trimSpace($("[name=defaultValue]").val().split("/"));
+            			for(var i =0;i<defaultValueList.length;i++){
+            				if (selectValueList.indexOf(defaultValueList[i]) < 0) {
+                                alert("默认值错误");
+                                return;
+                            }
+            			}
+            		}
                 }
             }
         }

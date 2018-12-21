@@ -113,8 +113,7 @@
 							<div th:case="多选框">
 								<input type="hidden" th:value="${ticketField.fieldName}"
 									name="hiddenData">
-								<div class="m-form__group form-group row"
-									style="width: 1300px;float: left;margin-left: 0px">
+								<div class="m-form__group form-group">
 									<label th:text="${ticketField.name}"></label>
 									<div class="m-checkbox-inline">
 										<label class="m-checkbox "
@@ -122,7 +121,8 @@
 											<input class="selfDefine" type="checkbox"
 											th:name="${ticketField.fieldName}"
 											th:text="${ticketFieldValue}" th:id="${ticketField.id}"
-											th:value="${ticketFieldValue}">
+											th:value="${ticketFieldValue}"
+											th:attr="checked=${ticketField.checkBoxValue.contains(ticketFieldValue)?true:false}">
 										</label>
 									</div>
 								</div>
@@ -162,12 +162,12 @@
 									name="hiddenData">
 								<div class="form-group">
 									<div th:if="${ticketField.required}=='1'">
-										<label th:text="${ticketField.name}" style="color:red"></label>
+										<label th:text="${ticketField.name+'(*)'}" style="color:red"></label>
 										<form action="/openticket/fileUpload" method="post"
 											enctype="multipart/form-data" th:id="${ticketField.id}">
 											<!-- 用来提交 ticketFileldId-->
 											<input type="hidden" th:value="${ticketField.id}" name="ticketFileldId">
-											<input type="file" class="selfDefine"
+											<input type="file" class="selfDefine notNullInput"  th:label="${ticketField.name}"
 												onchange="UpFile3(this.form)" name="fileName"
 												th:id="${ticketField.id}">
 										</form>
