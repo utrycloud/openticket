@@ -39,8 +39,9 @@
                 </div>
             </div>
         </div>
-        <div>
-          <sapn></sapn><span></span><span></span>
+        <div style="float: left; margin-left: 60px; margin-top: 40px;">
+          <span id="oneOrder" onclick="goUp()" style="cursor: pointer;"> 最高权限 </span>
+          <span id="twoOrder" th:if="${pid}==2"><span> >> </span> <span th:text="${name}"></span> </span>
         </div>
         <div class="m-portlet__body">
             <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -58,7 +59,8 @@
             </div>
             <!--begin: Datatable -->
             <div class="m_datatable" id="userTable">
-
+                <input type="hidden" th:value="${type}" id="type">
+                <input type="hidden" th:value="${pid}" id="pid">
             </div>
             <!--end: Datatable -->
         </div>
@@ -122,6 +124,8 @@
 </body>
 <script th:inline="javascript">
     //加载表格
+    var type=$("#type").val();
+    var pid=$("#type").val();
     var DatatableRemoteAjaxDemo = {
         init: function () {
             //表格头
@@ -148,7 +152,8 @@
                 "width":110,
                 "title":"操作",
                 "template":function() {
-                    return'<a href="#addUserModal" data-toggle="modal" onclick="updatePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>'+
+                    return '<a href="#setRoleModal" onclick="getChild(this)" data-toggle="modal" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="查看下级"><i class="la la-pencil" ></i></a>'+
+                        '<a href="#addUserModal" data-toggle="modal" onclick="updatePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>'+
                         '<a href="#" onclick="deletePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete"><i class="la la-trash"></i></a>';
                 }
             }
@@ -159,7 +164,7 @@
                     type: "remote",
                     source: {
                         read: {
-                            url: "/openticket/permission/list",
+                            url: "/openticket/getChildPermission?type="+type,
                             map: function (t) {
                                 var e = t;
                                 return void 0 !== t.data && (e = t.data),
@@ -202,6 +207,17 @@
 
         }
     };
+    function goUp(){
+        window.location.href="/openticket/permission?id=2";
+    }
+    function getChild(obj){
+      type = $(obj).parents("tr").find("td").eq(0).text();
+      if(pid!=2&&pid!=0){
+        alert("已经是最后一级权限");
+        return;
+      }
+      window.location.href="/openticket/permission?id="+type;
+    }
     jQuery(document).ready(function () {
         DatatableRemoteAjaxDemo.init();
     });
