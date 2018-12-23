@@ -64,4 +64,14 @@ public class PermissionService {
 		List<PermissionDO> result = permissionDAO.getByRoleId(roleId);
 		return JsonResult.success(result);
 	}
+
+	/**
+	 * 通过父权限的id获得子权限
+	 * @param pareId
+	 * @return
+	 */
+	public List<PermissionDO> getChildPermission(String pareId) {
+		// TODO Auto-generated method stub
+		return permissionDAO.getChildPermission(pareId);
+	}
 }

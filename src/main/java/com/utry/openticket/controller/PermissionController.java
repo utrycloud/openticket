@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,10 +29,15 @@ public class PermissionController {
     
     /**
      * 去权限管理界面
+     * id 是默认值2 最高权限
      * @return
      */
     @RequestMapping("/permission")
-    public String goPermissionPage(){
+    public String goPermissionPage(@RequestParam(defaultValue="2") String id,Model model){
+    	model.addAttribute("type", id);
+    	PermissionDO permissionDO=permissionService.getPermissionById(Integer.parseInt(id));
+    	model.addAttribute("name", permissionDO.getName());
+    	model.addAttribute("pid", permissionDO.getPid());
     	return "/permission_form";
     }
     
@@ -62,6 +68,17 @@ public class PermissionController {
     	return new JsonResult(1,"保存成功");
     }
     
+    /**
+     * 通过父权限的id获取所有子权限
+     * @param type
+     * @return
+     */
+    @RequestMapping("/getChildPermission")
+    @ResponseBody
+    public JsonResult getChildPermission(@RequestParam(defaultValue="2") String type,Model model){
+    	List<PermissionDO> permissionDOs = permissionService.getChildPermission(type);
+    	return new JsonResult(1,permissionDOs);
+    }
     /**
      * 用户通过id获取Permission
      * @param id

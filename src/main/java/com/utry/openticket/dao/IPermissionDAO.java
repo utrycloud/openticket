@@ -1,6 +1,8 @@
 package com.utry.openticket.dao;
 
 import com.utry.openticket.model.PermissionDO;
+import com.utry.openticket.model.vo.JsonResult;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -57,4 +59,11 @@ public interface IPermissionDAO {
 	 * @return
 	 */
 	int delRolePermissionByPermissionId(int permissionId);
+
+	/**
+	 * 
+	 * @param pareId
+	 * @return
+	 */
+	List<PermissionDO> getChildPermission(String pareId);
 }
