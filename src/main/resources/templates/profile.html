@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>个人主页</title>
+    <<link href="assets/vendors/base/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="table/bootstrap.min.css">
+    <script src="table/jquery-1.10.2.min.js"></script>
+    <script src="table/bootstrap.min.js"></script>
+<body>
+<div class="container">
+    <h1>个人资料</h1>
+    <hr/>
+    <div style="padding-left: 123px;">
+        <img src="assets/app/media/img/users/user4.jpg" class="img-circle" style="width: 114px;">
+        <a style="margin-left: 615px;" href="javaScript: window.location.href='/openticket/index'">返回首页</a>
+        <hr/>
+        <div style="padding-left: 117px;">
+            <p th:text= "${'用户名： '+session.login.getUsername()}">用户名</p>
+            <p th:text= "${'真实名： '+session.login.getRealName()}">正式名</p>
+            <p th:text= "${'电话号码： '+session.login.getTel()}">电话号码</p>
+            <p th:text= "${'邮箱： '+session.login.getEmail()}">邮箱</p>
+            <p th:text= "${'创建时间： '+session.login.getCreateTime()}">创建时间</p>
+            <p th:text= "${'更新时间： '+session.login.getUpdateTime()}">更新时间</p>
+            <!-- 模态框 -->
+            <div class="update-model" style="margin-left: 541px;">
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">修改个人信息</button>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">修改个人信息</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="username"  class="col-sm-2 control-label">用户名</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" th:value= "${session.login.getUsername()}" class="form-control" id="username" placeholder="请输入名字">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="relname" class="col-sm-2 control-label">正式名</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" th:value= "${session.login.getRealName()}" class="form-control" id="relname" placeholder="请输入名字">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tel" class="col-sm-2 control-label">电话</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" th:value= "${session.login.getTel()}" class="form-control" id="tel">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="meail" class="col-sm-2 control-label">邮箱</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" th:value= "${session.login.getEmail()}" class="form-control" id="meail">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id-old-password" class="col-sm-2 control-label">原密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="id-old-password" class="form-control">
+                                        <p hidden="true" style="color: red" id="id-check-password">原密码错误</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id-new-password" class="col-sm-2 control-label">新密码</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" onchange="checkPassword()" id="id-new-password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn btn-primary">提交更改</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        $("#id-old-password").blur(function(){
+            console.log("blur");
+            $("#id-check-password").attr("hidden", false);
+        });
+    });
+</script>
+</html>
