@@ -47,6 +47,7 @@ public class PermissionService {
 	public void delPermissionById(int id) {
 		// TODO Auto-generated method stub
 		permissionDAO.delPermissionById(id);
+		permissionDAO.delPermissionByPid(id);
 		//删除权限关联的角色权限表信息
 		permissionDAO.delRolePermissionByPermissionId(id);
 	}
@@ -73,5 +74,10 @@ public class PermissionService {
 	public List<PermissionDO> getChildPermission(String pareId) {
 		// TODO Auto-generated method stub
 		return permissionDAO.getChildPermission(pareId);
+	}
+
+	public List<PermissionDO> getPermissionByFuncOrder(int funcOrder) {
+		// TODO Auto-generated method stub
+		return permissionDAO.getPermissionByFuncOrder(funcOrder);
 	}
 }
