@@ -34,8 +34,11 @@ public class PermissionController {
      */
     @RequestMapping("/permission")
     public String goPermissionPage(@RequestParam(defaultValue="2") String id,Model model){
-    	model.addAttribute("type", id);
     	PermissionDO permissionDO=permissionService.getPermissionById(Integer.parseInt(id));
+    	//获取所有的二级目录
+    	List<PermissionDO> permissionList=permissionService.getPermissionByFuncOrder(2);
+    	model.addAttribute("permissionList", permissionList);
+    	model.addAttribute("type", id);
     	model.addAttribute("name", permissionDO.getName());
     	model.addAttribute("pid", permissionDO.getPid());
     	return "/permission_form";

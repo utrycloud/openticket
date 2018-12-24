@@ -9,6 +9,7 @@ public class PermissionDO implements Serializable {
     private Integer pid;
     private Integer funcOrder;
     private String description;
+    private String pName;
 
     public Integer getId() {
         return id;
@@ -58,7 +59,16 @@ public class PermissionDO implements Serializable {
         this.description = description;
     }
 
-    @Override
+    
+    public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+
+	@Override
     public String toString() {
         return "PermissionDO{" +
                 "id=" + id +

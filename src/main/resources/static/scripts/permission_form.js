@@ -1,7 +1,20 @@
 var formData={};
+var selectId;
+function changePid(obj){
+	selectId=obj.value;
+	if(selectId=='2'){
+		$("#funcOrder").val(2);
+		$("#funcOrder").attr("disabled","true");
+	}else{
+		$("#funcOrder").val(3);
+		$("#funcOrder").attr("disabled","true");
+	}
+}
 
 function updatePermission(obj){
 	initFrom();
+	$("#pid1").attr("disabled","disabled");
+	$("#funcOrder").attr("disabled","true");
 	//alert($('#description').attr("value"));
 	var id = $(obj).parents("tr").find("td").eq(0).text();
 	$.ajax({
@@ -14,7 +27,7 @@ function updatePermission(obj){
         	$('#id').val(formData.id);
         	$('#name').val(formData.name);
         	$('#uri').val(formData.uri);
-        	$('#pid').val(formData.pid);
+        	selectId=formData.pid;
         	$('#funcOrder').val(formData.funcOrder);
         	$('#description').val(formData.description);
         	//alert("formData.description"+formData.description);
@@ -53,6 +66,17 @@ function initFrom(){
 	$('#description').val("");
 }
 
+function initFrom2(){
+	initFrom();
+	$("#pid1").attr("disabled",false);
+	$("#funcOrder").attr("disabled","true");
+	$("option").each(function (){
+		$(this).attr('selected',false);
+	})
+	selectId=2;
+	$("#funcOrder").val(2);
+}
+
 function addPermission(){
 	var name = $('#name').val();
 	if(name==''){
@@ -65,7 +89,6 @@ function addPermission(){
 		return ;
 	}
 	var id=$('#id').attr("value");
-	var pid = $('#pid').val();
 	var funcOrder = $('#funcOrder').val();
 	var description = $('#description').val();
 	
@@ -77,7 +100,7 @@ function addPermission(){
         	id:id,
             name:name,
             uri:uri,
-            pid:pid,
+            pid:selectId,
             funcOrder:funcOrder,
             description:description,
 

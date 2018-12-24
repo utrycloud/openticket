@@ -66,4 +66,8 @@ public interface IPermissionDAO {
 	 * @return
 	 */
 	List<PermissionDO> getChildPermission(String pareId);
+
+	List<PermissionDO> getPermissionByFuncOrder(int funcOrder);
+
+	void delPermissionByPid(int id);
 }

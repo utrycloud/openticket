@@ -45,6 +45,16 @@
     </delete>
     
     <select id="getChildPermission" parameterType="string" resultType="com.utry.openticket.model.PermissionDO">
-        SELECT p.id,p.`name`,p.uri,p.pid,p.func_order as funcOrder,p.description from ot_permission p where p.pid=#{id}
+        SELECT p.id,p.`name`,p.uri,p.pid,p2.`name` as pName,p.func_order as funcOrder,
+        p.description from 
+        ot_permission p,ot_permission p2 where p.pid=#{id} and p.pid=p2.id
     </select>
+    
+    <select id="getPermissionByFuncOrder" parameterType="int" resultType="com.utry.openticket.model.PermissionDO">
+        select p.id, p.name,p.uri,p.pid,p.func_order as funcOrder,p.description from ot_permission p where p.func_order=#{funcOrder};
+    </select>
+    
+     <delete id="delPermissionByPid" parameterType="int">
+        DELETE from ot_permission where  pid=#{id}
+    </delete>
 </mapper>
