@@ -75,7 +75,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         boolean isPublic=true;
         AntPathMatcher matcher=new AntPathMatcher();
         for(PermissionDO permission:permissionList){
-            isPublic=!matcher.match(requestURI,permission.getUri());
+            if(matcher.match(requestURI,permission.getUri())){
+                isPublic=false;
+            }
         }
 
         //公用url则放行
@@ -93,7 +95,9 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             logger.info("用户"+user.getUsername()+"权限:"+userPermissions);
         }
         for(PermissionDO permission:userPermissions){
-            hasPermission=matcher.match(requestURI,permission.getUri());
+            if(matcher.match(requestURI,permission.getUri())){
+                hasPermission=true;
+            }
         }
         return hasPermission;
     }
