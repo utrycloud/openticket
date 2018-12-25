@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 public class RoleController {
     @Autowired
@@ -56,5 +59,18 @@ public class RoleController {
             return new JsonResult(201,"非法参数");
         }
         return roleService.updateRoleById(roleDO);
+    }
+
+    /**
+     * 更新角色权限
+     * @param roleId 角色id
+     * @param ids 权限id集合
+     * @return
+     */
+    @RequestMapping("/role/setRolePermission")
+    @ResponseBody
+    public JsonResult setRolePermission(Integer roleId, String ids){
+        List<String> list= Arrays.asList(ids.split(","));
+        return roleService.setRolePermission(roleId,list);
     }
 }

@@ -47,4 +47,8 @@
     <delete id="deleteUserRoleByRoleId" parameterType="Integer">
         delete from ot_user_role where role_id=#{roleId}
     </delete>
+
+    <insert id="insertRolePermission" parameterType="Integer">
+        insert into ot_role_permission(role_id,permission_id) values(#{roleId},#{permissionId})
+    </insert>
 </mapper>

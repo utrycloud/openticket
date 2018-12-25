@@ -183,10 +183,11 @@ function permissionManageModal(obj) {
     var id = tr.find("td").eq(0).text();
     var name=tr.find("td").eq(1).text();
     //清空
-    $("#permissionDiv").html("");
+    $("#permissionTree").html("");
 
     $("#s_role_name").html(name);
-    //获取角色拥有的权限并显示
+    $("#s_id").val(id);
+/*    //获取角色拥有的权限并显示
     $.ajax({
         type: "post",
         dataType: "json",
@@ -202,6 +203,80 @@ function permissionManageModal(obj) {
         },
         error: function (data) {
             alert("服务器出错！");
+        }
+    });*/
+
+    //加载权限树
+    $.ajax({
+        type: "Get",
+        url: "/openticket/permission/getTree",
+        dataType: "json",
+        success: function (result) {
+            //先清除
+            $('#permissionTree').jstree("destroy");
+            //
+            $("#permissionTree").jstree({
+                // 引入插件
+                'plugins': ['checkbox', 'types', 'themes'],
+                'types': {
+                    'default': {
+                        'icon': false  // 删除默认图标
+                    },
+                },
+                'checkbox': {  // 去除checkbox插件的默认效果
+                    'tie_selection': false,
+                    'keep_selected_style': false,
+                    'whole_node': false
+                },
+                'core': {
+                    'multiple': true,  // 可否多选
+                    'data': result.data,
+                    'dblclick_toggle': true   //允许tree的双击展开
+                }
+            }).on("loaded.jstree",function(event,data){
+                //当前角色拥有的权限
+                $.ajax({
+                    type: "Get",
+                    url: "/openticket/permission/getByRoleId",
+                    dataType: "json",
+                    data:{roleId:id},
+                    success:function (result) {
+                        var list=result.data;
+                        for(var p in list){
+                            $("#permissionTree").jstree('check_node',list[p].id);
+                        }
+                    }
+                });
+            });
+        },
+        error: function () {
+            alert("加载失败！")
+        }
+    });
+}
+
+//更新角色权限
+function updateRolePermission() {
+    var id=$("#s_id").val();
+    var list=$('#permissionTree').jstree("get_checked");
+    var params=[];
+    for (var p in list){
+        params.push(list[p]);
+    }
+    $.ajax({
+        type:"post",
+        dataType:"json",
+        data:{roleId:id,ids:params.toString()},
+        url:"/openticket/role/setRolePermission",
+        success:function (result) {
+            if(result.code==200){
+                alert("保存成功！");
+            }else{
+                alert("保存失败！"+result.msg);
+            }
+        },
+        error:function () {
+            alert("保存失败");
         }
     });
 }

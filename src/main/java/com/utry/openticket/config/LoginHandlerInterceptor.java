@@ -75,7 +75,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         boolean isPublic=true;
         AntPathMatcher matcher=new AntPathMatcher();
         for(PermissionDO permission:permissionList){
-            if(matcher.match(requestURI,permission.getUri())){
+            if(requestURI.equals(permission.getUri())){
                 isPublic=false;
             }
         }
