@@ -49,4 +49,12 @@ public interface RoleDAO {
      * @return
      */
     int deleteUserRoleByRoleId(Integer roleId);
+
+    /**
+     * 设置角色权限,
+     * @param roleId
+     * @param permissionId
+     * @return
+     */
+    int insertRolePermission(@Param("roleId")Integer roleId,@Param("permissionId")Integer permissionId);
 }

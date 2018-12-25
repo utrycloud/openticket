@@ -114,10 +114,21 @@ public class PermissionController {
     }
 
     /**
+     * 得到权限树
+     * @return
+     */
+    @RequestMapping("/permission/getTree")
+    @ResponseBody
+    public JsonResult getPermissionTree(){
+        return permissionService.getPermissionTree();
+    }
+
+    /**
      * 移除ServletContext保存的权限list
      * @param request
      */
     private void removePermissionList(HttpServletRequest request){
         request.getServletContext().removeAttribute("permissionList");
     }
+
 }

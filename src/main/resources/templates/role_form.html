@@ -147,13 +147,16 @@
             </div>
             <div class="modal-body">
                 <form class="form-group" id="setPermissionForm">
+                    <input type="index" id="s_id" name="id" hidden>
                     <label>当前角色:</label><span id="s_role_name">角色1</span><br/>
                     <label>拥有权限:</label>
-                    <div id="permissionDiv">
+                    <div id="permissionTree">
+
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="updateRolePermission()">保存</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
@@ -163,6 +166,7 @@
 <script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
+<script src="assets/demo/default/custom/components/base/treeview.js" type="text/javascript"></script>
 <script src="scripts/role_form.js" type="text/javascript"></script>
 
 </body>
