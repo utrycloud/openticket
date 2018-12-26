@@ -676,4 +676,10 @@ public class TicketController {
 		string = string.substring(0, string.length() - 1);
 		return string.replace("\"", "").split(",");
 	}
+
+	@RequestMapping("/menu")
+	@ResponseBody
+	public List<Integer> getRoleTypeId(Integer userId){
+		return userService.getRoleTypeIdByUserId(userId);
+	}
 }

@@ -108,7 +108,7 @@
 													class="m-menu__link-text" id="new-column">字段添加</span></a></li>
 										</ul>
 									</div></li>
-								<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true">
+								<li id="systemSetMenu" hidden class="m-menu__item  m-menu__item--submenu m-menu__item--rel" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true">
 									<a href="javascript:;" class="m-menu__link m-menu__toggle" title="Non functional dummy link">
 										<i class="m-menu__link-icon flaticon-add"></i>
 										<span class="m-menu__link-text">系统设置</span>
@@ -118,7 +118,7 @@
 									<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
 										<span class="m-menu__arrow m-menu__arrow--adjust"></span>
 										<ul class="m-menu__subnav">
-											<li class="m-menu__item " aria-haspopup="true">
+											<li id="userManageMenu" class="m-menu__item " aria-haspopup="true" hidden>
 												<a href="user" class="m-menu__link ">
 													<span class="m-menu__link-text" id="user_manage">用户管理</span>
 												</a>
@@ -765,7 +765,31 @@
                 }
             });
         }
-	</script>
+
+	//根据登录用户角色类型显示或隐藏菜单
+	var userId=[[${session.login.id}]];
+	$.ajax({
+		dataType:"json",
+		type:"post",
+		url:"/openticket/menu",
+		data:{userId:userId},
+		success:function (result) {
+		    //得到角色类型id数组
+			var ids=result;
+			//显示菜单
+			for(var i in ids){
+			    if(ids[i]=="1"){//超级管理员
+					$("#systemSetMenu").attr("hidden",false);
+                    $("#userManageMenu").attr("hidden",false);
+				} else if(ids[i]=="2"){//负责人
+                    $("#systemSetMenu").attr("hidden",false);
+				}else{//其他人员
+
+				}
+			}
+        }
+	});
+</script>
 
 <!-- end::Body -->
 </html>

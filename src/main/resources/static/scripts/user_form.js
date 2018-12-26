@@ -18,6 +18,9 @@ var DatatableRemoteAjaxDemo = {
             field: 'email',
             title: '邮箱'
         }, {
+            field: 'role',
+            title: '角色'
+        }, {
                 field: 'createTime',
                 title: '创建时间'
         },{

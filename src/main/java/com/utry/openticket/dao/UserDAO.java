@@ -26,5 +26,9 @@ public interface UserDAO {
 
     int updateUser(UserDO user);
 
+
+    List<Integer> getRoleTypeIdByUserId(Integer userId);
+
     int updateUserProfile(UserDTO userDTO);
+
 }
