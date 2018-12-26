@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="table/bootstrap.min.css">
     <script src="table/jquery-1.10.2.min.js"></script>
     <script src="table/bootstrap.min.js"></script>
-    <script src="scripts/permission_form.js"></script>
+
     <style>
         html{
             width:100%;
@@ -41,16 +41,16 @@
         </div>
         <div style="float: left; margin-left: 60px; margin-top: 40px;">
           <span id="oneOrder" onclick="goUp()" style="cursor: pointer;"> 最高权限 </span>
-          <span id="twoOrder" th:if="${pid}==2"><span> >> </span> <span th:text="${name}"></span> </span>
+          <span id="twoOrder" th:if="${currPermission.funcOrder}==2"><span> >> </span> <span th:text="${currPermission.name}"></span> </span>
         </div>
         <div class="m-portlet__body">
             <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
                 <div class="row align-items-center">
-                    <div class="col-xl-12 order-1 order-xl-2 m--align-right" onclick="initFrom2()">
-                        <a href="#addUserModal" data-toggle="modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
+                    <div class="col-xl-12 order-1 order-xl-2 m--align-right">
+                        <a href="#addPermissionModal" onclick="initFrom()" data-toggle="modal" class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air m-btn--pill">
                             <span>
                                 <i class="la la-cart-plus"></i>
-                                <span id="addUser" >添加权限</span>
+                                <span id="addPermission" >添加权限</span>
                             </span>
                         </a>
                         <div class="m-separator m-separator--dashed d-xl-none"></div>
@@ -58,9 +58,9 @@
                 </div>
             </div>
             <!--begin: Datatable -->
-            <div class="m_datatable" id="userTable">
-                <input type="hidden" th:value="${type}" id="type">
-                <input type="hidden" th:value="${pid}" id="pid">
+            <div class="m_datatable" id="permissionTable">
+                <input type="hidden" th:value="${currPermission.id}" id="currId">
+                <input type="hidden" th:value="${currPermission.pid}" id="pid">
             </div>
             <!--end: Datatable -->
         </div>
@@ -68,11 +68,11 @@
 
 
 </div>
-<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addPermissionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="addUserModalTitle">
+                <h3 class="modal-title" id="addPermissionModalTitle">
                     添加权限
                 </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -87,20 +87,20 @@
                     <label>uri</label><span style="color:red">(*)</span>
                     <input type="text" class="form-control" id="uri" placeholder="请输入uri" name="uri">
                     <label>父权限</label>
-	                     <select class="form-control" id="pid1" onchange="changePid(this)">
-	                         <optgroup label="一级权限" >
-	                             <option value="2" >最高权限</option>
+	                     <select class="form-control" id="pid1" onchange="changePid(this.value)">
+	                         <optgroup label="一级权限" id="order1" hidden>
 	                         </optgroup>
-	                         <optgroup label="二级权限">
-	                             <option th:each="permission:${permissionList}"
-	                                     th:value="${permission.id}"
-	                                     th:selected="${permission.id}==${type}"
-                                         th:text="${permission.name}">
-                                 </option>
+	                         <optgroup label="二级权限" id="order2" hidden>
 	                         </optgroup>
+                             <optgroup label="三级权限" id="order3" hidden>
+                             </optgroup>
+                             <optgroup label="四级权限" id="order4" hidden>
+                             </optgroup>
+                             <optgroup label="五级权限" id="order5" hidden>
+                             </optgroup>
 	                     </select>
                     <label>权限层级</label>
-                    <input type="text" class="form-control" id="funcOrder" placeholder="请输入层级" name="funcOrder">
+                    <input type="text" class="form-control" id="funcOrder" placeholder="请输入层级" name="funcOrder" readonly>
                     <label>权限描述</label>
                     <input type="text" class="form-control" id="description" placeholder="请输入权限描述" name="description">
                 </div>
@@ -118,13 +118,13 @@
 <script src="assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
 <script src="assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
 <!--end::Global Theme Bundle -->
-
+<script src="scripts/permission_form.js"></script>
 
 </body>
 <script th:inline="javascript">
     //加载表格
-    var type=$("#type").val();
-    var pid=$("#type").val();
+    var currId=$("#currId").val();
+    var pid=$("#pid").val();
     var DatatableRemoteAjaxDemo = {
         init: function () {
             //表格头
@@ -151,19 +151,19 @@
                 "width":110,
                 "title":"操作",
                 "template":function() {
-                    return '<a href="#setRoleModal" onclick="getChild(this)" data-toggle="modal" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="查看下级"><i class="la la-pencil" ></i></a>'+
-                        '<a href="#addUserModal" data-toggle="modal" onclick="updatePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edit details"><i class="la la-edit"></i></a>'+
-                        '<a href="#" onclick="deletePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="Delete"><i class="la la-trash"></i></a>';
+                    return '<a href="#" onclick="intoChild(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="查看下级"><i class="la la-level-down" ></i></a>'+
+                        '<a href="#addPermissionModal" data-toggle="modal" onclick="updatePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="编辑"><i class="la la-edit"></i></a>'+
+                        '<a href="#" onclick="deletePermission(this)" class="m-portlet__nav-link btn m-btn m-btn--hover-danger m-btn--icon m-btn--icon-only m-btn--pill" title="删除"><i class="la la-trash"></i></a>';
                 }
             }
             ];
             var t;
-            t = $("#userTable").mDatatable({
+            t = $("#permissionTable").mDatatable({
                 data: {
                     type: "remote",
                     source: {
                         read: {
-                            url: "/openticket/getChildPermission?type="+type,
+                            url: "/openticket/getChildPermission?id="+currId,
                             map: function (t) {
                                 var e = t;
                                 return void 0 !== t.data && (e = t.data),
@@ -206,16 +206,19 @@
 
         }
     };
+
+
     function goUp(){
-        window.location.href="/openticket/permission?id=2";
+        window.location.href="/openticket/permission?id=1";
     }
-    function getChild(obj){
-      type = $(obj).parents("tr").find("td").eq(0).text();
-      if(pid!=2&&pid!=0){
+    //查看下级权限
+    function intoChild(obj){
+      id = $(obj).parents("tr").find("td").eq(0).text();
+      /*if(pid!=2&&pid!=0){
         alert("已经是最后一级权限");
         return;
-      }
-      window.location.href="/openticket/permission?id="+type;
+      }*/
+      window.location.href="/openticket/permission?id="+id;
     }
     jQuery(document).ready(function () {
         DatatableRemoteAjaxDemo.init();

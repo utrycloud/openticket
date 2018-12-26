@@ -28,19 +28,24 @@ public class PermissionController {
     }
     
     /**
-     * 去权限管理界面
-     * id 是默认值2 最高权限
+     * 去当前权限下级权限界面
+     * id 是当前权限id，默认值1 最高权限
      * @return
      */
     @RequestMapping("/permission")
-    public String goPermissionPage(@RequestParam(defaultValue="2") String id,Model model){
+    public String goPermissionPage(@RequestParam(defaultValue="1") String id,Model model){
+        if(Integer.parseInt(id)<1){
+            id="1";
+        }
     	PermissionDO permissionDO=permissionService.getPermissionById(Integer.parseInt(id));
-    	//获取所有的二级目录
-    	List<PermissionDO> permissionList=permissionService.getPermissionByFuncOrder(2);
+    	//获取所有的下级目录
+    	List<PermissionDO> permissionList=permissionService.getPermissionByFuncOrder(permissionDO.getFuncOrder()+1);
     	model.addAttribute("permissionList", permissionList);
-    	model.addAttribute("type", id);
+        model.addAttribute("currPermission", permissionDO);
+/*    	model.addAttribute("type", id);
     	model.addAttribute("name", permissionDO.getName());
     	model.addAttribute("pid", permissionDO.getPid());
+        model.addAttribute("funcOrder", permissionDO.getFuncOrder());*/
     	return "/permission_form";
     }
     
@@ -73,13 +78,13 @@ public class PermissionController {
     
     /**
      * 通过父权限的id获取所有子权限
-     * @param type
+     * @param id
      * @return
      */
     @RequestMapping("/getChildPermission")
     @ResponseBody
-    public JsonResult getChildPermission(@RequestParam(defaultValue="2") String type,Model model){
-    	List<PermissionDO> permissionDOs = permissionService.getChildPermission(type);
+    public JsonResult getChildPermission(@RequestParam(defaultValue="2") String id,Model model){
+    	List<PermissionDO> permissionDOs = permissionService.getChildPermission(id);
     	return new JsonResult(1,permissionDOs);
     }
     /**

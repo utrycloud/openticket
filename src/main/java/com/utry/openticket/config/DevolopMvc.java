@@ -21,6 +21,6 @@ public class DevolopMvc implements WebMvcConfigurer {
         registry.addInterceptor(loginHandlerInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/login.html", "/login", "/login2.html","/logout","/error","/403",
                         "/assets/**","/scripts/**","/css/**","/fonts/**","/img/**","/plugins/**",
-                        "/table/**", "/addTicket*", "/saveTicket");
+                        "/table/**");
     }
 }

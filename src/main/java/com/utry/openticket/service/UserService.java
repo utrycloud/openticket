@@ -3,14 +3,17 @@ package com.utry.openticket.service;
 import com.utry.openticket.dao.RoleDAO;
 import com.utry.openticket.dao.UserDAO;
 import com.utry.openticket.dto.UserDTO;
+import com.utry.openticket.model.RoleDO;
 import com.utry.openticket.model.UserDO;
 import com.utry.openticket.model.vo.JsonResult;
+import com.utry.openticket.model.vo.UserVO;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,8 +38,16 @@ public class UserService {
      * 获取所有user，不分页
   * @return
      */
-    public List<UserDO> getUserList(){
-        return userDAO.getUserList();
+    public List<UserVO> getUserList(){
+        List<UserDO> list = userDAO.getUserList();
+        List<UserVO> result=new ArrayList<>();
+        for(UserDO userDO:list){
+            UserVO userVO=new UserVO(userDO);
+            List<RoleDO> role = roleDAO.getRoleByUserId(userVO.getId());
+            userVO.setRoles(role);
+            result.add(userVO);
+        }
+        return result;
     }
 
     public JsonResult getUserById(Integer id){
@@ -89,6 +100,10 @@ public class UserService {
             roleDAO.addUserRole(userId,Integer.valueOf(roleId));
         }
         return JsonResult.success();
+    }
+
+    public List<Integer> getRoleTypeIdByUserId(Integer userId){
+        return userDAO.getRoleTypeIdByUserId(userId);
     }
 
     private String getCurrentTime(){

@@ -21,6 +21,20 @@ public class UserDO implements Serializable{
 /*    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }*/
+    public UserDO(){
+
+    }
+
+    public UserDO(Integer id, String username, String password, String realName, String tel, String email, String createTime, String updateTime) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.realName = realName;
+        this.tel = tel;
+        this.email = email;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 
     public String getRealName() {
         return realName;

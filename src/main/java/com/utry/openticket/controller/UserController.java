@@ -3,6 +3,7 @@ package com.utry.openticket.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.utry.openticket.model.UserDO;
 import com.utry.openticket.model.vo.JsonResult;
+import com.utry.openticket.model.vo.UserVO;
 import com.utry.openticket.service.RoleService;
 import com.utry.openticket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/list")
-    public @ResponseBody List<UserDO> getUserList(){
+    public @ResponseBody List<UserVO> getUserList(){
         return userService.getUserList();
     }
 

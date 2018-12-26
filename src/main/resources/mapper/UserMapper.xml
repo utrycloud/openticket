@@ -37,5 +37,8 @@
         where id=#{id}
     </update>
 
-
+    <select id="getRoleTypeIdByUserId" parameterType="Integer" resultType="Integer">
+        select distinct r.role_type_id from ot_role r,ot_user_role ur
+        where ur.user_id=#{userId} and ur.role_id=r.id
+    </select>
 </mapper>
