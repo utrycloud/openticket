@@ -9,7 +9,6 @@ var allList;
 
 //改变父权限时联动权限层级
 function changePid(id){
-	selectId=id;
 	/*if(selectId=='2'){
 		$("#funcOrder").val(2);
 		$("#funcOrder").attr("disabled","true");
@@ -27,7 +26,7 @@ function changePid(id){
         }
 	});*/
 	for(var i in allList){
-		if(selectId==allList[i].id){
+		if(id==allList[i].id){
             $("#funcOrder").val(allList[i].funcOrder+1);
 		}
 	}
@@ -43,20 +42,23 @@ function loadPid1() {
         url:"/openticket/permission/list",
         success:function (result) {
             allList=result;
+            for(var i=1;i<=5;i++){
+                $("#order"+i).html("");
+                $("#order"+i).attr("hidden",true);
+            }
+            for(var i in allList){
+                var order=allList[i].funcOrder;
+                var id=allList[i].id;
+                var name=allList[i].name;
+                var $group=$("#order"+order);
+                $group.attr("hidden",false);
+                $group.append("<option value=\'"+id+"\'>"+name+"</option>")
+            }
+            changePid(selectId);
+            $("option[value="+selectId+"]").attr("selected",true);
         }
     });
-	for(var i=1;i<=5;i++){
-        $("#order"+i).html("");
-        $("#order"+i).attr("hidden",true);
-	}
-	for(var i in allList){
-		var order=allList[i].funcOrder;
-		var id=allList[i].id;
-        var name=allList[i].name;
-        var $group=$("#order"+order);
-        $group.attr("hidden",false);
-        $group.append("<option value=\'"+id+"\'>"+name+"</option>")
-	}
+
 }
 
 //编辑更新时补充弹出框信息
@@ -116,8 +118,6 @@ function initFrom(){
 	$('#description').val("");
 	//加载父权限
     loadPid1();
-    changePid(selectId);
-    $("option[value="+selectId+"]").attr("selected",true);
 }
 
 function initFrom2(){
