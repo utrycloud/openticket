@@ -3,9 +3,11 @@ package com.utry.openticket.service;
 import com.utry.openticket.dao.IPermissionDAO;
 import com.utry.openticket.model.PermissionDO;
 import com.utry.openticket.model.vo.JsonResult;
+import com.utry.openticket.model.vo.PermissionTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,5 +81,22 @@ public class PermissionService {
 	public List<PermissionDO> getPermissionByFuncOrder(int funcOrder) {
 		// TODO Auto-generated method stub
 		return permissionDAO.getPermissionByFuncOrder(funcOrder);
+	}
+
+	/**
+	 * 构建权限树
+	 * @return
+	 */
+	public JsonResult getPermissionTree(){
+		List<PermissionDO> permissionList = permissionDAO.getPermissionList();
+		List<PermissionTreeNode> nodeList=new ArrayList<>();
+		for(PermissionDO permission:permissionList){
+			PermissionTreeNode node=new PermissionTreeNode(permission.getId().toString(),permission.getName(),permission.getPid().toString());
+			if(node.getParent().equals("0")){
+				node.setParent("#");
+			}
+			nodeList.add(node);
+		}
+		return JsonResult.success(nodeList);
 	}
 }

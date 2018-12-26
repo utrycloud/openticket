@@ -1,5 +1,6 @@
 package com.utry.openticket.service;
 
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.utry.openticket.dao.IPermissionDAO;
 import com.utry.openticket.dao.RoleDAO;
 import com.utry.openticket.dto.RoleDTO;
@@ -47,5 +48,16 @@ public class RoleService {
     public JsonResult getRoleByUserId(Integer userId){
         List<RoleDO> result = roleDAO.getRoleByUserId(userId);
         return JsonResult.success(result);
+    }
+
+    public JsonResult setRolePermission(Integer roleId,List<String> list){
+        roleDAO.deleteRolePermission(roleId);
+        for(String permissionId:list){
+            if("".equals(permissionId)){
+                break;
+            }
+            roleDAO.insertRolePermission(roleId,Integer.valueOf(permissionId));
+        }
+        return JsonResult.success();
     }
 }
