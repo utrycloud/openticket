@@ -83,6 +83,9 @@ public class UserService {
         roleDAO.deleteRoleByUserId(userId);
         //重新设置用户角色
         for(String roleId : Roles){
+            if("".equals(roleId)){
+                continue;
+            }
             roleDAO.addUserRole(userId,Integer.valueOf(roleId));
         }
         return JsonResult.success();
