@@ -40,8 +40,7 @@
             </div>
         </div>
         <div style="float: left; margin-left: 60px; margin-top: 40px;">
-          <span id="oneOrder" onclick="goUp()" style="cursor: pointer;"> 最高权限 </span>
-          <span id="twoOrder" th:if="${currPermission.funcOrder}==2"><span> >> </span> <span th:text="${currPermission.name}"></span> </span>
+          <span id="oneOrder" onclick="goUp()" style="cursor: pointer;"> 返回上一级 </span>
         </div>
         <div class="m-portlet__body">
             <div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
@@ -209,7 +208,12 @@
 
 
     function goUp(){
-        window.location.href="/openticket/permission?id=1";
+        if(pid>0){
+            window.location.href="/openticket/permission?id="+pid;
+        }else{
+            alert("已经是最高层级");
+        }
+
     }
     //查看下级权限
     function intoChild(obj){
