@@ -26,9 +26,9 @@
             <p th:text= "${'更新时间： '+session.login.getUpdateTime()}">更新时间</p>
             <!-- 模态框 -->
             <div class="update-model" style="margin-left: 541px;">
-                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">修改个人信息</button>
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#id-modify-profile-modal">修改个人信息</button>
                 <!-- 模态框（Modal） -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="id-modify-profile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -36,47 +36,56 @@
                                 <h4 class="modal-title" id="myModalLabel">修改个人信息</h4>
                             </div>
                             <div class="modal-body">
+                            <form class="form-group" id="updateProFile">
+                                <input hidden name="id" th:value= "${session.login.getId()}">
                                 <div class="form-group">
                                     <label for="username"  class="col-sm-2 control-label">用户名</label>
                                     <div class="col-sm-10">
-                                        <input type="text" th:value= "${session.login.getUsername()}" class="form-control" id="username" placeholder="请输入名字">
+                                        <input name="username" type="text" th:value= "${session.login.getUsername()}" class="form-control" id="username">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="relname" class="col-sm-2 control-label">正式名</label>
+                                    <label for="realName" class="col-sm-2 control-label">正式名</label>
                                     <div class="col-sm-10">
-                                        <input type="text" th:value= "${session.login.getRealName()}" class="form-control" id="relname" placeholder="请输入名字">
+                                        <input name="realName" type="text" th:value= "${session.login.getRealName()}" class="form-control" id="realName">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="tel" class="col-sm-2 control-label">电话</label>
                                     <div class="col-sm-10">
-                                        <input type="text" th:value= "${session.login.getTel()}" class="form-control" id="tel">
+                                        <input name="tel" type="text" th:value= "${session.login.getTel()}" class="form-control" id="tel">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="meail" class="col-sm-2 control-label">邮箱</label>
+                                    <label for="email" class="col-sm-2 control-label">邮箱</label>
                                     <div class="col-sm-10">
-                                        <input type="text" th:value= "${session.login.getEmail()}" class="form-control" id="meail">
+                                        <input name="email" type="text" th:value= "${session.login.getEmail()}" class="form-control" id="email">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="id-old-password" class="col-sm-2 control-label">原密码</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="id-old-password" class="form-control">
-                                        <p hidden="true" style="color: red" id="id-check-password">原密码错误</p>
+                                    <label>
+                                        <input id="id-checkbox-modify-password" type="checkbox" checked>修改密码
+                                    </label>
+                                <div id="div-modify-password">
+                                    <div class="form-group">
+                                        <label for="id-old-password" class="col-sm-2 control-label">原密码</label>
+                                        <div class="col-sm-10">
+                                            <input name="password" type="password" id="id-old-password" class="form-control">
+                                            <p hidden="true" style="color: red" id="id-check-password">原密码错误</p>
+                                            <p hidden id="hidden-password" th:text="${session.login.getPassword()}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id-new-password" class="col-sm-2 control-label">新密码</label>
+                                        <div class="col-sm-10">
+                                            <input name="newPassword" type="password" class="form-control" id="id-new-password">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="id-new-password" class="col-sm-2 control-label">新密码</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" onchange="checkPassword()" id="id-new-password">
-                                    </div>
-                                </div>
+                            </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                <button type="button" class="btn btn-primary">提交更改</button>
+                                <button type="button" id="id-close-button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="button" id="id-submit-button" onclick="submitProFile()" class="btn btn-primary">提交更改</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal -->
@@ -86,12 +95,90 @@
     </div>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
     $(document).ready(function(){
+        //密码输入错误提示
         $("#id-old-password").blur(function(){
-            console.log("blur");
-            $("#id-check-password").attr("hidden", false);
+            var password = $("#hidden-password").text();
+            var oldPassword = $("#id-old-password").val();
+            console.log(password, "  ", oldPassword);
+            if(oldPassword === password) {
+                $("#id-check-password").attr("hidden", true);
+            } else {
+                $("#id-check-password").attr("hidden", false);
+            }
         });
+
+        //关闭按钮
+        $("#id-close-button").click(function(){
+            $("#id-check-password").attr("hidden", true);
+            $("#id-old-password").val("");
+        });
+        $('#id-modify-profile-modal').on('hidden.bs.modal', function () {
+            // 执行一些动作...
+            console.log("hide motal");
+            $("#id-check-password").attr("hidden", true);
+            $("#id-old-password").val("")
+            $("#id-new-password").val("")
+        })
+
+        //点击选中是否修改密码
+        $("#id-checkbox-modify-password").bind('click', function(){
+            if ($(this).attr('checked')) {
+                $(this).attr('checked', false);
+                $("#div-modify-password").attr('hidden', true);
+            } else {
+                console.log("选中")
+                $(this).attr('checked', true);
+                $("#div-modify-password").attr('hidden', false);
+            }
+        })
     });
+
+    //提交表单
+    function submitProFile() {
+        if ($("#id-checkbox-modify-password").attr('checked')) {
+            if(!truePassword() || !trueNewPassword()) {
+                return;
+            }
+        }
+        var data=$("#updateProFile").serialize();
+        data = decodeURIComponent(data,true);
+        $.ajax({
+            type:"post",
+            dataType:"json",
+            url:"/openticket/proFile/update",
+            data:data,
+            success:function(data) {
+                    alert("更新成功！");
+                    window.location.reload();
+            },
+            error:function(data){
+                alert("失败！");
+            }
+        });
+    }
+    
+    function truePassword() {
+       var password =  $("#hidden-password").text();
+       var oldPassword = $("#id-old-password").val();
+       console.log("session password = ", password, oldPassword);
+       if ( oldPassword === password) {
+           return true;
+       } else {
+           alert("原密码错误不能提交");
+           return false;
+       }
+    }
+
+    function trueNewPassword() {
+        if ($("#id-new-password").val() === null || $("#id-new-password").val() === "") {
+            alert("请输入新密码");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 </script>
 </html>

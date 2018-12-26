@@ -13,6 +13,15 @@ public class UserDTO implements Serializable{
     private String createTime;
     private String updateTime;
     private Integer roleId;
+    private String newPassword;
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
     public String getRealName() {
         return realName;
@@ -98,6 +107,7 @@ public class UserDTO implements Serializable{
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", roleId=" + roleId +
+                ", newPassword='" + newPassword + '\'' +
                 '}';
     }
 }

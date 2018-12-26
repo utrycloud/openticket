@@ -94,4 +94,8 @@ public class UserService {
         return dateFormat.format(today);
     }
 
+    public void updateUserProfile(UserDTO userDTO) {
+        userDAO.updateUserProfile(userDTO);
+    }
+
 }
