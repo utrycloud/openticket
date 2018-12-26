@@ -37,5 +37,10 @@
         where id=#{id}
     </update>
 
+    <update id="updateUserProfile"  parameterType="com.utry.openticket.dto.UserDTO">
+        update ot_user set username=#{username}, password=#{newPassword},realName=#{realName},tel=#{tel},email=#{email},
+        update_time=now() where id=#{id}
+    </update>
+
 
 </mapper>
