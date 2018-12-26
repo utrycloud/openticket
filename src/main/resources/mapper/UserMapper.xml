@@ -37,8 +37,17 @@
         where id=#{id}
     </update>
 
+
     <select id="getRoleTypeIdByUserId" parameterType="Integer" resultType="Integer">
         select distinct r.role_type_id from ot_role r,ot_user_role ur
         where ur.user_id=#{userId} and ur.role_id=r.id
     </select>
+
+    <update id="updateUserProfile"  parameterType="com.utry.openticket.dto.UserDTO">
+        update ot_user set username=#{username}, password=#{newPassword},realName=#{realName},tel=#{tel},email=#{email},
+        update_time=now() where id=#{id}
+    </update>
+
+
+
 </mapper>

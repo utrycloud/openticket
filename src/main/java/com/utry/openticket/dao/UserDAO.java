@@ -1,5 +1,6 @@
 package com.utry.openticket.dao;
 
+import com.utry.openticket.dto.UserDTO;
 import com.utry.openticket.model.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,5 +26,9 @@ public interface UserDAO {
 
     int updateUser(UserDO user);
 
+
     List<Integer> getRoleTypeIdByUserId(Integer userId);
+
+    int updateUserProfile(UserDTO userDTO);
+
 }
