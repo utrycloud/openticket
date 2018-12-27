@@ -95,7 +95,7 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             logger.info("用户"+user.getUsername()+"权限:"+userPermissions);
         }
         for(PermissionDO permission:userPermissions){
-            if(matcher.match(requestURI,permission.getUri())){
+            if(matcher.match(permission.getUri(),requestURI)){
                 hasPermission=true;
             }
         }
