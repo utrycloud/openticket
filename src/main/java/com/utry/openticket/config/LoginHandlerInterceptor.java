@@ -1,13 +1,10 @@
 package com.utry.openticket.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.utry.openticket.controller.TicketController;
 import com.utry.openticket.model.PermissionDO;
 import com.utry.openticket.model.UserDO;
 import com.utry.openticket.model.vo.JsonResult;
 import com.utry.openticket.service.PermissionService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -23,8 +20,6 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Autowired
     private PermissionService permissionService;
 
-    private Logger logger = LoggerFactory.getLogger(TicketController.class);
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         UserDO login = (UserDO)request.getSession().getAttribute("login");
@@ -35,10 +30,8 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
         } else {
             //url权限认证
             if(checkPermission(request)){//有权限则放行.
-                //logger.info("用户:"+login.getUsername()+"有权限:"+request.getRequestURL());
                 return true;
             }else{//没权限
-                //logger.info("用户:"+login.getUsername()+"没权限:"+request.getRequestURL());
                 //判断是否为ajax请求
                 String header = request.getHeader("x-requested-with");
                 if(header==null){//普通请求
@@ -62,14 +55,12 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
     private boolean checkPermission(HttpServletRequest request){
         //获得请求uri
         String requestURI = request.getRequestURI();
-        //logger.info("请求uri:"+requestURI);
         //获得权限list
         ServletContext servletContext = request.getServletContext();
         List<PermissionDO> permissionList =(List<PermissionDO>) servletContext.getAttribute("permissionList");
         if(permissionList==null) {
             permissionList=permissionService.getPermissionList();
             servletContext.setAttribute("permissionList", permissionList);
-            logger.info("权限list:"+permissionList);
         }
         //判断是否公共url
         boolean isPublic=true;
@@ -92,7 +83,6 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
             UserDO user = (UserDO) request.getSession().getAttribute("login");
             userPermissions = permissionService.getUserPermissions(user.getId());
             request.getSession().setAttribute("userPermissions",userPermissions);
-            logger.info("用户"+user.getUsername()+"权限:"+userPermissions);
         }
         for(PermissionDO permission:userPermissions){
             if(matcher.match(permission.getUri(),requestURI)){
