@@ -9,6 +9,7 @@
         where ticket_type_id = '${value}'
         and t.create_user_id = u.id
         and t.ticket_type_id = tt.id
+        order by t.create_time desc
     </select>
 
     <insert id="saveTicket" parameterType="com.utry.openticket.dto.TicketDTO"
