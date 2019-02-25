@@ -5,6 +5,7 @@ import com.utry.openticket.dao.ITicketValueDAO;
 import com.utry.openticket.dto.TicketDTO;
 import com.utry.openticket.dto.TicketPageDTO;
 import com.utry.openticket.model.TicketValueDO;
+import com.utry.openticket.model.TimeDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +35,9 @@ public class TicketService {
      * @auther : LVDING
      * @date : 2018-07-26
      */
-    public List<TicketDTO> getTicketList(String ticketType){
+    public List<TicketDTO> getTicketList(String ticketType, TimeDO time){
 
-        List<TicketDTO> ticketList = ticketDAO.getTicketList(ticketType);
+        List<TicketDTO> ticketList = ticketDAO.getTicketList(ticketType,time);
         return ticketList;
 
     }

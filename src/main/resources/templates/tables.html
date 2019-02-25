@@ -539,10 +539,8 @@
 													<div class="m-form__control">
 														<select class="form-control m-bootstrap-select"
 															id="m_form_type">
-															<option value="">All</option>
-															<option value="1">Online</option>
-															<option value="2">Retail</option>
-															<option value="3">Direct</option>
+															<option th:selected="${type=='0'}" value="0">All</option>
+															<option th:selected="${type=='1'}" value="1">本周</option>
 														</select>
 													</div>
 												</div>
@@ -616,6 +614,7 @@
             init: function () {
                 var ticketType = [[${ticketType}]];
                 var ticketTypeId = [[${ticketTypeId}]];
+                var timeType = $("#m_form_type").val();
                 var data = getColumn(ticketTypeId);
                 var t;
                 t = $(".m_datatable").mDatatable({
@@ -623,7 +622,7 @@
                         type: "remote",
                         source: {
                             read: {
-                                url: "/openticket/getTicket?ticketTypeId="+ticketTypeId,
+                                url: "/openticket/getTicket?ticketTypeId="+ticketTypeId+"&timeType="+timeType,
                                 map: function (t) {
                                     var e = t;
                                     return void 0 !== t.data && (e = t.data),
@@ -684,8 +683,9 @@
         });
         //导出所有数据
         $("[id=export_all]").click(function () {
+            var timeType = $("#m_form_type").val();
             var ticketType = $("h3.m-portlet__head-text").text();
-            window.open('/openticket/exportXLs?ticketType='+ticketType);
+            window.open('/openticket/exportXLs?ticketType='+ticketType+"&timeType="+timeType);
             window.location.href = "/openticket/form?ticketType=" + ticketType;
 
         });
@@ -693,6 +693,11 @@
 			var ticketTypeId = $("h3.m-portlet__head-text").text();
 			window.location.href = "/openticket/addField?ticketTypeId=" + ticketTypeId;
 		});
+        $("#m_form_type").change(function(){
+            var timeType = $("#m_form_type").val();
+            var ticketTypeId = $("h3.m-portlet__head-text").text();
+            window.location.href = "/openticket/index?ticketTypeId=" + ticketTypeId+"&timeType="+timeType;
+        });
         function chooseType(obj){
             var ticketType = $(obj).text();
             $("h3.m-portlet__head-text").text(ticketType);

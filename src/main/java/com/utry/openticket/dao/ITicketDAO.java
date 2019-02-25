@@ -10,7 +10,9 @@ package com.utry.openticket.dao;
 import com.utry.openticket.dto.TicketDTO;
 import com.utry.openticket.dto.TicketPageDTO;
 
+import com.utry.openticket.model.TimeDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public interface ITicketDAO {
      * @auther : LVDING
      * @date : 2018-07-26
      */
-    List<TicketDTO> getTicketList(String ticketType);
+    List<TicketDTO> getTicketList(@Param("ticketType") String ticketType, @Param("time")TimeDO timeDO);
 
     /**
      *
